@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet,Platform } from 'react-native';
+import { StatusBar, StyleSheet,Platform, Dimensions } from 'react-native';
  
 export default StyleSheet.create({
 container: {
@@ -101,6 +101,30 @@ card: {
   height: 180,
 },
 
+
+addBankButton: {
+  position: 'absolute',
+  bottom: 15,
+  left: 15,
+  backgroundColor: '#fff',
+  paddingHorizontal: 14,
+  paddingVertical: 8,
+  borderRadius: 20,
+  flexDirection: 'row',
+  alignItems: 'center',
+  opacity:0.6
+},
+
+bankIcon: {
+  marginRight: 6,
+},
+
+addBankText: {
+  fontSize: 14,
+  fontWeight: '600',
+  color: '#000',
+},
+
 balanceLabel: {
   color: '#d8d4d4',
   fontSize: 14,
@@ -170,7 +194,7 @@ bottomLeftCurve: {
   width: 90,
   height: 90,
   borderRadius: 40,
-  backgroundColor: '#E5E7EB',
+  // backgroundColor: '#E5E7EB',
 },
 
 cardFooter: {
@@ -349,9 +373,11 @@ cornerRight: {
     fontSize: 16,
     fontWeight: 'bold',
   },
+
   viewAllText: {
     color: '#FDE68A',
-    fontSize: 12,
+      fontSize: 14,
+  fontWeight: "600",
   },
  
   transactionsList: {
@@ -442,6 +468,106 @@ statusText: {
   fontSize: 10,
   color: "#C7B8FF",
 },
+
+expertContainer: {
+  paddingHorizontal: 20,
+  marginTop: 40,
+
+},
+
+expertHeader: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: 14,
+},
+
+// viewAllText: {
+//   color: "#4F46E5",
+//   fontSize: 14,
+//   fontWeight: "600",
+// },
+
+expertTitle: {
+  color: "#fff",
+  fontSize: 18,
+  fontWeight: "700",
+  marginBottom: 15,
+},
+
+expertCard: {
+  width: 170,
+  backgroundColor: "#fff",
+  borderRadius: 16,
+  padding: 12,
+  marginRight: 14,
+},
+
+expertTopRow: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+},
+
+coinInfo: {
+  flexDirection: "row",
+  alignItems: "center",
+},
+
+coinImage: {
+  width: 26,
+  height: 26,
+  marginRight: 6,
+},
+
+coinSymbol: {
+  fontWeight: "700",
+  fontSize: 14,
+},
+
+badge: {
+  paddingHorizontal: 8,
+  paddingVertical: 4,
+  borderRadius: 6,
+},
+
+longBadge: {
+  backgroundColor: "#22c55e",
+},
+
+shortBadge: {
+  backgroundColor: "#ef4444",
+},
+
+badgeText: {
+  color: "#fff",
+  fontSize: 11,
+  fontWeight: "600",
+},
+
+entryLabel: {
+  marginTop: 12,
+  color: "#6b7280",
+  fontSize: 12,
+},
+
+entryPrice: {
+  fontSize: 15,
+  fontWeight: "700",
+},
+
+profitBox: {
+  marginTop: 12,
+  backgroundColor: "#ecfdf5",
+  padding: 6,
+  borderRadius: 8,
+},
+
+profitText: {
+  color: "#16a34a",
+  fontWeight: "700",
+},
+
   /* BOTTOM NAV */
  bottomNav: {
   position: 'absolute',
@@ -459,6 +585,7 @@ statusText: {
 },
   navItem: {
     alignItems: 'center',
+    marginLeft:30
   },
  
   navIcon: {
@@ -487,9 +614,80 @@ centerIcon: {
   justifyContent: 'center',
   alignItems: 'center',
   position: 'absolute',
-  top: -30,
+  top: -40,
   alignSelf: 'center',
   elevation: 10,
 },
 
+marketCardsContainer: {
+  marginTop: 25,
+  paddingHorizontal: 16,
+},
+
+marketCard: {
+  width: '100%',
+  backgroundColor: '#fcf2bd',
+  borderRadius: 30,
+  padding: 20,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 5,
+  },
+  shadowOpacity: 0.08,
+  shadowRadius: 10,
+  elevation: 5,
+},
+
+marketHeader: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+
+marketCoinRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+
+marketCoinImage: {
+  width: 55,
+  height: 55,
+  borderRadius: 30,
+  marginRight: 14,
+},
+
+marketCoinName: {
+  fontSize: 20,
+  fontWeight: '700',
+  color: '#111',
+},
+
+marketCoinSymbol: {
+  fontSize: 15,
+  color: '#888',
+  marginTop: 4,
+},
+
+marketBadge: {
+  paddingHorizontal: 14,
+  paddingVertical: 8,
+  borderRadius: 30,
+},
+
+priceSection: {
+  marginTop: 16,
+},
+
+marketPrice: {
+  fontSize: 28,
+  fontWeight: '800',
+  color: '#000',
+},
+
+marketChange: {
+  marginTop: 10,
+  fontSize: 18,
+  fontWeight: '700',
+},
 });

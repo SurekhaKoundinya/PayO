@@ -19,6 +19,7 @@ import Icon from "react-native-vector-icons/Feather";
 
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
+import BottomNav from '../components/bottomNav';
 
 export default function UserProfile({ navigation }) {
   const [profiledata, setProfileData] = useState({});
@@ -216,7 +217,7 @@ export default function UserProfile({ navigation }) {
             style={styles.addBankBtn}
             onPress={() => navigation.navigate('AddBankAccount')}
           >
-            <Icon name="credit-card" size={20} color="#fff" />
+            <Icon name="plus-circle" size={20} color="#fff" />
             
             <Text style={styles.addBankText}>
               Add Bank Account
@@ -296,6 +297,11 @@ export default function UserProfile({ navigation }) {
           </TouchableOpacity>
         </ScrollView>
       </View>
+
+        <BottomNav
+                  navigation={navigation}
+                  currentRoute="Scan"
+                />
 
     </SafeAreaView>
   );

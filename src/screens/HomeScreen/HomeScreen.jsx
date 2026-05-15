@@ -2,14 +2,15 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView,Image } from 'react-native';
 import styles from './homeStyling';
 import api from '../../api/axios';
 import Header from '../components/header';
 import Icon from 'react-native-vector-icons/Feather';
-
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
+// import { Dimensions } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
 
 export default function HomeScreen({ navigation }) {
 
@@ -26,6 +27,8 @@ export default function HomeScreen({ navigation }) {
 
   const [avaliable, setAvaliable] = useState("");
   const [totalBalance, setTotalBalance] = useState("");
+  const [expertCoins, setExpertCoins] = useState([]);
+  const [selectedCoin, setSelectedCoin] = useState(null);
 
   // DISPLAY LOGIC
   const displayedTransactions = showAll
@@ -120,15 +123,31 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+const fetchExpertCoins = async () => {
+  try {
+    const res = await fetch("http://payo-app.duckdns.org:3001/api/market/overview");
+
+    const result = await res.json();
+    console.log(result, "data");
+
+    // access result.data (array)
+    setExpertCoins(result.data.slice(0, 50));
+
+  } catch (error) {
+    console.log("Expert picks error:", error);
+  }
+};
+
   useFocusEffect(
-    useCallback(() => {
+  useCallback(() => {
 
-      fetchBalance();
-      fetchTransactions();
-      fetchTotalBalance();
+    fetchBalance();
+    fetchTransactions();
+    fetchTotalBalance();
+    fetchExpertCoins();
 
-    }, [])
-  );
+  }, [])
+);
 
   return (
 
@@ -142,7 +161,7 @@ export default function HomeScreen({ navigation }) {
       >
 
         {/* CARD */}
-        <View style={styles.cardContainer}>
+        {/* <View style={styles.cardContainer}>
 
           <View style={styles.card}>
 
@@ -200,7 +219,75 @@ export default function HomeScreen({ navigation }) {
 
           </View>
 
+        </View> */}
+
+        <View style={styles.cardContainer}>
+
+  <View style={styles.card}>
+
+    <View style={styles.topRightCurve} />
+    <View style={styles.bottomLeftCurve} />
+
+    <View>
+      <Text style={styles.balanceLabel}>
+        Total Balance
+      </Text>
+
+      <View style={styles.balanceRow}>
+        <Text style={styles.balanceAmount}>
+          {balanceVisible ? ` ${avaliable}` : '* * * *'}
+        </Text>
+
+        <Text style={styles.payoLabel}>
+          PAYO
+        </Text>
+      </View>
+    </View>
+
+    <View style={styles.cardRight}>
+
+      <TouchableOpacity
+        onPress={() => setBalanceVisible(!balanceVisible)}
+      >
+        <Icon
+          name={balanceVisible ? "eye" : "eye-off"}
+          size={18}
+          color="#fff"
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.walletRow}
+        onPress={() => navigation.navigate('Wallets')}
+      >
+
+        <Text style={styles.walletText}>
+          My Wallet
+        </Text>
+
+        <View style={styles.arrowCircle}>
+          <Icon name="arrow-right" size={14} color="#000" />
         </View>
+
+      </TouchableOpacity>
+
+    </View>
+
+    {/* ADD BANK ACCOUNT BUTTON */}
+    <TouchableOpacity
+  style={styles.addBankButton}
+  onPress={() => navigation.navigate('AddBankAccount')}
+  disabled={true}
+>
+  <Icon name="plus-circle" size={18} color="#020202" style={styles.bankIcon} />
+  <Text style={styles.addBankText}>
+    Add Bank
+  </Text>
+</TouchableOpacity>
+
+  </View>
+
+</View>
 
         {/* ACTIONS */}
         <View style={styles.actionsContainer}>
@@ -327,14 +414,273 @@ export default function HomeScreen({ navigation }) {
 
         </View>
 
-        {/* TRANSACTION HEADER */}
-        <View style={styles.transactionsHeader}>
+      
+<View style={styles.expertContainer}>
+
+  <View style={styles.expertHeader}>
+
+  <Text style={styles.expertTitle}>
+    Expert Picks
+  </Text>
+
+  <TouchableOpacity
+    onPress={() =>
+      navigation.navigate("MarketScreen")
+    }
+  >
+    <Text style={styles.viewAllText}>
+      View All
+    </Text>
+  </TouchableOpacity>
+
+</View>
+
+ <ScrollView
+  horizontal
+  showsHorizontalScrollIndicator={false}
+>
+
+  {expertCoins.map((coin, index) => {
+
+    const isLong = coin?.priceChangePercentage24h >= 0;
+
+    return (
+      <TouchableOpacity
+        key={index}
+        style={styles.expertCard}
+        activeOpacity={0.8}
+        onPress={() =>
+          navigation.navigate("CoinDetailsScreen", { coin })
+        }
+      >
+
+        <View style={styles.expertTopRow}>
+
+          <View style={styles.coinInfo}>
+
+            <Image
+              source={{
+                uri:
+                  coin.image ||
+                  "https://cdn-icons-png.flaticon.com/512/825/825508.png",
+              }}
+              style={styles.coinImage}
+            />
+
+            <Text style={styles.coinSymbol}>
+              {coin.symbol?.toUpperCase()}
+            </Text>
+
+          </View>
+
+          <View
+            style={[
+              styles.badge,
+              isLong ? styles.longBadge : styles.shortBadge,
+            ]}
+          >
+            <Text style={styles.badgeText}>
+              {isLong ? "Long 5x" : "Short 5x"}
+            </Text>
+          </View>
+
+        </View>
+
+        <Text style={styles.entryLabel}>
+          Entry
+        </Text>
+
+        <Text style={styles.entryPrice}>
+          ${coin.price?.toLocaleString()}
+        </Text>
+
+        <View style={styles.profitBox}>
+          <Text style={styles.profitText}>
+            {Math.abs(
+              coin.priceChangePercentage24h || 0
+            ).toFixed(2)}% Expected profit
+          </Text>
+        </View>
+
+      </TouchableOpacity>
+    );
+
+  })}
+
+</ScrollView>
+
+</View>
+
+
+{/* MARKET CARDS */}
+
+<View style={styles.marketCardsContainer}>
+
+  {expertCoins.slice(0, 1).map((coin, index) => {
+
+    const isNegative =
+      coin?.priceChangePercentage24h < 0;
+
+    const graphData = [
+      coin.price + 1200,
+      coin.price + 900,
+      coin.price + 700,
+      coin.price + 300,
+      coin.price - 100,
+      coin.price + 200,
+      coin.price - 400,
+      coin.price - 250,
+    ];
+
+    return (
+
+      <View
+        key={index}
+        style={styles.marketCard}
+      >
+
+        {/* HEADER */}
+
+        <View style={styles.marketHeader}>
+
+          <View style={styles.marketCoinRow}>
+
+            <Image
+              source={{
+                uri:
+                  coin.image ||
+                  "https://cdn-icons-png.flaticon.com/512/825/825508.png",
+              }}
+              style={styles.marketCoinImage}
+            />
+
+            <View>
+
+              <Text style={styles.marketCoinName}>
+                {coin.name}
+              </Text>
+
+              <Text style={styles.marketCoinSymbol}>
+                {coin.symbol?.toUpperCase()}
+              </Text>
+
+            </View>
+
+          </View>
+
+          <View
+            style={[
+              styles.marketBadge,
+              {
+                backgroundColor: isNegative
+                  ? "#FFE5EA"
+                  : "#E7FFF1",
+              },
+            ]}
+          >
+
+            <Text
+              style={{
+                color: isNegative
+                  ? "#FF4D6D"
+                  : "#00C853",
+                fontWeight: "700",
+              }}
+            >
+              {isNegative ? "Bearish" : "Bullish"}
+            </Text>
+
+          </View>
+
+        </View>
+
+        {/* PRICE */}
+
+        <View style={styles.priceSection}>
+
+          <Text style={styles.marketPrice}>
+            ${coin?.price?.toLocaleString()}
+          </Text>
+
+          <Text
+            style={[
+              styles.marketChange,
+              {
+                color: isNegative
+                  ? "#FF4D6D"
+                  : "#00C853",
+              },
+            ]}
+          >
+            {isNegative ? "▼" : "▲"}{" "}
+            {Math.abs(
+              coin.priceChangePercentage24h || 0
+            ).toFixed(2)}
+            %
+          </Text>
+
+        </View>
+
+        {/* GRAPH */}
+
+        <LineChart
+          data={{
+            datasets: [
+              {
+                data: graphData,
+              },
+            ],
+          }}
+          width={300}
+          height={100}
+          withDots={false}
+          withInnerLines={false}
+          withOuterLines={false}
+          withHorizontalLabels={false}
+          withVerticalLabels={false}
+          withShadow={false}
+          transparent
+          bezier
+          chartConfig={{
+            backgroundGradientFrom: "#fff",
+            backgroundGradientTo: "#fff",
+            decimalPlaces: 0,
+            color: () =>
+              isNegative
+                ? "#FF4D6D"
+                : "#00C853",
+            strokeWidth: 3,
+            propsForBackgroundLines: {
+              stroke: "transparent",
+            },
+          }}
+          style={{
+            marginTop: 20,
+            borderRadius: 20,
+          }}
+        />
+
+      </View>
+    );
+  })}
+</View>
+
+      </ScrollView>
+
+    </View>
+  );
+}
+ 
+
+
+  {/* TRANSACTION HEADER */}
+        {/* <View style={styles.transactionsHeader}>
 
   <Text style={styles.transactionsTitle}>
     Recent Transactions
   </Text>
 
-  {/* SHOW ONLY IF MORE THAN 5 TRANSACTIONS */}
+
   {transactionsList.length > 5 && (
 
     <TouchableOpacity
@@ -365,7 +711,6 @@ export default function HomeScreen({ navigation }) {
 
 </View>
 
-        {/* TRANSACTIONS */}
         {transactionsList?.length > 0 ? (
 
           <>
@@ -392,7 +737,7 @@ export default function HomeScreen({ navigation }) {
                   }
                 >
 
-                  {/* LEFT */}
+               
                   <View style={styles.transactionLeft}>
 
                     <View
@@ -439,7 +784,7 @@ export default function HomeScreen({ navigation }) {
 
                   </View>
 
-                  {/* RIGHT */}
+                 
                   <View style={styles.amountBlock}>
 
                     <View style={styles.amountRow}>
@@ -483,7 +828,7 @@ export default function HomeScreen({ navigation }) {
 
             </View>
 
-            {/* VIEW MORE BUTTON */}
+            
             {showAll && visibleCount < transactionsList.length && (
 
               <TouchableOpacity
@@ -513,7 +858,7 @@ export default function HomeScreen({ navigation }) {
 
             )}
 
-            {/* PAGINATION ONLY WHEN SHOW LESS */}
+            
             {!showAll && totalPages > 1 ? (
 
               <View
@@ -660,12 +1005,8 @@ export default function HomeScreen({ navigation }) {
 
           </View>
 
-        )}
+        )} */}
 
-      </ScrollView>
 
-    </View>
-  );
-}
- 
+        {/* EXPERT PICKS */}
  

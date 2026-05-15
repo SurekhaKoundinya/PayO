@@ -230,12 +230,14 @@ const handleCopyTransactionID = (Id) => {
     return (
         <LinearGradient colors={["#5B0FD1", "#14002B"]} style={styles.container}>
 
-          
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-<Icon name="chevron-left" size={28} color="#ffffff" />                </TouchableOpacity>
-                <Text style={styles.headerText}>Transaction Details</Text>
-            </View>
+              <View style={styles.headerRow}>
+                      <TouchableOpacity 
+              onPress={() => navigation.canGoBack() && navigation.goBack()}          >
+                        <Text style={styles.back}>
+            <Icon name="chevron-left" size={28} color="#ffffff" />            </Text>
+                      </TouchableOpacity>
+                      <Text style={styles.header}>Transaction Details</Text>
+                    </View>
 
             {/* ✅ RECEIPT CAPTURE AREA */}
            <ViewShot

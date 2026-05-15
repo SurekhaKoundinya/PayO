@@ -133,7 +133,7 @@ export default function TnsHistorySingleUser({ navigation }) {
           <TouchableOpacity
             onPress={() => navigation.canGoBack() && navigation.goBack()}
           >
-            <Icon name="arrow-left" size={22} color="#fff" />
+           <Icon name="chevron-left" size={28} color="#ffffff" />    
           </TouchableOpacity>
 
           <Text style={styles.header}>Transaction History</Text>

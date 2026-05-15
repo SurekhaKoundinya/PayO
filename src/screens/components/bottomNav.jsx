@@ -102,7 +102,7 @@ const goToTab = (screen) => {
 
       {/* TRANSACTIONS */}
       <TouchableOpacity style={styles.navItem} onPress={() => goToTab('Transactions')}>
-        <Icon name="bar-chart-2" size={22} color={getColor('Transactions')} />
+        <Icon name="repeat" size={22} color={getColor('Transactions')} />
         <Text style={[
           styles.navLabel,
           currentRoute === 'Transactions' ? styles.navActive : styles.navInactive
@@ -112,13 +112,23 @@ const goToTab = (screen) => {
       </TouchableOpacity>
 
       {/* PROFILE */}
-    <TouchableOpacity style={styles.navItem} onPress={() => goToTab('UserProfile')}>
+    {/* <TouchableOpacity style={styles.navItem} onPress={() => goToTab('UserProfile')}>
   <Icon name="settings" size={22} color={getColor('Profile')} />
   <Text style={[
     styles.navLabel,
     currentRoute === 'Profile' ? styles.navActive : styles.navInactive
   ]}>
     Profile
+  </Text>
+</TouchableOpacity> */}
+
+ <TouchableOpacity style={styles.navItem} onPress={() => goToTab('MarketScreen')}>
+  <Icon name="trending-up" size={22} color={getColor('Market')} />
+  <Text style={[
+    styles.navLabel,
+    currentRoute === 'Market' ? styles.navActive : styles.navInactive
+  ]}>
+    Market
   </Text>
 </TouchableOpacity>
 
@@ -131,7 +141,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',

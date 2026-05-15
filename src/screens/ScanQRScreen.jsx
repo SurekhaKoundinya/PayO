@@ -28,7 +28,8 @@ export default function ScanQRScreen({ navigation, setSelectedUser, setActiveTab
   const [hasPermission, setHasPermission] = useState(false);
   const [scannedData, setScannedData] = useState(null);
   const [torch, setTorch] = useState('off');
-
+  const [isProcessingScan, setIsProcessingScan] = useState(false);
+ 
 
   const scanLine = useRef(new Animated.Value(0)).current;
 
@@ -63,27 +64,46 @@ export default function ScanQRScreen({ navigation, setSelectedUser, setActiveTab
 
 
   const handleQR = async (value) => {
-    if (scannedData) return;
-
+    // Prevent multiple API hits
+    if (scannedData || isProcessingScan) return;
+ 
+    setIsProcessingScan(true);
+ 
     try {
       const res = await api.post('api/wallet/scan-qr', { qrData: value });
-
+ 
       const user = {
         name: res?.data?.name,
-        address: res.data.walletAddress,
+        address: res?.data?.walletAddress,
       };
-      
-
+ 
       setScannedData(user);
-
-      // ✅ directly navigate to amount screen
+ 
+      // Navigate to amount screen
       setSelectedUser(user);
       setActiveTab('amount');
-
+ 
     } catch (err) {
-      alert('Invalid QR');
+      Alert.alert(
+        'Invalid QR',
+        'The scanned QR code is invalid.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              // Resume scanner only after user clicks OK
+              setIsProcessingScan(false);
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+      return;
     }
+ 
+    // Keep scanner blocked after successful scan
   };
+ 
 
   // 🔍 Scanner
   const codeScanner = useCodeScanner({

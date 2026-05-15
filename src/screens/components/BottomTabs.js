@@ -13,18 +13,21 @@ import SendScreen from './sendScreen';
 import TransactionHistory from '../HomeScreen/TransactionHistory';
 import WalletScreen from '../HomeScreen/WalletScreen';
 import UserProfile from '../UserProfile/UserProfile';
+import MarketScreen from '../Market/market';
+
 
 const Tab = createBottomTabNavigator();
 
 // 🔥 Custom Bottom Tab Bar
 function CustomTabBar({ state, navigation }) {
 
-  const labels = {
-    Home: "Home",
-    Wallets: "Wallets",
-    Transactions: "Transactions",
-    UserProfile: "Profile", // ✅ change label here
-  };
+ const labels = {
+  Home: "Home",
+  Wallets: "Wallets",
+  Transactions: "Transactions",
+  UserProfile: "Profile",
+  MarketScreen: "Market"
+};
 
   return (
     <View style={styles.bottomNav}>
@@ -40,8 +43,9 @@ function CustomTabBar({ state, navigation }) {
 
         if (route.name === "Home") icon = "home";
         if (route.name === "Wallets") icon = "credit-card";
-        if (route.name === "Transactions") icon = "bar-chart-2";
+        if (route.name === "Transactions") icon = "repeat";
         if (route.name === "UserProfile") icon = "settings";
+          if (route.name === "MarketScreen") icon = "trending-up";
 
         // ⭐ Center Button
         if (route.name === "Send") {
@@ -53,7 +57,7 @@ function CustomTabBar({ state, navigation }) {
         navigation.navigate("Send", { tab: "scan" }) // ✅ force scan tab
       }
     >
-      <Icon name="maximize" size={26} color="#fff" />
+      <Icon name="maximize" size={24} color="#fff" />
     </TouchableOpacity>
   );
 }
@@ -65,7 +69,7 @@ function CustomTabBar({ state, navigation }) {
           >
             <Icon
               name={icon}
-              size={22}
+              size={20}
               color={isFocused ? '#FF7FD8' : '#ccc'}
             />
 
@@ -98,7 +102,10 @@ export default function BottomTabs() {
       <Tab.Screen name="Wallets" component={WalletScreen} />
       <Tab.Screen name="Send" component={SendScreen} />
       <Tab.Screen name="Transactions" component={TransactionHistory} />
-      <Tab.Screen name="UserProfile" component={UserProfile} />
+      {/* <Tab.Screen name="UserProfile" component={UserProfile} /> */}
+      <Tab.Screen name="MarketScreen"
+       component={MarketScreen}
+        />
     </Tab.Navigator>
   );
 }

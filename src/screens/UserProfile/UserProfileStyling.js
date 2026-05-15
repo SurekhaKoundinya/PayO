@@ -164,6 +164,7 @@ labelItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    opacity:0.6
   },
 
   addBankText: {

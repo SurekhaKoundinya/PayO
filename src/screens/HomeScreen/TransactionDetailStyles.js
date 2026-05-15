@@ -9,34 +9,33 @@ container: {
   paddingBottom: 20,
 },
 
-  header: {
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
+  // header: {
+  //   height: 50,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   position: "relative",
 
+  // },
+
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop:20
+    
   },
-
-  header: {
-
-    flexDirection: "row",
-
-    alignItems: "center",
-
-    marginBottom: 25,
-
+ 
+  back: {
+    color: '#fff',
+    fontSize: 22,
+    marginRight: 14,
   },
-
-  headerText: {
-
-    color: "#fff",
-
-    fontSize: 18,
-
-    fontWeight: "600",
-
-    marginLeft: 15,
-
+ 
+  header: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '700',
+    
   },
 
   /* SECTION */

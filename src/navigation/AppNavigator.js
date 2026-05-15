@@ -5,10 +5,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 /* AUTH */
 import SplashScreen from '../screens/SplashScreen';
 import AnimationScreen from '../screens/AnimationScreen';
-import WelcomeScreen from '../screens/WelcomeScreen';
+//import WelcomeScreen from '../screens/WelcomeScreen';
 import Onboarding1 from '../screens/Onboarding1';
 import Onboarding2 from '../screens/Onboarding2';
 import Onboarding3 from '../screens/Onboarding3';
+import Onboarding4 from '../screens/Onboarding4';
 
 import LoginScreen from '../screens/LoginScreen';
 import RegisterMobileScreen from '../screens/RegisterMobileScreen';
@@ -53,6 +54,9 @@ import UserProfile from '../screens/UserProfile/UserProfile';
 import TransactionHistory from '../screens/HomeScreen/TransactionHistory';
 import TnsHistorySingleUser from '../screens/HomeScreen/TnsHistorySingleUser';
 import WalletScreen from '../screens/HomeScreen/WalletScreen';
+import MarketScreen from '../screens/Market/market';
+import CoinDetailsScreen from '../screens/Market/singleMarket';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -64,10 +68,11 @@ export default function AppNavigator() {
         {/* AUTH */}
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Animation" component={AnimationScreen} />
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        {/* <Stack.Screen name="Welcome" component={WelcomeScreen} /> */}
         <Stack.Screen name="Onboarding1" component={Onboarding1} />
         <Stack.Screen name="Onboarding2" component={Onboarding2} />
         <Stack.Screen name="Onboarding3" component={Onboarding3} />
+        <Stack.Screen name="Onboarding4" component={Onboarding4} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="RegisterMobile" component={RegisterMobileScreen} />
         <Stack.Screen name="OTP" component={OtpVerificationScreen} />
@@ -85,6 +90,11 @@ export default function AppNavigator() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="WalletScreen" component={WalletScreen} />
+          <Stack.Screen name="MarketScreen" component={MarketScreen} />
+            <Stack.Screen name="CoinDetailsScreen" component={CoinDetailsScreen} />
+          
+      
+
 
         {/* SEND FLOW */}
         <Stack.Screen name="SendScreen" component={SendScreen} />
