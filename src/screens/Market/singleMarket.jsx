@@ -452,9 +452,7 @@ export default function CoinDetailsScreen({ route }) {
             ]}
           >
             {isNegative ? '▼' : '▲'}{" "}
-            {Math.abs(
-              coin.priceChangePercentage24h
-            ).toFixed(2)}
+             {(coin.priceChangePercentage24h || 0).toFixed(2)}
             %
           </Text>
 

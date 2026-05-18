@@ -588,51 +588,57 @@ export default function UserProfile({ navigation }) {
 
           <Text style={styles.sectionTitle}>Linked Bank Accounts</Text>
 
-          {bankData && bankData.length > 0 ? (
+       {bankData && bankData.length > 0 ? (
+  <>
+    {bankData.map((bank, index) => (
+      <View key={index} style={styles.bankCard}>
+        <View style={styles.bankLeft}>
+          <View style={styles.bankIcon}>
+            <Icon name="credit-card" size={20} color="#fff" />
+          </View>
 
-            bankData.map((bank, index) => (
-              <View key={index} style={styles.bankCard}>
+          <View>
+            <Text style={styles.bankName}>
+              {bank.bankName} - {maskAccount(bank.accountNumber)}
+            </Text>
 
-                <View style={styles.bankLeft}>
+            <Text style={styles.bankSub}>
+              Bank Account
+            </Text>
+          </View>
+        </View>
 
-                  <View style={styles.bankIcon}>
-                    <Icon name="credit-card" size={20} color="#fff" />
-                  </View>
+        <Icon name="chevron-right" size={20} color="#fff" />
+      </View>
+    ))}
 
-                  <View>
-                    <Text style={styles.bankName}>
-                      {bank.bankName} - {maskAccount(bank.accountNumber)}
-                    </Text>
+    <TouchableOpacity
+      style={styles.addBankBtn}
+      onPress={() => navigation.navigate("AddBankHome")}
+    >
+      <Icon name="plus-circle" size={20} color="#fff" />
 
-                    <Text style={styles.bankSub}>
-                      Bank Account
-                    </Text>
-                  </View>
+      <Text style={styles.addBankText}>
+        Add Bank Account
+      </Text>
 
-                </View>
+      <Icon name="chevron-right" size={20} color="#fff" />
+    </TouchableOpacity>
+  </>
+) : (
+  <TouchableOpacity
+    style={styles.addBankBtn}
+    onPress={() => navigation.navigate("AddBankHome")}
+  >
+    <Icon name="plus-circle" size={20} color="#fff" />
 
-                <Icon name="chevron-right" size={20} color="#fff" />
+    <Text style={styles.addBankText}>
+      Add Bank Account
+    </Text>
 
-              </View>
-            ))
-
-          ) : (
-
-            <TouchableOpacity
-              style={styles.addBankBtn}
-              onPress={() => navigation.navigate('AddBankHome')}
-            >
-              <Icon name="plus-circle" size={20} color="#fff" />
-
-              <Text style={styles.addBankText}>
-                Add Bank Account
-              </Text>
-
-              <Icon name="chevron-right" size={20} color="#fff" />
-            </TouchableOpacity>
-
-          )}
-
+    <Icon name="chevron-right" size={20} color="#fff" />
+  </TouchableOpacity>
+)}
           <Text style={styles.sectionTitle}>Account</Text>
 
           <View style={styles.card}>

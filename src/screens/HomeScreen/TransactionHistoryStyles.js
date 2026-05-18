@@ -7,6 +7,13 @@ export default StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 110,
   },
+  
+   container1: {
+    flex: 1,
+    paddingHorizontal: 18,
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
  
   headerRow: {
     flexDirection: 'row',

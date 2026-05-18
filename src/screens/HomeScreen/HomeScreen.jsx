@@ -496,9 +496,7 @@ const fetchExpertCoins = async () => {
 
         <View style={styles.profitBox}>
           <Text style={styles.profitText}>
-            {Math.abs(
-              coin.priceChangePercentage24h || 0
-            ).toFixed(2)}% Expected profit
+            {(coin.priceChangePercentage24h || 0).toFixed(2)}% Expected profit
           </Text>
         </View>
 
@@ -613,9 +611,7 @@ const fetchExpertCoins = async () => {
             ]}
           >
             {isNegative ? "▼" : "▲"}{" "}
-            {Math.abs(
-              coin.priceChangePercentage24h || 0
-            ).toFixed(2)}
+            {(coin.priceChangePercentage24h || 0).toFixed(2)}
             %
           </Text>
 

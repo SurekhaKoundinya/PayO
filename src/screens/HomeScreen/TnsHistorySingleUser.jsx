@@ -127,7 +127,7 @@ export default function TnsHistorySingleUser({ navigation }) {
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container1}>
         {/* HEADER */}
         <View style={styles.headerRow}>
           <TouchableOpacity
