@@ -7,53 +7,11 @@ import Icon from 'react-native-vector-icons/Feather';
 export default function BottomNav({ navigation, currentRoute }) {
   const insets = useSafeAreaInsets();
 
-//   const goToTab = (screen) => {
 
-//     // ⭐ Scan Button
-//     console.log(screen,"screen1")
-//     if (screen === 'ScanButton') {
-//       navigation.navigate('SendScreen', { tab: 'scan' });
-//       return;
-//     }
-
-   
-//     if (screen === 'UserProfile') {
-//       navigation.navigate('UserProfile');
-//       return;
-//     }
-
-//     //  if (screen === 'Wallets') {
-//     //   navigation.navigate('WalletScreen');
-//     //   return;
-//     // }
-
-    
-//     //  if (screen === 'Transactions') {
-//     //   navigation.navigate('TransactionHistory');
-//     //   return;
-//     // }
-
-
-     
-//     //  if (screen === 'Home') {
-//     //   navigation.navigate('Main');
-//     //   return;
-//     // }
-
-// // const goToTab = (screen) => {
-//     navigation.navigate('Main', { screen });
-//   // };
-
-
-
-
-
-//     navigation.navigate(screen);
-//   };
 
 const goToTab = (screen) => {
 
-  console.log(screen, "screen1");
+  
 
   // ⭐ Scan Button
   if (screen === 'ScanButton') {
@@ -111,16 +69,7 @@ const goToTab = (screen) => {
         </Text>
       </TouchableOpacity>
 
-      {/* PROFILE */}
-    {/* <TouchableOpacity style={styles.navItem} onPress={() => goToTab('UserProfile')}>
-  <Icon name="settings" size={22} color={getColor('Profile')} />
-  <Text style={[
-    styles.navLabel,
-    currentRoute === 'Profile' ? styles.navActive : styles.navInactive
-  ]}>
-    Profile
-  </Text>
-</TouchableOpacity> */}
+      
 
  <TouchableOpacity style={styles.navItem} onPress={() => goToTab('MarketScreen')}>
   <Icon name="trending-up" size={22} color={getColor('Market')} />
