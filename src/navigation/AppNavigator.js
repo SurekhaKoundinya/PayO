@@ -45,17 +45,21 @@ import HomeScreen from '../screens/HomeScreen/HomeScreen';
 
 import Recents from '../screens/HomeScreen/Recents';
 
-import AddBankHome from "../screens/Bank/AddBankHome";
-import AccountDetails from "../screens/Bank/AccountDetails";
-import AccountNumber from "../screens/Bank/AccountNumber";
-import UpiPin from "../screens/Bank/UpiPin";
-import SuccessScreen from "../screens/Bank/SuccessScreen";
+// import AccountDetails from "../screens/Bank/AccountDetails";
+// import AccountNumber from "../screens/Bank/AccountNumber";
+// import UpiPin from "../screens/Bank/UpiPin";
+// import SuccessScreen from "../screens/Bank/SuccessScreen";
 import UserProfile from '../screens/UserProfile/UserProfile';
 import TransactionHistory from '../screens/HomeScreen/TransactionHistory';
 import TnsHistorySingleUser from '../screens/HomeScreen/TnsHistorySingleUser';
 import WalletScreen from '../screens/HomeScreen/WalletScreen';
 import MarketScreen from '../screens/Market/market';
 import CoinDetailsScreen from '../screens/Market/singleMarket';
+
+import BankAccInit from '../screens/Bank/BankAccInit';
+import AddBankDetails from '../screens/Bank/AddBankDetails';
+import TpinScreen from '../screens/Bank/TpinScreen';
+import BankAddedScreen from '../screens/Bank/BankAddedScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -115,12 +119,21 @@ export default function AppNavigator() {
         
         
         {/* BANK DETAILS */}
-        <Stack.Screen name="AddBankHome" component={AddBankHome} />
-        <Stack.Screen name="AccountDetails" component={AccountDetails} />
+        {/* <Stack.Screen name="AddBankHome" component={BankAccInit} /> */}
+        {/* <Stack.Screen name="AccountDetails" component={AccountDetails} />
         <Stack.Screen name="AccountNumber" component={AccountNumber} />
         <Stack.Screen name="UpiPin" component={UpiPin} />
-        <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+        <Stack.Screen name="SuccessScreen" component={SuccessScreen} /> */}
+ 
+ 
+ 
+
+
+ <Stack.Screen name="AddBankHome" component={BankAccInit} />
+  <Stack.Screen name="AddBankDetails" component={AddBankDetails} />
+ <Stack.Screen name="TpinScreen" component={TpinScreen} />
         <Stack.Screen name="Notifications" component={NotificationScreen} />
+               <Stack.Screen name="BankAddedScreen" component={BankAddedScreen} />
           
 
 

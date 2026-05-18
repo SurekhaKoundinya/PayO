@@ -276,8 +276,8 @@ const fetchExpertCoins = async () => {
     {/* ADD BANK ACCOUNT BUTTON */}
     <TouchableOpacity
   style={styles.addBankButton}
-  onPress={() => navigation.navigate('AddBankAccount')}
-  disabled={true}
+    onPress={() => navigation.navigate('AddBankHome')}
+  // disabled={true}
 >
   <Icon name="plus-circle" size={18} color="#020202" style={styles.bankIcon} />
   <Text style={styles.addBankText}>

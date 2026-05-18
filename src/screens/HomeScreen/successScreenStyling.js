@@ -1,39 +1,66 @@
-import { StyleSheet } from 'react-native';
- 
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
 export default StyleSheet.create({
+
   container: {
     flex: 1,
-    backgroundColor: '#2e7d32',
+  },
+
+  gradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
- 
+
+  // SUCCESS ICON
   iconContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#fff',
+    width: width * 0.28,
+    height: width * 0.28,
+    borderRadius: width * 0.14,
+    backgroundColor: '#2ED573',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: height * 0.04,
+
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
   },
- 
+
   check: {
-    fontSize: 50,
-    color: '#2e7d32',
+    fontSize: width * 0.14,
+    color: '#fff',
     fontWeight: 'bold',
   },
- 
+
   title: {
-    fontSize: 18,
+    fontSize: width * 0.06,
+    fontWeight: '700',
     color: '#fff',
-    fontWeight: '600',
     marginBottom: 10,
+    textAlign: 'center',
   },
- 
+
   subtitle: {
-    fontSize: 12,
-    color: '#e0e0e0',
+    fontSize: width * 0.04,
+    color: '#fff',
+    opacity: 0.95,
+    marginBottom: 8,
+    textAlign: 'center',
   },
+
+  time: {
+    fontSize: width * 0.035,
+    color: '#fff',
+    opacity: 0.8,
+    textAlign: 'center',
+  },
+
 });
- 

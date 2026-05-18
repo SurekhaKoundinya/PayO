@@ -112,7 +112,7 @@ addBankButton: {
   borderRadius: 20,
   flexDirection: 'row',
   alignItems: 'center',
-  opacity:0.6
+  // opacity:0.6
 },
 
 bankIcon: {
