@@ -13,7 +13,7 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import api from "../../api/axios"; // ✅ your existing axios instance
 import Icon from "react-native-vector-icons/Feather";
- 
+import { AppThemeBackground } from '../../styles/main';
 export default function NotificationScreen({ navigation }) {
   const [activeTab, setActiveTab] = useState("Today");
   const [data, setData] = useState([]);
@@ -95,7 +95,12 @@ export default function NotificationScreen({ navigation }) {
   );
  
   return (
-    <LinearGradient colors={["#6a11cb", "#3a0ca3"]} style={{ flex: 1 }}>
+  <LinearGradient
+    colors={AppThemeBackground.gradientColors}
+    start={AppThemeBackground.gradientStart}
+    end={AppThemeBackground.gradientEnd}
+    style={{ flex: 1 }}
+  >
       <SafeAreaView style={styles.container}>
  
         {/* HEADER */}

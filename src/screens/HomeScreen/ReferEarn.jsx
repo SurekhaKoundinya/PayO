@@ -17,7 +17,9 @@ import styles from './ReferEarnStyles';
 import api from '../../api/axios';
 import Clipboard from '@react-native-clipboard/clipboard';
 import BottomNav from '../components/bottomNav';
+import { AppThemeBackground } from '../../styles/main';
 import Icon from "react-native-vector-icons/Feather";
+
 export default function ReferEarn({ navigation }) {
 
   const [data, setData] = useState({
@@ -39,8 +41,6 @@ export default function ReferEarn({ navigation }) {
 
       const res = await api.get('/api/wallet/refer');
 
-      console.log(res.data, "REFERRAL DATA");
-
       setData(res.data);
 
     } catch (err) {
@@ -50,27 +50,24 @@ export default function ReferEarn({ navigation }) {
     }
   };
 
-  // COPY CODE
-  // const copyCode = () => {
-  //   Clipboard.setString(data.referralCode || 'PAYO0872');
-
-  //   Alert.alert(
-  //     'Copied',
-  //     'Referral code copied successfully'
-  //   );
-  // };
-
   const copyCode = () => {
     const code = data.referralCode;
+
     Clipboard.setString(code);
+
     if (Platform.OS === "android") {
-      ToastAndroid.show("Referral code copied", ToastAndroid.SHORT);
+      ToastAndroid.show(
+        "Referral code copied",
+        ToastAndroid.SHORT
+      );
     } else {
-      Alert.alert('Copied', 'Referral code copied');
+      Alert.alert(
+        'Copied',
+        'Referral code copied'
+      );
     }
   };
 
-  // SHARE CODE
   const shareReferral = async () => {
     try {
 
@@ -87,14 +84,21 @@ export default function ReferEarn({ navigation }) {
   if (loading) {
     return (
       <LinearGradient
-        colors={['#1e0a3c', '#5b21b6']}
+        colors={AppThemeBackground.gradientColors}
+        start={AppThemeBackground.gradientStart}
+        end={AppThemeBackground.gradientEnd}
         style={{
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        <Text style={{ color: '#fff', fontSize: 16 }}>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 16,
+          }}
+        >
           Loading...
         </Text>
       </LinearGradient>
@@ -103,7 +107,9 @@ export default function ReferEarn({ navigation }) {
 
   return (
     <LinearGradient
-      colors={['#1e0a3c', '#5b21b6']}
+      colors={AppThemeBackground.gradientColors}
+      start={AppThemeBackground.gradientStart}
+      end={AppThemeBackground.gradientEnd}
       style={{
         flex: 1,
         paddingTop:
@@ -113,15 +119,25 @@ export default function ReferEarn({ navigation }) {
       }}
     >
 
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: 'transparent',
+        }}
+      >
 
-<ScrollView
-  showsVerticalScrollIndicator={false}
-  contentContainerStyle={{
-    paddingHorizontal: 20,
-    paddingBottom: 140
-  }}
->
+        <ScrollView
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+          }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingBottom: 140,
+          }}
+        >
+
           {/* HEADER */}
           <View style={styles.headerRow}>
 
@@ -130,7 +146,11 @@ export default function ReferEarn({ navigation }) {
               onPress={() => navigation.goBack()}
             >
               <Text style={styles.back}>
-                <Icon name="chevron-left" size={28} color="#ffffff" />    
+                <Icon
+                  name="chevron-left"
+                  size={28}
+                  color="#ffffff"
+                />
               </Text>
             </TouchableOpacity>
 
@@ -141,7 +161,12 @@ export default function ReferEarn({ navigation }) {
           </View>
 
           {/* CARD */}
-          <View style={styles.card}>
+          <View
+            style={[
+              styles.card,
+              { backgroundColor: 'rgba(255,255,255,0.08)' }
+            ]}
+          >
 
             <Text style={styles.icon}>
               👥
@@ -159,7 +184,12 @@ export default function ReferEarn({ navigation }) {
           </View>
 
           {/* REFERRAL CODE */}
-          <View style={styles.codeBox}>
+          <View
+            style={[
+              styles.codeBox,
+              { backgroundColor: 'rgba(255,255,255,0.08)' }
+            ]}
+          >
 
             <Text style={styles.codeLabel}>
               Your Referral Code
@@ -197,8 +227,12 @@ export default function ReferEarn({ navigation }) {
           {/* STATS */}
           <View style={styles.statsRow}>
 
-            {/* TOTAL USERS */}
-            <View style={styles.statBox}>
+            <View
+              style={[
+                styles.statBox,
+                { backgroundColor: 'rgba(255,255,255,0.08)' }
+              ]}
+            >
 
               <Text style={styles.statValue}>
                 {data.totalUsers || 0}
@@ -210,8 +244,12 @@ export default function ReferEarn({ navigation }) {
 
             </View>
 
-            {/* TOTAL REWARDS */}
-            <View style={styles.statBox}>
+            <View
+              style={[
+                styles.statBox,
+                { backgroundColor: 'rgba(255,255,255,0.08)' }
+              ]}
+            >
 
               <Text style={styles.statValueGreen}>
                 {data.totalRewards || 0}
@@ -226,26 +264,38 @@ export default function ReferEarn({ navigation }) {
           </View>
 
           {/* REFERRAL PROGRESS */}
-          <View style={styles.info}>
+          <View
+            style={[
+              styles.info,
+              { backgroundColor: 'rgba(255,255,255,0.08)' }
+            ]}
+          >
 
             <Text style={styles.infoTitle}>
               Referral Progress
             </Text>
 
             <Text style={styles.infoText}>
-              Successful Referrals: {data.successfulReferrals || 0}
+              Successful Referrals:
+              {' '}
+              {data.successfulReferrals || 0}
             </Text>
 
             <Text style={styles.infoText}>
-              Reward Per User: {data.rewardPerUser || 50} PAYO
+              Reward Per User:
+              {' '}
+              {data.rewardPerUser || 50} PAYO
             </Text>
 
           </View>
 
-          
-
           {/* HOW IT WORKS */}
-          <View style={styles.info}>
+          <View
+            style={[
+              styles.info,
+              { backgroundColor: 'rgba(255,255,255,0.08)' }
+            ]}
+          >
 
             <Text style={styles.infoTitle}>
               How it works :
@@ -254,6 +304,7 @@ export default function ReferEarn({ navigation }) {
             <Text style={styles.infoText}>
               1. Share your referral code with friends.
             </Text>
+
             <Text style={styles.infoText}>
               2. Friend signs up using your code.
             </Text>
@@ -270,7 +321,6 @@ export default function ReferEarn({ navigation }) {
 
         </ScrollView>
 
-        {/* BOTTOM NAV */}
         <BottomNav navigation={navigation} />
 
       </SafeAreaView>
@@ -278,4 +328,3 @@ export default function ReferEarn({ navigation }) {
     </LinearGradient>
   );
 }
-

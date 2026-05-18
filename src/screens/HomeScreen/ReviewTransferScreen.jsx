@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import api from "../../api/axios";
+import { AppThemeBackground } from '../../styles/main';
 import Icon from 'react-native-vector-icons/Feather';
 export default function ReviewTransferScreen({ route, navigation }) {
   const { receiver, amount, address, sender ,show,isRecent} = route.params;
@@ -58,7 +59,12 @@ export default function ReviewTransferScreen({ route, navigation }) {
   };
  
   return (
-    <LinearGradient colors={["#6A00F4", "#1A0033"]} style={styles.container}>
+    <LinearGradient
+    colors={AppThemeBackground.gradientColors}
+    start={AppThemeBackground.gradientStart}
+    end={AppThemeBackground.gradientEnd}
+    style={styles.container}
+  >
       <SafeAreaView style={{ flex: 1, padding: 20 }}>
  
         {/* HEADER */}

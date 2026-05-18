@@ -112,7 +112,7 @@ addBankButton: {
   borderRadius: 20,
   flexDirection: 'row',
   alignItems: 'center',
-  opacity:0.6
+  // opacity:0.6
 },
 
 bankIcon: {
@@ -585,6 +585,7 @@ profitText: {
 },
   navItem: {
     alignItems: 'center',
+    marginLeft:30
   },
  
   navIcon: {
@@ -613,7 +614,7 @@ centerIcon: {
   justifyContent: 'center',
   alignItems: 'center',
   position: 'absolute',
-  top: -30,
+  top: -40,
   alignSelf: 'center',
   elevation: 10,
 },

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import api from '../../api/axios';
+import { AppThemeBackground } from '../../styles/main';
 import { useRoute } from "@react-navigation/native";
 
 export default function EnterAmountScreen({ navigation, name, address,setActiveTab ,show}) {
@@ -97,7 +98,9 @@ TransShow ?
     TransShow ?
    <>
     <LinearGradient
-      colors={["#6A00F4", "#1A0033"]}
+    colors={AppThemeBackground.gradientColors}
+    start={AppThemeBackground.gradientStart}
+    end={AppThemeBackground.gradientEnd}
       style={{ flex: 1, paddingTop:
                 Platform.OS === "android" ? StatusBar.currentHeight : 0, }}
     >

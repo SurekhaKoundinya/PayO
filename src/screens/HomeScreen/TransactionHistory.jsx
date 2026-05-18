@@ -12,7 +12,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/Feather';
-
+import { AppThemeBackground } from "../../styles/main";
 import styles from './TransactionHistoryStyles';
 import api from '../../api/axios';
 
@@ -132,7 +132,18 @@ const filteredData = transactions.filter((item) => {
   };
 
   return (
-    <LinearGradient colors={['#6A00F4', '#1A0033']} style={{ flex: 1, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
+    <LinearGradient
+  colors={AppThemeBackground.gradientColors}
+  start={AppThemeBackground.gradientStart}
+  end={AppThemeBackground.gradientEnd}
+  style={{
+    flex: 1,
+    paddingTop:
+      Platform.OS === "android"
+        ? StatusBar.currentHeight
+        : 0,
+  }}
+>
       <SafeAreaView style={styles.container}>
 
         {/* HEADER */}

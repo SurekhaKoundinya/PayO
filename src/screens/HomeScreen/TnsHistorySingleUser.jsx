@@ -13,7 +13,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { Dropdown } from "react-native-element-dropdown";
 import Icon from "react-native-vector-icons/Feather";
 import { useRoute } from "@react-navigation/native";
-
+import { AppThemeBackground } from "../../styles/main";
 import styles from "./TransactionHistoryStyles";
 import api from "../../api/axios";
 
@@ -120,14 +120,24 @@ export default function TnsHistorySingleUser({ navigation }) {
   console.log(grouped,"grouped")
 
   return (
-    <LinearGradient
-      colors={["#6A00F4", "#1A0033"]}
-      style={{
-        flex: 1,
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-      }}
+  <LinearGradient
+    colors={AppThemeBackground.gradientColors}
+    start={AppThemeBackground.gradientStart}
+    end={AppThemeBackground.gradientEnd}
+    style={{
+      flex: 1,
+      paddingTop:
+        Platform.OS === "android"
+          ? StatusBar.currentHeight
+          : 0,
+    }}
+  >
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: "transparent" }
+      ]}
     >
-      <SafeAreaView style={styles.container}>
         {/* HEADER */}
         <View style={styles.headerRow}>
           <TouchableOpacity
@@ -222,69 +232,7 @@ export default function TnsHistorySingleUser({ navigation }) {
   );
 }
 
-/* TRANSACTION ITEM */
 
-// const Item = ({ item, navigation }) => {
-
-
-//   const isReceived = Number(item.amount) > 0;
-
-//   const formatDateTime = (date) =>
-//     new Date(date).toLocaleString("en-IN", {
-//       timeZone: "Asia/Kolkata",
-//       day: "2-digit",
-//       month: "short",
-//       year: "numeric",
-//       hour: "2-digit",
-//       minute: "2-digit",
-//       hour12: true,
-//     });
-
-//   return (
-//     <TouchableOpacity
-//       style={styles.item}
-//       activeOpacity={0.7}
-//       onPress={() =>
-//         navigation.navigate("TransactionDetailScreen", {
-//           transaction_id: item?.id,
-//         })
-//       }
-//     >
-//       <View style={styles.left}>
-//         <View
-//           style={[
-//             styles.avatar,
-//             { backgroundColor: isReceived ? "#22c55e" : "#e5e7eb" },
-//           ]}
-//         >
-//           <Icon
-//             name={isReceived ? "arrow-down" : "arrow-up"}
-//             size={18}
-//             color={isReceived ? "#fff" : "#000"}
-//           />
-//         </View>
-
-//         <View>
-//           {/* AMOUNT */}
-//           <Text
-//             style={[
-//               styles.amount,
-//               { color: isReceived ? "#22c55e" : "#ef4444" },
-//             ]}
-//           >
-//             {isReceived
-//               ? `+${Number(item.amount).toFixed(2)}`
-//               : Number(item.amount).toFixed(2)}{" "}
-//             PAYO
-//           </Text>
-
-//           {/* DATE TIME */}
-//           <Text style={styles.time}>{formatDateTime(item.date)}</Text>
-//         </View>
-//       </View>
-//     </TouchableOpacity>
-//   );
-// };
 
 
 const Item = ({ item, navigation ,name}) => {

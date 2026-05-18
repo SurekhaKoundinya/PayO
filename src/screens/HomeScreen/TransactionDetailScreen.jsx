@@ -18,7 +18,7 @@ import {
 import { useRoute } from "@react-navigation/native";
 
 import LinearGradient from "react-native-linear-gradient";
-
+import { AppThemeBackground } from '../../styles/main';
 import Icon from "react-native-vector-icons/Feather";
 
 import api from "../../api/axios";
@@ -219,16 +219,26 @@ const handleCopyTransactionID = (Id) => {
     if (loading) {
 
         return (
-            <LinearGradient colors={["#5B0FD1", "#14002B"]} style={styles.container}>
-                <ActivityIndicator size="large" color="#fff" />
-            </LinearGradient>
+  <LinearGradient
+    colors={AppThemeBackground.gradientColors}
+    start={AppThemeBackground.gradientStart}
+    end={AppThemeBackground.gradientEnd}
+    style={styles.container}
+  >
+    <ActivityIndicator size="large" color="#fff" />
+  </LinearGradient>
 
-        );
+);
 
-    }
+}
 
-    return (
-        <LinearGradient colors={["#5B0FD1", "#14002B"]} style={styles.container}>
+return (
+  <LinearGradient
+    colors={AppThemeBackground.gradientColors}
+    start={AppThemeBackground.gradientStart}
+    end={AppThemeBackground.gradientEnd}
+    style={styles.container}
+  >
 
               <View style={styles.headerRow}>
                       <TouchableOpacity 

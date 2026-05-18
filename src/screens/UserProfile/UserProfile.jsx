@@ -16,7 +16,8 @@ import Clipboard from "@react-native-clipboard/clipboard";
 import Share from "react-native-share";
 import RNFS from "react-native-fs";
 import Icon from "react-native-vector-icons/Feather";
-
+import LinearGradient from 'react-native-linear-gradient';
+import { AppThemeBackground } from '../../styles/main';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import BottomNav from '../components/bottomNav';
@@ -137,9 +138,15 @@ export default function UserProfile({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+  <LinearGradient
+    colors={AppThemeBackground.gradientColors}
+    start={AppThemeBackground.gradientStart}
+    end={AppThemeBackground.gradientEnd}
+    style={{ flex: 1 }}
+  >
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
 
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: 'transparent' }]}>
 
         {/* HEADER */}
         <View style={styles.header}>
@@ -147,8 +154,7 @@ export default function UserProfile({ navigation }) {
             onPress={() => navigation.canGoBack() && navigation.goBack()}
           >
             <Text style={styles.back}>
-              <Icon name="chevron-left" size={28} color="#ffffff" /> 
-
+              <Icon name="chevron-left" size={28} color="#ffffff" />
             </Text>
           </TouchableOpacity>
 
@@ -167,27 +173,29 @@ export default function UserProfile({ navigation }) {
           <Text style={styles.verified}>• KYC VERIFIED</Text>
         </View>
 
-        {/* BALANCE CARD */}
-
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 40 }}
         >
+          {/* BALANCE CARD */}
           <View style={styles.balanceCard}>
             <View style={{ marginLeft: 8 }}>
               <Text style={styles.label}>Balance</Text>
+
               <Text style={styles.balance}>
-                {profiledata?.balance} <Text style={styles.token}>PAYO</Text>
+                {profiledata?.balance}{' '}
+                <Text style={styles.token}>PAYO</Text>
               </Text>
             </View>
 
             <View style={styles.divider} />
+
             <View style={styles.transactionRow}>
               <Icon name="arrow-up" size={30} color="#E25C5C" />
 
-
               <View style={{ marginLeft: 8 }}>
                 <Text style={styles.label}>Transactions</Text>
+
                 <Text style={styles.transactions}>
                   {profiledata?.transactionCount}
                 </Text>
@@ -198,111 +206,162 @@ export default function UserProfile({ navigation }) {
           {/* REFERRAL BOX */}
           <View style={styles.referralBox}>
             <Text style={styles.refLabel}>Your Referral code</Text>
-            <Text style={styles.refCode}>{profiledata?.referralCode}</Text>
+
+            <Text style={styles.refCode}>
+              {profiledata?.referralCode}
+            </Text>
           </View>
 
           {/* BUTTONS */}
           <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.btn} onPress={handleCopy}>
-              <Text style={styles.btnText}>Copy WalletID</Text>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={handleCopy}
+            >
+              <Text style={styles.btnText}>
+                Copy WalletID
+              </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.btn} onPress={handleShare}>
-              <Text style={styles.btnText}>Share WalletID</Text>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={handleShare}
+            >
+              <Text style={styles.btnText}>
+                Share WalletID
+              </Text>
             </TouchableOpacity>
           </View>
 
-                    {/* ADD BANK ACCOUNT BUTTON */}
+          {/* ADD BANK ACCOUNT BUTTON */}
           <TouchableOpacity
             style={styles.addBankBtn}
-            onPress={() => navigation.navigate('AddBankAccount')}
+            onPress={() => navigation.navigate('AddBankHome')}
           >
-            <Icon name="plus-circle" size={20} color="#fff" />
-            
+            <Icon
+              name="plus-circle"
+              size={20}
+              color="#fff"
+            />
+
             <Text style={styles.addBankText}>
               Add Bank Account
             </Text>
 
-            <Icon name="chevron-right" size={20} color="#fff" />
+            <Icon
+              name="chevron-right"
+              size={20}
+              color="#fff"
+            />
           </TouchableOpacity>
 
-          {/* ACCOUNT SECTION */}
-          <Text style={styles.sectionTitle}>Personal Information</Text>
+          {/* PERSONAL INFO */}
+          <Text style={styles.sectionTitle}>
+            Personal Information
+          </Text>
 
           <View style={styles.card}>
 
-            {/* 
             <View style={styles.row}>
-              <Text style={styles.item}>Personal Information</Text>
-              <Text style={styles.arrow}>›</Text>
-            </View> */}
+              <Text style={styles.labelItem}>Name</Text>
 
-            <View>
-
-
-              <View style={styles.row}>
-                <Text style={styles.labelItem}>Name</Text>
-                <Text style={styles.value}>
-                  {profiledata?.name || "N/A"}
-                </Text>
-              </View>
-
-              <View style={styles.row}>
-                <Text style={styles.labelItem}>Email</Text>
-                <Text style={styles.value}>
-                  {profiledata?.email || "N/A"}
-                </Text>
-              </View>
+              <Text style={styles.value}>
+                {profiledata?.name || 'N/A'}
+              </Text>
             </View>
 
             <View style={styles.row}>
-              <Text style={styles.labelItem}>Linked Mobile</Text>
-              <Text style={styles.value}>+91 {profiledata?.mobile}</Text>
+              <Text style={styles.labelItem}>Email</Text>
+
+              <Text style={styles.value}>
+                {profiledata?.email || 'N/A'}
+              </Text>
             </View>
 
+            <View style={styles.row}>
+              <Text style={styles.labelItem}>
+                Linked Mobile
+              </Text>
+
+              <Text style={styles.value}>
+                +91 {profiledata?.mobile}
+              </Text>
+            </View>
           </View>
 
-          <Text style={styles.sectionTitle}>Account</Text>
+          {/* ACCOUNT */}
+          <Text style={styles.sectionTitle}>
+            Account
+          </Text>
 
           <View style={styles.card}>
             <View style={styles.row}>
-              <Text style={styles.labelItem}>Wallet Address</Text>
-              <Text style={styles.value}>{profiledata?.walletAddress}</Text>
+              <Text style={styles.labelItem}>
+                Wallet Address
+              </Text>
+
+              <Text style={styles.value}>
+                {profiledata?.walletAddress}
+              </Text>
             </View>
 
             <View style={styles.row}>
-              <Text style={styles.labelItem}>Wallet ID</Text>
-              <Text style={styles.value}>{profiledata?.walletId}</Text>
+              <Text style={styles.labelItem}>
+                Wallet ID
+              </Text>
+
+              <Text style={styles.value}>
+                {profiledata?.walletId}
+              </Text>
             </View>
           </View>
 
-          {/* SECURITY SECTION */}
-          <Text style={styles.sectionTitle}>Security</Text>
+          {/* SECURITY */}
+          <Text style={styles.sectionTitle}>
+            Security
+          </Text>
 
           <View style={styles.card}>
             <View style={styles.row}>
-              <Text style={styles.item}>KYC Verification</Text>
-              <Text style={styles.green}>Approved ›</Text>
+              <Text style={styles.item}>
+                KYC Verification
+              </Text>
+
+              <Text style={styles.green}>
+                Approved ›
+              </Text>
             </View>
 
             <View style={styles.row}>
-              <Text style={styles.item}>Linked Mobile</Text>
-              <Text style={styles.value}>+91 {profiledata?.mobile}</Text>
+              <Text style={styles.item}>
+                Linked Mobile
+              </Text>
+
+              <Text style={styles.value}>
+                +91 {profiledata?.mobile}
+              </Text>
             </View>
           </View>
 
-          {/* ✅ LOGOUT BUTTON */}
-          <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
-            <Text style={styles.logoutText}>Logout</Text>
+          {/* LOGOUT */}
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={handleLogout}
+          >
+            <Text style={styles.logoutText}>
+              Logout
+            </Text>
           </TouchableOpacity>
+
         </ScrollView>
       </View>
 
-        <BottomNav
-                  navigation={navigation}
-                  currentRoute="Scan"
-                />
+      <BottomNav
+        navigation={navigation}
+        currentRoute="Scan"
+      />
 
     </SafeAreaView>
-  );
+  </LinearGradient>
+);
 }

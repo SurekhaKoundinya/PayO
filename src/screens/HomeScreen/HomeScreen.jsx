@@ -11,7 +11,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 // import { Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
-
+import LinearGradient from 'react-native-linear-gradient';
+import { AppThemeBackground } from '../../styles/main';
 export default function HomeScreen({ navigation }) {
 
   const [balanceVisible, setBalanceVisible] = useState(false);
@@ -151,7 +152,12 @@ const fetchExpertCoins = async () => {
 
   return (
 
-    <View style={styles.container}>
+  <LinearGradient
+    colors={AppThemeBackground.gradientColors}
+    start={AppThemeBackground.gradientStart}
+    end={AppThemeBackground.gradientEnd}
+    style={styles.container}
+  >
 
       <Header />
 
@@ -276,8 +282,8 @@ const fetchExpertCoins = async () => {
     {/* ADD BANK ACCOUNT BUTTON */}
     <TouchableOpacity
   style={styles.addBankButton}
-  onPress={() => navigation.navigate('AddBankAccount')}
-  disabled={true}
+    onPress={() => navigation.navigate('AddBankHome')}
+  // disabled={true}
 >
   <Icon name="plus-circle" size={18} color="#020202" style={styles.bankIcon} />
   <Text style={styles.addBankText}>
@@ -667,7 +673,7 @@ const fetchExpertCoins = async () => {
 
       </ScrollView>
 
-    </View>
+    </LinearGradient>
   );
 }
  
