@@ -27,27 +27,21 @@ const moderateScale = (size, factor = 0.5) =>
 export default function Onboarding3({ navigation }) {
   const insets = useSafeAreaInsets();
 
-  // LOGO
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoTranslateY = useRef(new Animated.Value(-40)).current;
 
-  // IMAGE
   const imageOpacity = useRef(new Animated.Value(0)).current;
   const imageScale = useRef(new Animated.Value(0.8)).current;
   const imageFloat = useRef(new Animated.Value(0)).current;
 
-  // TITLE
   const titleOpacity = useRef(new Animated.Value(0)).current;
   const titleTranslateY = useRef(new Animated.Value(30)).current;
 
-  // DESCRIPTION
   const descOpacity = useRef(new Animated.Value(0)).current;
   const descTranslateY = useRef(new Animated.Value(30)).current;
 
-  // FOOTER
   const footerOpacity = useRef(new Animated.Value(0)).current;
 
-  // COINS
   const coins = useRef(
     Array.from({ length: width > 400 ? 12 : 8 }).map(() => ({
       translateY: new Animated.Value(-height),
@@ -255,32 +249,30 @@ export default function Onboarding3({ navigation }) {
 
       <Animated.View
         style={[
-          styles.footer,
+          styles.buttonContainer,
           {
             opacity: footerOpacity,
-            bottom:
+            paddingBottom:
               insets.bottom > 0
-                ? insets.bottom + moderateScale(12)
+                ? insets.bottom + moderateScale(16)
                 : moderateScale(20),
           },
         ]}
       >
         <TouchableOpacity
-          style={styles.skipBtn}
-          onPress={() => navigation.navigate('Onboarding4')}
-          activeOpacity={0.8}
+          style={styles.registerBtn}
+          activeOpacity={0.85}
+          onPress={() => navigation.navigate('RegisterMobile')}
         >
-          <Text style={styles.skipText}>Skip</Text>
+          <Text style={styles.registerText}>Register</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('Onboarding4')}
-          activeOpacity={0.8}
+          style={styles.loginBtn}
+          activeOpacity={0.85}
+          onPress={() => navigation.navigate('Login')}
         >
-          <Image
-            source={require('../../assets/images/full_load.png')}
-            style={styles.nextImage}
-          />
+          <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
       </Animated.View>
     </SafeAreaView>
@@ -333,35 +325,38 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(20),
   },
 
-  footer: {
-    position: 'absolute',
-    left: moderateScale(25),
-    right: moderateScale(25),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex: 2,
+  buttonContainer: {
+    width: '100%',
+    paddingHorizontal: moderateScale(30),
   },
 
-  skipBtn: {
-    backgroundColor: '#C9F0FF',
-    paddingHorizontal: moderateScale(20),
-    paddingVertical: verticalScale(10),
+  registerBtn: {
+    backgroundColor: '#6200EE',
+    height: verticalScale(50),
     borderRadius: moderateScale(14),
-    minWidth: moderateScale(85),
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: verticalScale(18),
   },
 
-  skipText: {
-    fontSize: moderateScale(16),
+  registerText: {
+    color: '#FFFFFF',
+    fontSize: moderateScale(18),
     fontWeight: '600',
-    color: '#000',
   },
 
-  nextImage: {
-    width: moderateScale(78),
-    height: moderateScale(78),
-    resizeMode: 'contain',
+  loginBtn: {
+    height: verticalScale(50),
+    borderRadius: moderateScale(14),
+    borderWidth: 1.5,
+    borderColor: '#7B4DFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  loginText: {
+    color: '#6200EE',
+    fontSize: moderateScale(18),
+    fontWeight: '600',
   },
 });
