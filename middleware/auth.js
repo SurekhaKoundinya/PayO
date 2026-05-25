@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, "mysecretkey");
 
-    //  support both id and mobile
+    //  support both id and mo
     let user;
 
     if (decoded.id) {
