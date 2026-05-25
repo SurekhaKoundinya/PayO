@@ -2,375 +2,594 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
+  StyleSheet,
   TextInput,
-  Platform,
-  StatusBar,
+  Alert,
+  ScrollView,
 } from 'react-native';
+
 import LinearGradient from 'react-native-linear-gradient';
 import api from '../../api/axios';
-import { useRoute } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function EnterAmountScreen({ navigation, name, address,setActiveTab ,show}) {
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
+import { moderateScale } from 'react-native-size-matters';
 
-  const [amount, setAmount] = useState("");
-  const [available, setAvailable] = useState("");
-  const[senderData,setSenderData]=useState({});
-    const route = useRoute();
+export default function EnterAmountScreen({
+  navigation,
+  name,
+  address,
+  setActiveTab,
+  show,
+}) {
+  const [amount, setAmount] = useState('');
+  const [available, setAvailable] = useState('');
+  const [senderData, setSenderData] =
+    useState({});
+  const [message, setMessage] =
+    useState('');
 
-    const Transname = route?.params?.name;
-  const Transaddress =  route?.params?.address;
-  const TransrouteAmount = route?.params?.amount;
-  const TransShow = route?.params?.show;
-  const[message,setMessage]=useState("");
+  const route = useRoute();
 
-  console.log(TransShow,"9994")
+  const Transname =
+    route?.params?.name;
+  const Transaddress =
+    route?.params?.address;
+  const TransrouteAmount =
+    route?.params?.amount;
+  const TransShow =
+    route?.params?.show;
 
-  // 🔥 Fetch balance
   useEffect(() => {
-    const fetchBalance = async () => {
-      try {
-        const response = await api.get('/api/wallet/balance');
-        setAvailable(response?.data?.balance || "0");
-      } catch (error) {
-        console.log("Error fetching balance:", error);
-      }
-    };
+    const fetchBalance =
+      async () => {
+        try {
+          const response =
+            await api.get(
+              '/api/wallet/balance',
+            );
+
+          setAvailable(
+            response?.data?.balance ||
+              '0',
+          );
+        } catch (error) {
+          console.log(
+            'Error fetching balance:',
+            error,
+          );
+        }
+      };
 
     fetchBalance();
   }, []);
 
-   useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const res = await api.get('/api/wallet/profile');
-        console.log(res.data.data,"9898")
-        setSenderData(res?.data?.data);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
+  useEffect(() => {
+    const fetchProfileData =
+      async () => {
+        try {
+          const res =
+            await api.get(
+              '/api/wallet/profile',
+            );
+
+          setSenderData(
+            res?.data?.data,
+          );
+        } catch (err) {
+          console.log(
+            err.message,
+          );
+        }
+      };
+
     fetchProfileData();
   }, [navigation]);
 
-  const handleContinue=async ()=>{
-    const data=address || Transaddress
-   
-  if (! data) {
-    alert("Enter valid wallet address");
-    return;
-  }
+  const handleContinue =
+    async () => {
+      const data =
+        address ||
+        Transaddress;
 
-  try {
-    const res = await api.post("/api/wallet/transfer/preview", {
-      toAddress: data,
-      amount: amount,
-    });
+      if (!data) {
+        Alert.alert(
+          'Error',
+          'Enter valid wallet address',
+        );
+        return;
+      }
 
-    console.log("PREVIEW RESPONSE 👉", res.data);
-TransShow ? 
-    navigation.navigate('SendPin', {
-    amount: TransrouteAmount,
-    name: Transname,
-    address: Transaddress,
-    senderData
-  }) :
-      navigation.navigate('SendPin', {
+      try {
+        await api.post(
+          '/api/wallet/transfer/preview',
+          {
+            toAddress: data,
+            amount: amount,
+          },
+        );
+
+        if (TransShow) {
+          navigation.navigate(
+            'SendPin',
+            {
+              amount:
+                TransrouteAmount,
+              name: Transname,
+              address:
+                Transaddress,
+              senderData,
+            },
+          );
+        } else {
+          navigation.navigate(
+            'SendPin',
+            {
               amount,
               name,
               address,
-              senderData
-            })
-
-
-  } catch (err) {
-    console.log( err?.response?.data);
-    setMessage(err?.response?.data?.message)
-   
-  }
-};
-  
+              senderData,
+            },
+          );
+        }
+      } catch (err) {
+        setMessage(
+          err?.response?.data
+            ?.message,
+        );
+      }
+    };
 
   return (
-    TransShow ?
-   <>
     <LinearGradient
-      colors={["#6A00F4", "#1A0033"]}
-      style={{ flex: 1, paddingTop:
-                Platform.OS === "android" ? StatusBar.currentHeight : 0, }}
-    >
-      <View style={styles.container}>
-
-        {/* 🔙 Cancel Button */}
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.cancel}>Cancel</Text>
-        </TouchableOpacity>
-
-        {/* Title */}
-        <Text style={styles.title}>Total Tokens Transfer Details</Text>
-
-        {/* 💜 Amount Card */}
-        <View style={styles.amountCard}>
-          <View style={styles.amountRow}>
-            <TextInput
-              style={styles.amountInput}
-              value={amount}
-              onChangeText={(text) => {
-                const cleaned = text.replace(/[^0-9]/g, '');
-                setAmount(cleaned);
-                 setMessage("");
-              }}
-              keyboardType="numeric"
-              placeholder="0"
-              placeholderTextColor="#eee"
-              cursorColor="#fff"
-               maxLength={6}
-            />
-            <Text style={styles.currency}> PAYO</Text>
-          </View>
-        </View>
-
-        {/* User Details */}
-          {message ? <Text style={{color:"#ff0000"}}>{message}</Text>:""}
-        <Text style={styles.toText}>To - {name || Transname}</Text>
-        <Text style={styles.address}>{address || Transaddress }</Text>
-
-        {/* Quick Amount Buttons */}
-
-           
-        <View style={styles.row}>
-          {['100', '300', '500', '700'].map((val) => (
+      colors={
+        TransShow
+          ? [
+              '#6A00F4',
+              '#1A0033',
+            ]
+          : [
+              'transparent',
+              'transparent',
+            ]
+      }
+      style={styles.gradient}>
+      <SafeAreaView
+        style={styles.safeArea}
+        edges={['top', 'bottom']}>
+        <ScrollView
+          showsVerticalScrollIndicator={
+            false
+          }
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={
+            styles.scrollContent
+          }>
+          <View
+            style={
+              styles.container
+            }>
             <TouchableOpacity
-              key={val}
-              style={styles.quickBtn}
-              onPress={() => setAmount(val)}
-            >
-              <Text style={styles.quickText}>{val}</Text>
+              onPress={() =>
+                navigation.goBack()
+              }>
+              <Text
+                style={
+                  styles.cancel
+                }>
+                Cancel
+              </Text>
             </TouchableOpacity>
-          ))}
-        </View>
 
-        {/* Balance */}
-        <View style={styles.balanceBox}>
-          <Text style={styles.balanceText}>Available balance</Text>
-          <Text style={styles.balanceAmount}>{available}</Text>
-        </View>
+            <Text
+              style={
+                styles.title
+              }>
+              Total Tokens Transfer
+              Details
+            </Text>
 
-        {/* Continue Button */}
-        <TouchableOpacity
-          style={styles.continueBtn}
-         onPress={handleContinue}
-//          {() =>
-//   navigation.navigate('SendPin', {
-//     amount: TransrouteAmount,
-//     name: Transname,
-//     address: Transaddress,
-//     senderData
-//   })
-// }
-        >
-          <Text style={styles.continueText}>Continue</Text>
-        </TouchableOpacity>
+            <View
+              style={
+                styles.amountCard
+              }>
+              <View
+                style={
+                  styles.amountRow
+                }>
+                <TextInput
+                  style={
+                    styles.amountInput
+                  }
+                  value={amount}
+                  onChangeText={(
+                    text,
+                  ) => {
+                    const cleaned =
+                      text.replace(
+                        /[^0-9]/g,
+                        '',
+                      );
 
-      </View>
-      </LinearGradient>
-   </>
-      :
-      
-       <View style={styles.container}>
+                    setAmount(
+                      cleaned,
+                    );
+                    setMessage(
+                      '',
+                    );
+                  }}
+                  keyboardType="numeric"
+                  placeholder="0"
+                  placeholderTextColor="#eee"
+                  cursorColor="#fff"
+                  maxLength={
+                    6
+                  }
+                />
 
-        {/* 🔙 Cancel Button */}
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.cancel}>Cancel</Text>
-        </TouchableOpacity>
+                <Text
+                  style={
+                    styles.currency
+                  }>
+                  PAYO
+                </Text>
+              </View>
+            </View>
 
-        {/* Title */}
-        <Text style={styles.title}>Total Tokens Transfer Details</Text>
+            {message ? (
+              <Text
+                style={
+                  styles.errorText
+                }>
+                {message}
+              </Text>
+            ) : null}
 
-        {/* 💜 Amount Card */}
-        <View style={styles.amountCard}>
-          <View style={styles.amountRow}>
-            <TextInput
-              style={styles.amountInput}
-              value={amount}
-              onChangeText={(text) => {
-                const cleaned = text.replace(/[^0-9]/g, '');
-                setAmount(cleaned);
-                 setMessage("");
-              }}
-              keyboardType="numeric"
-              placeholder="0"
-              placeholderTextColor="#eee"
-              cursorColor="#fff"
-                 maxLength={6}
-            />
-            <Text style={styles.currency}> PAYO</Text>
-          </View>
-        </View>
+            <Text
+              style={
+                styles.toText
+              }>
+              To -{' '}
+              {name ||
+                Transname}
+            </Text>
 
-        {/* User Details */}
-         {message ? <Text style={{color:"#ff0000",textAlign: 'center',marginBottom:10,fontSize:18}}>{message}</Text>:""}
-        <Text style={styles.toText}>To - {name || Transname}</Text>
-        <Text style={styles.address}>{address || Transaddress }</Text>
+            <Text
+              style={
+                styles.address
+              }
+              numberOfLines={
+                2
+              }>
+              {address ||
+                Transaddress}
+            </Text>
 
-        
+            <View
+              style={
+                styles.row
+              }>
+              {[
+                '100',
+                '300',
+                '500',
+                '700',
+              ].map(
+                (
+                  val,
+                ) => (
+                  <TouchableOpacity
+                    key={
+                      val
+                    }
+                    style={
+                      styles.quickBtn
+                    }
+                    onPress={() =>
+                      setAmount(
+                        val,
+                      )
+                    }>
+                    <Text
+                      style={
+                        styles.quickText
+                      }>
+                      {val}
+                    </Text>
+                  </TouchableOpacity>
+                ),
+              )}
+            </View>
 
-        {/* Quick Amount Buttons */}
-        <View style={styles.row}>
-          {['100', '300', '500', '700'].map((val) => (
+            <View
+              style={
+                styles.balanceBox
+              }>
+              <Text
+                style={
+                  styles.balanceText
+                }>
+                Available
+                balance
+              </Text>
+
+              <Text
+                style={
+                  styles.balanceAmount
+                }>
+                {
+                  available
+                }
+              </Text>
+            </View>
+
             <TouchableOpacity
-              key={val}
-              style={styles.quickBtn}
-              onPress={() => setAmount(val)}
-            >
-              <Text style={styles.quickText}>{val}</Text>
+              style={
+                styles.continueBtn
+              }
+              onPress={
+                handleContinue
+              }>
+              <Text
+                style={
+                  styles.continueText
+                }>
+                Continue
+              </Text>
             </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Balance */}
-        <View style={styles.balanceBox}>
-          <Text style={styles.balanceText}>Available balance</Text>
-          <Text style={styles.balanceAmount}>{available}</Text>
-        </View>
-
-        {/* Continue Button */}
-        <TouchableOpacity
-          style={styles.continueBtn}
-          onPress={handleContinue}
-          
-          // {() =>
-          //   // navigation.navigate('SendPin', {
-          //   //   amount,
-          //   //   name,
-          //   //   address,
-          //   //   senderData
-          //   // })
-          // }
-        >
-          <Text style={styles.continueText}>Continue</Text>
-        </TouchableOpacity>
-
-      </View>
-    
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
+const styles =
+  StyleSheet.create({
+    gradient: {
+      flex: 1,
+    },
 
-  cancel: {
-    color: '#fff',
-    fontSize: 16,
-    marginBottom: 20,
-  },
+    safeArea: {
+      flex: 1,
+    },
 
-  title: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 16,
-    marginBottom: 25,
-  },
+    scrollContent: {
+      flexGrow: 1,
+      paddingBottom:
+        hp('18%'),
+    },
 
-  amountCard: {
-    backgroundColor: '#9B6DFF',
-    borderRadius: 20,
-    paddingVertical: 25,
-    paddingHorizontal: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    width: '80%',
-    marginBottom: 30,
-  },
+    container: {
+      flex: 1,
+      paddingHorizontal:
+        wp('5%'),
+      paddingTop:
+        hp('2%'),
+    },
 
-  amountRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+    cancel: {
+      color: '#fff',
+      fontSize:
+        moderateScale(
+          16,
+        ),
+      marginBottom:
+        hp('2.5%'),
+    },
 
-  amountInput: {
-    fontSize: 36,
-    color: '#fff',
-    fontWeight: '700',
-    textAlign: 'center',
-  },
+    title: {
+      color: '#fff',
+      textAlign:
+        'center',
+      fontSize:
+        moderateScale(
+          16,
+        ),
+      marginBottom:
+        hp('3%'),
+      fontWeight:
+        '600',
+    },
 
-  currency: {
-    fontSize: 16,
-    color: '#00FFD1',
-    marginLeft: 6,
-    fontWeight: '600',
-  },
+    amountCard: {
+      backgroundColor:
+        '#9B6DFF',
+      borderRadius:
+        moderateScale(
+          20,
+        ),
+      paddingVertical:
+        hp('3%'),
+      paddingHorizontal:
+        wp('6%'),
+      alignItems:
+        'center',
+      justifyContent:
+        'center',
+      alignSelf:
+        'center',
+      width: '85%',
+      marginBottom:
+        hp('3%'),
+    },
 
-  toText: {
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 5,
-    textTransform:"capitalize"
-  },
+    amountRow: {
+      flexDirection:
+        'row',
+      alignItems:
+        'center',
+    },
 
-  address: {
-    color: '#ccc',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
+    amountInput: {
+      fontSize:
+        moderateScale(
+          36,
+        ),
+      color: '#fff',
+      fontWeight:
+        '700',
+      textAlign:
+        'center',
+      minWidth:
+        wp('20%'),
+    },
 
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30,
-  },
+    currency: {
+      fontSize:
+        moderateScale(
+          16,
+        ),
+      color:
+        '#00FFD1',
+      marginLeft:
+        wp('2%'),
+      fontWeight:
+        '600',
+    },
 
-  quickBtn: {
-    backgroundColor: '#E5E5E5',
-    paddingVertical: 10,
-    borderRadius: 8,
-    width: 60,
-    alignItems: 'center',
-  },
+    toText: {
+      color: '#fff',
+      textAlign:
+        'center',
+      marginBottom:
+        hp('0.8%'),
+      textTransform:
+        'capitalize',
+      fontSize:
+        moderateScale(
+          14,
+        ),
+    },
 
-  quickText: {
-    fontWeight: '500',
-  },
+    address: {
+      color: '#ccc',
+      textAlign:
+        'center',
+      marginBottom:
+        hp('3%'),
+      fontSize:
+        moderateScale(
+          12,
+        ),
+    },
 
-  balanceBox: {
-    backgroundColor: "#7B3FE4",
-    borderRadius: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
+    errorText: {
+      color: '#ff0000',
+      textAlign:
+        'center',
+      marginBottom:
+        hp('1.5%'),
+      fontSize:
+        moderateScale(
+          14,
+        ),
+    },
 
-  balanceText: {
-    color: "#ddd",
-    fontSize: 12,
-  },
+    row: {
+      flexDirection:
+        'row',
+      justifyContent:
+        'space-between',
+      flexWrap:
+        'wrap',
+      marginBottom:
+        hp('3%'),
+    },
 
-  balanceAmount: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: 14,
-    textAlign: "right",
-  },
+    quickBtn: {
+      backgroundColor:
+        '#E5E5E5',
+      paddingVertical:
+        hp('1.2%'),
+      borderRadius:
+        moderateScale(
+          8,
+        ),
+      width: wp('18%'),
+      minWidth: 60,
+      alignItems:
+        'center',
+      marginBottom:
+        hp('1%'),
+    },
 
-  continueBtn: {
-    backgroundColor: '#16A34A',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
+    quickText: {
+      fontWeight:
+        '500',
+      fontSize:
+        moderateScale(
+          13,
+        ),
+    },
 
-  continueText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-});
+    balanceBox: {
+      backgroundColor:
+        '#7B3FE4',
+      borderRadius:
+        moderateScale(
+          14,
+        ),
+      paddingVertical:
+        hp('1.8%'),
+      paddingHorizontal:
+        wp('4%'),
+      flexDirection:
+        'row',
+      justifyContent:
+        'space-between',
+      alignItems:
+        'center',
+      marginBottom:
+        hp('2.5%'),
+    },
+
+    balanceText: {
+      color: '#ddd',
+      fontSize:
+        moderateScale(
+          12,
+        ),
+    },
+
+    balanceAmount: {
+      color: '#fff',
+      fontWeight:
+        '600',
+      fontSize:
+        moderateScale(
+          14,
+        ),
+      textAlign:
+        'right',
+    },
+
+    continueBtn: {
+      backgroundColor:
+        '#16A34A',
+      paddingVertical:
+        hp('2%'),
+      borderRadius:
+        moderateScale(
+          10,
+        ),
+      alignItems:
+        'center',
+    },
+
+    continueText: {
+      color: '#fff',
+      fontWeight:
+        '600',
+      fontSize:
+        moderateScale(
+          14,
+        ),
+    },
+  });

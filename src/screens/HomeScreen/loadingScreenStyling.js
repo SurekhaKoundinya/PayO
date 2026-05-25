@@ -1,4 +1,9 @@
 import { StyleSheet } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { moderateScale } from 'react-native-size-matters';
 
 export default StyleSheet.create({
 
@@ -10,33 +15,36 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: wp('8%'),
   },
 
   loaderRow: {
     flexDirection: 'row',
-    marginBottom: 30,
+    marginBottom: hp('4%'),
   },
 
   dot: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
+    width: moderateScale(14),
+    height: moderateScale(14),
+    borderRadius: moderateScale(7),
     backgroundColor: '#000',
-    marginHorizontal: 6,
+    marginHorizontal: wp('1.5%'),
   },
 
   title: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: '600',
     color: '#fff',
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: hp('1%'),
+    lineHeight: moderateScale(26),
   },
 
   subtitle: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     color: '#fff',
     opacity: 0.9,
+    textAlign: 'center',
+    lineHeight: moderateScale(20),
   },
-
 });

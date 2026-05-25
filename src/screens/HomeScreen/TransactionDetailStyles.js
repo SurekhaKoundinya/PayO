@@ -1,262 +1,183 @@
-import { Platform, StatusBar, StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { moderateScale } from 'react-native-size-matters';
 
 export default StyleSheet.create({
-container: {
-  flex: 1,
-  paddingHorizontal: 18,
- 
-   paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  paddingBottom: 20,
-},
+  gradient: {
+    flex: 1,
+  },
 
-  // header: {
-  //   height: 50,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   position: "relative",
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
-  // },
+  container: {
+    flex: 1,
+    paddingHorizontal: wp('5%'),
+  },
+
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: hp('5%'),
+  },
 
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
-    marginTop:20
-    
+    marginTop: hp('1%'),
+    marginBottom: hp('2.5%'),
   },
- 
-  back: {
-    color: '#fff',
-    fontSize: 22,
-    marginRight: 14,
-  },
- 
+
   header: {
     color: '#fff',
-    fontSize: 22,
+    fontSize: moderateScale(20),
     fontWeight: '700',
-    
+    marginLeft: wp('3%'),
+    flex: 1,
   },
 
-  /* SECTION */
+  receiptCard: {
+    backgroundColor: '#1E1E2D',
+    borderRadius: moderateScale(18),
+    padding: wp('4.5%'),
+  },
 
   section: {
-    marginBottom: 18,
-    paddingTop: 30
+    marginBottom: hp('1.5%'),
   },
 
   smallLabel: {
-
-    color: "#bbb",
-
-    fontSize: 12,
-
-    marginBottom: 8,
-
+    color: '#bbb',
+    fontSize: moderateScale(12),
+    marginBottom: hp('1%'),
   },
 
-  /* ROWS */
-
   row: {
-
-    flexDirection: "row",
-
-    justifyContent: "space-between",
-
-    alignItems: "center",
-
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
 
   userRow: {
-
-    flexDirection: "row",
-
-    alignItems: "center",
-
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
-
+    paddingRight: wp('3%'),
   },
 
   iconBox: {
-
-    width: 30,
-
-    height: 30,
-
-    borderRadius: 15,
-
-    backgroundColor: "#fff",
-
-    alignItems: "center",
-
-    justifyContent: "center",
-
+    width: moderateScale(34),
+    height: moderateScale(34),
+    borderRadius: moderateScale(17),
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   name: {
+    color: '#fff',
+    fontSize: moderateScale(15),
+    fontWeight: '600',
+    marginLeft: wp('3%'),
+    maxWidth: wp('42%'),
+    textTransform: 'capitalize',
+  },
 
-    color: "#fff",
-
-    fontSize: 16,
-    fontWeight: "600",
-    textTransform: "capitalize",
-    width: "70%",
-
-    marginLeft: 10,
-
-    flexShrink: 1,
-
-    fontWeight: "500",
-
+  timeText: {
+    color: '#ddd',
+    fontSize: moderateScale(10),
+    marginTop: hp('0.4%'),
+    marginLeft: wp('3%'),
+    maxWidth: wp('45%'),
   },
 
   amount: {
-
-    color: "#fff",
-
-    fontSize: 18,
-
-    fontWeight: "bold",
-
+    color: '#fff',
+    fontSize: moderateScale(16),
+    fontWeight: '700',
+    textAlign: 'right',
+    maxWidth: wp('30%'),
   },
 
   payo: {
-
-    fontSize: 12,
-
-    color: "#bbb",
-
+    color: '#bbb',
+    fontSize: moderateScale(11),
   },
-  timeText: {
-    fontSize: 12,
-    color: "#f7f4f4",
-    marginTop: 2,
-    marginLeft: 10,
-  },
-  timeText: {
-    fontSize: 12,
-    color: "#f7f4f4",
-    marginTop: 2,
-    marginLeft: 10,
-  },
-  /* DIVIDER */
 
   divider: {
-
     height: 1,
-
-    backgroundColor: "rgba(255,255,255,0.1)",
-
-    marginVertical: 15,
-
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    marginVertical: hp('2%'),
   },
 
-  /* PAYMENT DETAILS */
-
   paymentHeader: {
-
-    flexDirection: "row",
-
-    alignItems: "center",
-
-    marginBottom: 10,
-
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: hp('1.2%'),
   },
 
   paymentTitle: {
-
-    color: "#ddd",
-
-    fontSize: 14,
-
-    marginLeft: 8,
-
-    fontWeight: "500",
-
+    color: '#ddd',
+    fontSize: moderateScale(14),
+    marginLeft: wp('2%'),
+    fontWeight: '600',
   },
 
   label: {
-
-    color: "#f1e7e7",
-
-    fontSize: 12,
-
-    marginTop: 10,
-
+    color: '#f1e7e7',
+    fontSize: moderateScale(12),
+    marginTop: hp('1%'),
   },
 
   valueRow: {
-
-    flexDirection: "row",
-
-    justifyContent: "space-between",
-
-    alignItems: "center",
-
-    marginTop: 4,
-
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: hp('0.7%'),
   },
 
   value: {
-
-    color: "#0fe93e",
-
-    fontSize: 14,
-
+    color: '#0fe93e',
+    fontSize: moderateScale(13),
     flex: 1,
-
-    marginRight: 10,
-
+    marginRight: wp('3%'),
   },
 
-  /* ACTIONS */
-
- /* ACTIONS */
-
-actionsRow: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginTop: 10,
-  paddingTop: 20,
-  borderTopWidth: 1,
-  borderTopColor: "rgba(255,255,255,0.15)",
-},
-
-actionItem: {
-  alignItems: "center",
-  justifyContent: "center",
-  width: "24%",
-},
-
-circle: {
-  width: 52,
-  height: 52,
-  borderRadius: 26,
-  backgroundColor: "#F2F2F2",
-  alignItems: "center",
-  justifyContent: "center",
-  marginBottom: 8,
-},
-
-actionText: {
-  color: "#fff",
-  fontSize: 11,
-  textAlign: "center",
-  marginTop: 2,
-  lineHeight: 15,
-},
-
-  /* OPTIONAL: RECEIPT CARD (for better screenshot UI) */
-
-  receiptCard: {
-
-    backgroundColor: "#1E1E2D",
-
-    borderRadius: 16,
-
-    padding: 16,
-
+  actionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginTop: hp('3%'),
+    paddingTop: hp('2.5%'),
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.15)',
   },
 
+  actionItem: {
+    alignItems: 'center',
+    flex: 1,
+    paddingHorizontal: wp('1%'),
+  },
+
+  circle: {
+    width: moderateScale(48),
+    height: moderateScale(48),
+    borderRadius: moderateScale(24),
+    backgroundColor: '#F2F2F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: hp('1%'),
+  },
+
+  actionText: {
+    color: '#fff',
+    fontSize: moderateScale(10),
+    textAlign: 'center',
+    lineHeight: moderateScale(14),
+  },
 });

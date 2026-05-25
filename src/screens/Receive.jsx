@@ -1,381 +1,71 @@
-// import React, { useEffect, useRef, useState } from "react";
-// import {
-//   View,
-//   Text,
-//   StyleSheet,
-//   TouchableOpacity,
-//   Image,
-  
-//   ActivityIndicator,
-//   Platform,
-//   StatusBar,
-//   ScrollView,
-// } from "react-native";
-// import RNFS from "react-native-fs";
-// import Share from "react-native-share";
-// import LinearGradient from "react-native-linear-gradient";
-// import Clipboard from "@react-native-clipboard/clipboard";
-// import api from "../api/axios";
-// import BottomNav from "./components/bottomNav";
-// import Icon from "react-native-vector-icons/Feather";
-// import { SafeAreaView } from "react-native";
-
-
-// const Receive = ({navigation}) => {
-//   const [qr, setQr] = useState(null);
-//   const [address, setAddress] = useState("");
-//   const [timer, setTimer] = useState(900); // 15 minutes
-//   const [loading, setLoading] = useState(true);
-  
-
-//   const intervalRef = useRef(null);
-
-//   // ================= FETCH QR =================
-//   const fetchQr = async () => {
-//     try {
-//       setLoading(true);
-
-//       console.log("Calling API...");
-
-//       const res = await api.get("api/wallet/generate-address");
-//       const data = res.data;
-
-//       console.log("API RESPONSE:", data);
-
-//       const qrImage = data.qr?.startsWith("data:image")
-//         ? data.qr
-//         : `data:image/png;base64,${data.qr}`;
-
-//       setQr(qrImage);
-//       setAddress(data.address || "No Address");
-
-//       // reset timer to 15 min
-//       setTimer(900);
-
-//       setLoading(false);
-//     } catch (err) {
-//       console.log("QR ERROR:", err.response?.data || err.message);
-//       setQr(null);
-//       setAddress("");
-//       setTimer(0);
-//       setLoading(false);
-//     }
-//   };
-
-//   // ================= INITIAL LOAD =================
-//   useEffect(() => {
-//     fetchQr();
-//   }, []);
-
-//   // ================= TIMER =================
-//   useEffect(() => {
-//     intervalRef.current = setInterval(() => {
-//       setTimer((prev) => {
-//         if (prev <= 1) {
-//           clearInterval(intervalRef.current);
-//           return 0;
-//         }
-//         return prev - 1;
-//       });
-//     }, 1000);
-
-//     return () => clearInterval(intervalRef.current);
-//   }, []);
-
-//   // ================= AUTO REFRESH WHEN TIMER ENDS =================
-//   useEffect(() => {
-//     if (timer === 0 && !loading) {
-//       fetchQr();
-//     }
-//   }, [timer]);
-
-//   // ================= COPY =================
-//   const handleCopy = () => {
-   
-//      const code = address;
-     
-//         Clipboard.setString(code);
-     
-//         if (Platform.OS === "android") {
-//           ToastAndroid.show("Address copied", ToastAndroid.SHORT);
-//         } else {
-//           Alert.alert('Copied', 'Referral code copied');
-//         }
-//   };
-
-//   // ================= SHARE =================
-//   const handleShare = async () => {
-//   try {
-//     if (!qr) return;
-//     // Extract base64 part
-//     const base64Data = qr.replace(/^data:image\/png;base64,/, "");
-//     const filePath = `${RNFS.CachesDirectoryPath}/payo_qr.png`;
-//     // Save QR image to file
-//     await RNFS.writeFile(filePath, base64Data, "base64");
-//     // Share image + message
-//     await Share.open({
-//       url: "file://" + filePath,
-//       message: `Send PAYO to this address:\n${address}`,
-//     });
-//   } catch (error) {
-//     console.log("Share error:", error);
-//   }
-// };
-//   // ================= FORMAT TIMER =================
-//   const formatTime = () => {
-//     const m = Math.floor(timer / 60);
-//     const s = timer % 60;
-//     return `${m}:${s < 10 ? "0" : ""}${s}`;
-//   };
-
-//   return (
-//     <LinearGradient
-//         colors={['#1e0a3c', '#5b21b6']}
-//         style={{
-//           flex: 1,
-//           paddingTop: Platform.OS === "android"
-//             ? StatusBar.currentHeight
-//             : 0,
-//         }}
-//       >
-//         <SafeAreaView style={{ flex: 1 }}>
-//           <ScrollView contentContainerStyle={styles.container}>
-   
-//             {/* HEADER */}
-//             <View style={styles.headerRow}>
-//               <TouchableOpacity
-//                 style={styles.backBtn}
-//                 onPress={() => navigation.goBack()}
-//               >
-//                 <Text style={styles.back}>
-//                   <Icon name="arrow-left" size={22} color="#fff" />
-//                 </Text>
-//               </TouchableOpacity>
-   
-//               <Text style={styles.header}>Receive</Text>
-//             </View>
-      
-
-//       {/* ================= QR ================= */}
-//       <View style={styles.qrContainer}>
-//         {loading ? (
-//           <ActivityIndicator size="large" color="#6A0DAD" />
-//         ) : qr ? (
-//           <Image source={{ uri: qr }} style={styles.qrImage} />
-//         ) : (
-//           <Text style={styles.errorText}>Failed to load QR</Text>
-//         )}
-//       </View>
-
-//       {/* ================= ADDRESS ================= */}
-//       <View style={styles.addressBox}>
-//         <Text style={styles.label}>WALLET ADDRESS</Text>
-//         <Text style={styles.address}>
-//           {address || (loading ? "Loading..." : "Unavailable")}
-//         </Text>
-//       </View>
-
-//       {/* ================= BUTTONS ================= */}
-//       <View style={styles.row}>
-//         <TouchableOpacity style={styles.button} onPress={handleCopy}>
-//           <Text style={styles.buttonText}>Copy</Text>
-//         </TouchableOpacity>
-
-//         <TouchableOpacity style={styles.button} onPress={handleShare}>
-//           <Text style={styles.buttonText}>Share</Text>
-//         </TouchableOpacity>
-//       </View>
-
-//       {/* ================= TIMER ================= */}
-//       <Text style={styles.timer}>
-//         {loading ? "Generating QR..." : `Expires in ${formatTime()}`}
-//       </Text>
-
-//       {/* ================= REGENERATE ================= */}
-//       <TouchableOpacity onPress={fetchQr} disabled={loading}>
-//         <Text style={styles.regenerate}>
-//           {loading ? "Generating..." : "Regenerate QR"}
-//         </Text>
-//       </TouchableOpacity>
-     
-//              </ScrollView>
-      
-//              <BottomNav
-//                navigation={navigation}
-//              />
-//            </SafeAreaView>
-//          </LinearGradient>
-//   );
-// };
-
-// export default Receive;
-
-// // ================= STYLES =================
-// const styles = StyleSheet.create({
-//   // container: {
-//   //   flex: 1,
-//   //    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-//   //   // alignItems: "center",
-//   // },
-
-//   container: {
-//     flex: 1,
-//     padding: 20,
-//     paddingTop: 20,        // ✅ prevent top touch
-//     paddingBottom: 110,    // ✅ prevent bottom tab overlap
-//     // ❌ removed backgroundColor (use gradient in screen)
-//   },
-
-//   /* HEADER */
-//  headerRow: {
-//   height: 50,
-//   justifyContent: "center",
-//   alignItems: "center",
-//   position: "relative",
-// },
-
-// backBtn: {
-//   position: "absolute",
-//   left: 15,
-// },
-
-// back: {
-//   fontSize: 22,
-//   color: "#fff",
-// },
-
-// header: {
-//   fontSize: 18,
-//   fontWeight: "600",
-//   color: "#fff",
-// },
-
-// title: {
-//   fontSize: 18,
-//   fontWeight: "600",
-//   color: "#fff",
-// },
-//   qrContainer: {
-//     backgroundColor: "#fff",
-//     padding: 15,
-//     borderRadius: 20,
-//     marginBottom: 20,
-//     width: 230,
-//     height: 230,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   qrImage: {
-//     width: 200,
-//     height: 200,
-//   },
-//   errorText: {
-//     color: "#999",
-//   },
-//   addressBox: {
-//     backgroundColor: "#7B2CBF",
-//     padding: 15,
-//     borderRadius: 10,
-//     width: "85%",
-//     marginBottom: 20,
-//   },
-//   label: {
-//     color: "#ccc",
-//     fontSize: 12,
-//   },
-//   address: {
-//     color: "#fff",
-//     fontSize: 12,
-//     marginTop: 5,
-//     fontWeight: "600",
-//   },
-//   row: {
-//     flexDirection: "row",
-//     gap: 10,
-//     marginBottom: 20,
-//   },
-//   button: {
-//     backgroundColor: "#9D4EDD",
-//     padding: 10,
-//     borderRadius: 8,
-//   },
-//   buttonText: {
-//     color: "#fff",
-//   },
-//   timer: {
-//     color: "#fff",
-//     marginBottom: 10,
-//   },
-//   regenerate: {
-//     color: "#ddd",
-//     textDecorationLine: "underline",
-//   },
-// });
-
-
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
+  StyleSheet,
   Image,
   ActivityIndicator,
   Platform,
-  StatusBar,
   ScrollView,
   ToastAndroid,
   Alert,
-} from "react-native";
-import RNFS from "react-native-fs";
-import Share from "react-native-share";
-import LinearGradient from "react-native-linear-gradient";
-import Clipboard from "@react-native-clipboard/clipboard";
-import api from "../api/axios";
-import BottomNav from "./components/bottomNav";
-import Icon from "react-native-vector-icons/Feather";
-import { SafeAreaView } from "react-native";
+} from 'react-native';
+
+import RNFS from 'react-native-fs';
+import Share from 'react-native-share';
+import LinearGradient from 'react-native-linear-gradient';
+import Clipboard from '@react-native-clipboard/clipboard';
+import api from '../api/axios';
+import BottomNav from './components/bottomNav';
+import Icon from 'react-native-vector-icons/Feather';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
+import { moderateScale } from 'react-native-size-matters';
 
 const Receive = ({ navigation }) => {
   const [qr, setQr] = useState(null);
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState('');
   const [timer, setTimer] = useState(900);
   const [loading, setLoading] = useState(true);
 
   const intervalRef = useRef(null);
 
-  // ================= FETCH QR =================
   const fetchQr = async () => {
     try {
       setLoading(true);
 
-      const res = await api.get("api/wallet/generate-address");
+      const res = await api.get('api/wallet/generate-address');
       const data = res.data;
 
-      const qrImage = data.qr?.startsWith("data:image")
+      const qrImage = data.qr?.startsWith('data:image')
         ? data.qr
         : `data:image/png;base64,${data.qr}`;
 
       setQr(qrImage);
-      setAddress(data.address || "No Address");
+      setAddress(data.address || 'No Address');
 
       setTimer(900);
       setLoading(false);
     } catch (err) {
-      console.log("QR ERROR:", err.response?.data || err.message);
+      console.log('QR ERROR:', err.response?.data || err.message);
       setQr(null);
-      setAddress("");
+      setAddress('');
       setTimer(0);
       setLoading(false);
     }
   };
 
-  // ================= INITIAL LOAD =================
   useEffect(() => {
     fetchQr();
   }, []);
 
-  // ================= TIMER =================
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setTimer((prev) => {
@@ -390,226 +80,249 @@ const Receive = ({ navigation }) => {
     return () => clearInterval(intervalRef.current);
   }, []);
 
-  // ================= AUTO REFRESH =================
   useEffect(() => {
     if (timer === 0 && !loading) {
       fetchQr();
     }
   }, [timer]);
 
-  // ================= COPY =================
   const handleCopy = () => {
     Clipboard.setString(address);
 
-    if (Platform.OS === "android") {
-      ToastAndroid.show("Address copied", ToastAndroid.SHORT);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show('Address copied', ToastAndroid.SHORT);
     } else {
-      Alert.alert("Copied", "Address copied");
+      Alert.alert('Copied', 'Address copied');
     }
   };
 
-  // ================= SHARE =================
   const handleShare = async () => {
     try {
       if (!qr) return;
 
-      const base64Data = qr.replace(/^data:image\/png;base64,/, "");
+      const base64Data = qr.replace(/^data:image\/png;base64,/, '');
       const filePath = `${RNFS.CachesDirectoryPath}/payo_qr.png`;
 
-      await RNFS.writeFile(filePath, base64Data, "base64");
+      await RNFS.writeFile(filePath, base64Data, 'base64');
 
       await Share.open({
-        url: "file://" + filePath,
+        url: 'file://' + filePath,
         message: `Send PAYO to this address:\n${address}`,
       });
     } catch (error) {
-      console.log("Share error:", error);
+      console.log('Share error:', error);
     }
   };
 
-  // ================= TIMER FORMAT =================
   const formatTime = () => {
     const m = Math.floor(timer / 60);
     const s = timer % 60;
-    return `${m}:${s < 10 ? "0" : ""}${s}`;
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
- return (
-  <LinearGradient
-    colors={["#5B21B6", "#2E1065", "#0F021F"]}
-    style={{ flex: 1 }}
-  >
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.container}>
+  return (
+    <LinearGradient
+      colors={['#5B21B6', '#2E1065', '#0F021F']}
+      style={styles.gradient}
+    >
+      <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.headerRow}>
+            <TouchableOpacity
+              style={styles.backBtn}
+              onPress={() => navigation.goBack()}
+            >
+              <Icon
+                name="chevron-left"
+                size={moderateScale(28)}
+                color="#ffffff"
+              />
+            </TouchableOpacity>
 
-        {/* HEADER */}
-        <View style={styles.headerRow}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => navigation.goBack()}
-          >
-<Icon name="chevron-left" size={28} color="#ffffff" />          </TouchableOpacity>
+            <Text style={styles.header}>Receive</Text>
+          </View>
 
-          <Text style={styles.header}>Receive</Text>
-        </View>
+          <View style={styles.qrContainer}>
+            {loading ? (
+              <ActivityIndicator size="large" color="#6A0DAD" />
+            ) : qr ? (
+              <Image source={{ uri: qr }} style={styles.qrImage} />
+            ) : (
+              <Text style={styles.errorText}>Failed to load QR</Text>
+            )}
+          </View>
 
-        {/* QR */}
-        <View style={styles.qrContainer}>
-          {loading ? (
-            <ActivityIndicator size="large" color="#6A0DAD" />
-          ) : qr ? (
-            <Image source={{ uri: qr }} style={styles.qrImage} />
-          ) : (
-            <Text style={styles.errorText}>Failed to load QR</Text>
-          )}
-        </View>
+          <View style={styles.addressCard}>
+            <Text style={styles.label}>WALLET ADDRESS</Text>
 
-        {/* ADDRESS CARD */}
-        <View style={styles.addressCard}>
-          <Text style={styles.label}>WALLET ADDRESS</Text>
-          <Text style={styles.address}>{address}</Text>
-        </View>
+            <Text
+              style={styles.address}
+              numberOfLines={2}
+            >
+              {address}
+            </Text>
+          </View>
 
-        {/* BUTTONS */}
-        <View style={styles.buttonRow}>
-          <TouchableOpacity style={styles.actionBtn} onPress={handleCopy}>
-            <Icon name="copy" size={18} color="#fff" />
-            <Text style={styles.actionText}> Copy address</Text>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity
+              style={styles.actionBtn}
+              onPress={handleCopy}
+            >
+              <Icon name="copy" size={18} color="#fff" />
+              <Text style={styles.actionText}> Copy address</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionBtn}
+              onPress={handleShare}
+            >
+              <Icon name="share-2" size={18} color="#fff" />
+              <Text style={styles.actionText}> Share address</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.timer}>
+            QR expires in {formatTime()} sec
+          </Text>
+
+          <TouchableOpacity onPress={fetchQr}>
+            <Text style={styles.regenerate}>Regenerate</Text>
           </TouchableOpacity>
+        </ScrollView>
 
-          <TouchableOpacity style={styles.actionBtn} onPress={handleShare}>
-            <Icon name="share-2" size={18} color="#fff" />
-            <Text style={styles.actionText}> Share address</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* TIMER */}
-        <Text style={styles.timer}>QR expires in {formatTime()} sec</Text>
-
-        {/* REGENERATE */}
-        <TouchableOpacity onPress={fetchQr}>
-          <Text style={styles.regenerate}>Regenerate</Text>
-        </TouchableOpacity>
-
-      </ScrollView>
-
-      <BottomNav navigation={navigation} />
-    </SafeAreaView>
-  </LinearGradient>
-);
+        <BottomNav navigation={navigation} />
+      </SafeAreaView>
+    </LinearGradient>
+  );
 };
 
 export default Receive;
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
 
-container:{
-flexGrow:1,
-alignItems:"center",
-// paddingTop:20,
-  paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  safeArea: {
+    flex: 1,
+  },
 
-paddingBottom:130
-},
+  container: {
+    flexGrow: 1,
+    alignItems: 'center',
+    paddingTop: hp('2%'),
+    paddingBottom: hp('18%'),
+    paddingHorizontal: wp('4%'),
+  },
 
-headerRow:{
-width:"100%",
-height:60,
-justifyContent:"center",
-alignItems:"center",
-position:"relative"
-},
+  headerRow: {
+    width: '100%',
+    minHeight: hp('7%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
 
-backBtn:{
-position:"absolute",
-left:20
-},
+  backBtn: {
+    position: 'absolute',
+    left: wp('2%'),
+  },
 
-header:{
-fontSize:20,
-fontWeight:"600",
-color:"#fff"
-},
+  header: {
+    fontSize: moderateScale(20),
+    fontWeight: '600',
+    color: '#fff',
+  },
 
-qrContainer:{
-backgroundColor:"#F2F2F2",
-padding:18,
-borderRadius:26,
-width:260,
-height:260,
-justifyContent:"center",
-alignItems:"center",
-marginTop:40,
-marginBottom:30
-},
+  qrContainer: {
+    backgroundColor: '#F2F2F2',
+    padding: wp('4%'),
+    borderRadius: moderateScale(26),
+    width: wp('68%'),
+    height: wp('68%'),
+    minWidth: 240,
+    minHeight: 240,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: hp('4%'),
+    marginBottom: hp('3%'),
+  },
 
-qrImage:{
-width:220,
-height:220
-},
+  qrImage: {
+    width: '88%',
+    height: '88%',
+    resizeMode: 'contain',
+  },
 
-addressCard:{
-width:"86%",
-backgroundColor:"#7C3AED",
-padding:18,
-borderRadius:14,
-borderWidth:1,
-borderColor:"#C4B5FD",
-borderStyle:"dashed",
-marginBottom:25
-},
+  addressCard: {
+    width: '90%',
+    backgroundColor: '#7C3AED',
+    padding: wp('4.5%'),
+    borderRadius: moderateScale(14),
+    borderWidth: 1,
+    borderColor: '#C4B5FD',
+    borderStyle: 'dashed',
+    marginBottom: hp('3%'),
+  },
 
-label:{
-fontSize:12,
-color:"#E9D5FF",
-marginBottom:6
-},
+  label: {
+    fontSize: moderateScale(12),
+    color: '#E9D5FF',
+    marginBottom: hp('0.8%'),
+  },
 
-address:{
-fontSize:14,
-fontWeight:"600",
-color:"#fff"
-},
+  address: {
+    fontSize: moderateScale(14),
+    fontWeight: '600',
+    color: '#fff',
+  },
 
-buttonRow:{
-flexDirection:"row",
-justifyContent:"space-between",
-width:"86%",
-marginBottom:30
-},
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+    marginBottom: hp('3%'),
+    flexWrap: 'wrap',
+  },
 
-actionBtn:{
-flexDirection:"row",
-alignItems:"center",
-justifyContent:"center",
-backgroundColor:"#8B5CF6",
-paddingVertical:12,
-paddingHorizontal:20,
-borderRadius:12,
-flex:1,
-marginHorizontal:6
-},
+  actionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#8B5CF6',
+    paddingVertical: hp('1.6%'),
+    paddingHorizontal: wp('4%'),
+    borderRadius: moderateScale(12),
+    flex: 1,
+    marginHorizontal: wp('1%'),
+    minWidth: wp('40%'),
+    marginBottom: hp('1%'),
+  },
 
-actionText:{
-color:"#fff",
-fontSize:14,
-fontWeight:"500"
-},
+  actionText: {
+    color: '#fff',
+    fontSize: moderateScale(13),
+    fontWeight: '500',
+  },
 
-timer:{
-color:"#E9D5FF",
-fontSize:14,
-marginBottom:12
-},
+  timer: {
+    color: '#E9D5FF',
+    fontSize: moderateScale(14),
+    marginBottom: hp('1.5%'),
+    textAlign: 'center',
+  },
 
-regenerate:{
-color:"#E9D5FF",
-fontSize:14,
-textDecorationLine:"underline"
-},
+  regenerate: {
+    color: '#E9D5FF',
+    fontSize: moderateScale(14),
+    textDecorationLine: 'underline',
+  },
 
-errorText:{
-color:"#ccc"
-}
-
+  errorText: {
+    color: '#ccc',
+    fontSize: moderateScale(13),
+  },
 });

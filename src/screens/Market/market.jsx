@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,535 +6,327 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  SafeAreaView,
   ActivityIndicator,
-  Platform,
-  StatusBar,
-} from "react-native";
-import Header from "../components/header";
-import Icon from "react-native-vector-icons/Feather";
+} from 'react-native';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const MarketScreen = ({navigation}) => {
+import Header from '../components/header';
+import Icon from 'react-native-vector-icons/Feather';
 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
+import { moderateScale } from 'react-native-size-matters';
+import { useFocusEffect } from '@react-navigation/native';
+import api from '../../api/axios';
+
+const MarketScreen = ({ navigation }) => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchExpertCoins();
-  }, []);
+   useFocusEffect(
+     useCallback(() => {
+       fetchExpertCoins();
+     }, []),
+   );
 
   const fetchExpertCoins = async () => {
   try {
-    const res = await fetch("http://payo-app.duckdns.org:3001/api/market/overview");
+    setLoading(true);
 
-    const result = await res.json();
-    console.log(result, "data");
+    const res = await api.get('/api/market/overview');
 
-    // access result.data (array)
-    setCoins(result.data.slice(0, 50));
-    setLoading(false)
+    console.log(res.data, 'data');
 
+    setCoins(res?.data?.data?.slice(0, 50));
+    setLoading(false);
   } catch (error) {
-    console.log("Expert picks error:", error);
+    console.log('Expert picks error:', error);
+    setLoading(false);
   }
 };
 
+  const renderItem = ({ item }) => {
+    const isLong =
+      item?.priceChangePercentage24h >= 0;
 
-  // const fetchMarketData = async () => {
+    return (
+      <TouchableOpacity
+        style={styles.card}
+        activeOpacity={0.8}
+        onPress={() =>
+          navigation.navigate(
+            'CoinDetailsScreen',
+            {
+              coin: item,
+            },
+          )
+        }>
+        <View style={styles.topRow}>
+          <View style={styles.coinInfo}>
+            <Image
+              source={{
+                uri:
+                  item?.image ||
+                  'https://cdn-icons-png.flaticon.com/512/825/825508.png',
+              }}
+              style={styles.coinImage}
+            />
 
-  //   try {
+            <Text style={styles.symbol}>
+              {item.symbol?.toUpperCase()}
+            </Text>
+          </View>
 
-  //     const response = await fetch(
-  //       "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd"
-  //     );
-
-  //     const data = await response.json();
-
-  //     setCoins(data || []);
-
-  //   } catch (error) {
-
-  //     console.log("Market API Error:", error);
-
-  //   } finally {
-
-  //     setLoading(false);
-
-  //   }
-  // };
-
-//   const renderItem = ({ item }) => {
-
-//     const isLong = item?.price_change_percentage_24h >= 0;
-
-//     return (
-//       <View style={styles.card}>
-
-//         {/* TOP ROW */}
-//         <View style={styles.topRow}>
-
-//           <View style={styles.coinInfo}>
-
-//             <Image
-//               source={{ uri: item.image }}
-//               style={styles.coinImage}
-//             />
-
-//             <Text style={styles.symbol}>
-//               {item.symbol?.toUpperCase()}
-//             </Text>
-
-//           </View>
-
-//           <View
-//             style={[
-//               styles.badge,
-//               isLong ? styles.longBadge : styles.shortBadge,
-//             ]}
-//           >
-//             <Text style={styles.badgeText}>
-//               {isLong ? "Long 5x" : "Short 5x"}
-//             </Text>
-//           </View>
-
-//         </View>
-
-//         {/* ENTRY */}
-//         <Text style={styles.label}>
-//           Entry Price
-//         </Text>
-
-//         <Text style={styles.price}>
-//           ${item.current_price}
-//         </Text>
-
-//         {/* PROFIT */}
-//         {/* <View style={styles.profitBox}>
-
-//           <Text style={styles.profitText}>
-//             {Math.abs(
-//               item.price_change_percentage_24h || 0
-//             ).toFixed(2)}
-//             % Expected profit
-//           </Text>
-
-//         </View>
-
-//         <TouchableOpacity
-//           style={[
-//             styles.actionButton,
-//             isLong ? styles.buyButton : styles.sellButton,
-//           ]}
-//         >
-//           <Text style={styles.actionText}>
-//             {isLong ? "Buy / Long" : "Sell / Short"}
-//           </Text>
-//         </TouchableOpacity> */}
-
-//         {/* PROFIT + BUTTON ROW */}
-// <View style={styles.actionRow}>
-
-//   {/* PROFIT */}
-//   <View style={styles.profitBox}>
-//     <Text style={styles.profitText}>
-//       {Math.abs(
-//         item.price_change_percentage_24h || 0
-//       ).toFixed(2)}
-//       % Expected profit
-//     </Text>
-//   </View>
-
-//   {/* ACTION BUTTON */}
-//   <TouchableOpacity
-//     style={[
-//       styles.actionButton,
-//       isLong ? styles.buyButton : styles.sellButton,
-//     ]}
-//   >
-//     <Text style={styles.actionText}>
-//       {isLong ? "Buy / Long" : "Sell / Short"}
-//     </Text>
-//   </TouchableOpacity>
-
-// </View>
-
-//       </View>
-//     );
-//   };
-// const renderItem = ({ item }) => {
-
-//   const isLong = item?.price_change_percentage_24h >= 0;
-
-//   return (
-//     <TouchableOpacity
-//       style={styles.card}
-//       activeOpacity={0.8}
-//       onPress={() =>
-//         navigation.navigate("CoinDetailsScreen", {
-//           coin: item,
-//         })
-//       }
-//     >
-
-//       {/* TOP ROW */}
-//       <View style={styles.topRow}>
-
-//         <View style={styles.coinInfo}>
-
-//           <Image
-//             source={{ uri: item.image }}
-//             style={styles.coinImage}
-//           />
-
-//           <Text style={styles.symbol}>
-//             {item.symbol?.toUpperCase()}
-//           </Text>
-
-//         </View>
-
-//         <View
-//           style={[
-//             styles.badge,
-//             isLong ? styles.longBadge : styles.shortBadge,
-//           ]}
-//         >
-//           <Text style={styles.badgeText}>
-//             {isLong ? "Long 5x" : "Short 5x"}
-//           </Text>
-//         </View>
-
-//       </View>
-
-//       <Text style={styles.label}>
-//         Entry Price
-//       </Text>
-
-//       <Text style={styles.price}>
-//         ${item.price}
-//       </Text>
-
-//       <View style={styles.actionRow}>
-
-//         <View style={styles.profitBox}>
-//           <Text style={styles.profitText}>
-//             {Math.abs(
-//               item.price_change_percentage_24h || 0
-//             ).toFixed(2)}
-//             % Expected profit
-//           </Text>
-//         </View>
-
-//         <TouchableOpacity
-//           style={[
-//             styles.actionButton,
-//             isLong ? styles.buyButton : styles.sellButton,
-//           ]}
-//         >
-//           <Text style={styles.actionText}>
-//             {isLong ? "Buy / Long" : "Sell / Short"}
-//           </Text>
-//         </TouchableOpacity>
-
-//       </View>
-
-//     </TouchableOpacity>
-//   );
-// };
-
-const renderItem = ({ item }) => {
-
-  const isLong = item?.priceChangePercentage24h >= 0;
-
-  return (
-    <TouchableOpacity
-      style={styles.card}
-      activeOpacity={0.8}
-      onPress={() =>
-        navigation.navigate("CoinDetailsScreen", {
-          coin: item,
-        })
-      }
-    >
-
-      {/* TOP ROW */}
-      <View style={styles.topRow}>
-
-        <View style={styles.coinInfo}>
-
-          <Image
-            source={{
-              uri: item.image || "https://via.placeholder.com/40"
-            }}
-            style={styles.coinImage}
-          />
-
-          <Text style={styles.symbol}>
-            {item.symbol?.toUpperCase()}
-          </Text>
-
+          <View
+            style={[
+              styles.badge,
+              isLong
+                ? styles.longBadge
+                : styles.shortBadge,
+            ]}>
+            <Text style={styles.badgeText}>
+              {isLong
+                ? 'Long 5x'
+                : 'Short 5x'}
+            </Text>
+          </View>
         </View>
 
-        <View
-          style={[
-            styles.badge,
-            isLong ? styles.longBadge : styles.shortBadge,
-          ]}
-        >
-          <Text style={styles.badgeText}>
-            {isLong ? "Long 5x" : "Short 5x"}
-          </Text>
+        <Text style={styles.label}>
+          Entry Price
+        </Text>
+
+        <Text style={styles.price}>
+          ${item.price?.toLocaleString()}
+        </Text>
+
+        <View style={styles.actionRow}>
+          <View style={styles.profitBox}>
+            <Text style={styles.profitText}>
+              {/* {Math.abs(
+                item.priceChangePercentage24h ||
+                  0,
+              ).toFixed(2)} */}
+
+                     {(
+  item.priceChangePercentage24h || 0
+).toFixed(2)}
+              % Expected profit
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            style={[
+              styles.actionButton,
+              isLong
+                ? styles.buyButton
+                : styles.sellButton,
+            ]}>
+            <Text style={styles.actionText}>
+              {isLong
+                ? 'Buy / Long'
+                : 'Sell / Short'}
+            </Text>
+          </TouchableOpacity>
         </View>
-
-      </View>
-
-      <Text style={styles.label}>
-        Entry Price
-      </Text>
-
-      <Text style={styles.price}>
-        ${item.price?.toLocaleString()}
-      </Text>
-
-      <View style={styles.actionRow}>
-
-        <View style={styles.profitBox}>
-          <Text style={styles.profitText}>
-            {Math.abs(
-              item.priceChangePercentage24h || 0
-            ).toFixed(2)}
-            % Expected profit
-          </Text>
-        </View>
-
-        <TouchableOpacity
-          style={[
-            styles.actionButton,
-            isLong ? styles.buyButton : styles.sellButton,
-          ]}
-        >
-          <Text style={styles.actionText}>
-            {isLong ? "Buy / Long" : "Sell / Short"}
-          </Text>
-        </TouchableOpacity>
-
-      </View>
-
-    </TouchableOpacity>
-  );
-};
+      </TouchableOpacity>
+    );
+  };
 
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#4F46E5" />
+        <ActivityIndicator
+          size="large"
+          color="#4F46E5"
+        />
       </View>
     );
   }
 
-return (
+  return (
+    <SafeAreaView
+      style={styles.container}
+      edges={['top', 'bottom']}>
+      <Header />
 
-  <SafeAreaView style={styles.container}>
+      <View style={styles.headerRow}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() =>
+            navigation.canGoBack() &&
+            navigation.goBack()
+          }>
+          <Icon
+            name="chevron-left"
+            size={moderateScale(28)}
+            color="#ffffff"
+          />
+        </TouchableOpacity>
 
-    <Header />
+        <Text style={styles.header}>
+          Market
+        </Text>
+      </View>
 
-<View style={styles.headerRow}>
-                      <TouchableOpacity 
-              onPress={() => navigation.canGoBack() && navigation.goBack()}          >
-                        <Text style={styles.back}>
-            <Icon name="chevron-left" size={28} color="#ffffff" />            </Text>
-                      </TouchableOpacity>
-                      <Text style={styles.header}>Market</Text>
-                    </View>
-
-    <FlatList
-      data={coins}
-      keyExtractor={(item) => item.id}
-      renderItem={renderItem}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-    paddingTop: 30,
-    paddingBottom: 30,
-  }}
-    />
-
-  </SafeAreaView>
-
-);
+      <FlatList
+        data={coins}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingTop: hp('2%'),
+          paddingBottom: hp('18%'),
+        }}
+      />
+    </SafeAreaView>
+  );
 };
 
 export default MarketScreen;
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    backgroundColor: "#3B0A6B",
-    paddingHorizontal: 16,
-    paddingTop:
-      Platform.OS === "android"
-        ? StatusBar.currentHeight
-        : 0,
+    backgroundColor: '#3B0A6B',
+    paddingHorizontal: wp('4.5%'),
   },
 
   headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 12,
-  },
-
-  back: {
-    marginRight: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: hp('1.5%'),
   },
 
   header: {
-    color: "#FFF",
-    fontSize: 22,
-    fontWeight: "700",
+    color: '#FFF',
+    fontSize: moderateScale(21),
+    fontWeight: '700',
+    marginLeft: wp('3%'),
   },
 
   loaderContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#3B0A6B",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#3B0A6B',
   },
 
-  /* CARD */
-
   card: {
-    backgroundColor: "#FFF",
-    borderRadius: 18,
-    padding: 14,
-    marginBottom: 14,
+    backgroundColor: '#FFF',
+    borderRadius: moderateScale(18),
+    padding: wp('4%'),
+    marginBottom: hp('1.8%'),
   },
 
   topRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   coinInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    paddingRight: wp('2%'),
   },
 
   coinImage: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    marginRight: 10,
+    width: wp('9%'),
+    height: wp('9%'),
+    borderRadius: wp('4.5%'),
+    marginRight: wp('3%'),
   },
 
   symbol: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#111",
+    fontSize: moderateScale(17),
+    fontWeight: '700',
+    color: '#111',
   },
 
-  /* BADGE */
-
   badge: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 12,
+    paddingHorizontal: wp('3%'),
+    paddingVertical: hp('0.7%'),
+    borderRadius: moderateScale(12),
   },
 
   longBadge: {
-    backgroundColor: "#DCFCE7",
+    backgroundColor: '#DCFCE7',
   },
 
   shortBadge: {
-    backgroundColor: "#FEE2E2",
+    backgroundColor: '#FEE2E2',
   },
 
   badgeText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#111",
+    fontSize: moderateScale(11),
+    fontWeight: '600',
+    color: '#111',
   },
 
-  /* TEXT */
-
   label: {
-    marginTop: 12,
-    color: "#777",
-    fontSize: 12,
-    fontWeight: "500",
+    marginTop: hp('1.4%'),
+    color: '#777',
+    fontSize: moderateScale(12),
+    fontWeight: '500',
   },
 
   price: {
-    marginTop: 4,
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#111",
+    marginTop: hp('0.5%'),
+    fontSize: moderateScale(18),
+    fontWeight: '700',
+    color: '#111',
   },
 
-  /* PROFIT BOX */
+  actionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: hp('1.8%'),
+    flexWrap: 'wrap',
+  },
 
-  // profitBox: {
-  //   marginTop: 12,
-  //   backgroundColor: "#ECFDF5",
-  //   paddingVertical: 12,
-  //   paddingHorizontal: 12,
-  //   borderRadius: 12,
-  // },
+  profitBox: {
+    backgroundColor: '#ECFDF5',
+    paddingVertical: hp('1.2%'),
+    paddingHorizontal: wp('3.5%'),
+    borderRadius: moderateScale(12),
+    marginRight: wp('2%'),
+    flex: 1,
+    minWidth: wp('42%'),
+  },
 
   profitText: {
-    color: "#10B981",
-    fontWeight: "700",
-    fontSize: 14,
+    color: '#10B981',
+    fontWeight: '700',
+    fontSize: moderateScale(12),
   },
 
-  /* BUTTON */
-
-  // actionButton: {
-  //   marginTop: 14,
-  //   paddingVertical: 12,
-  //   borderRadius: 12,
-  //   alignItems: "center",
-  // },
+  actionButton: {
+    paddingVertical: hp('1.2%'),
+    paddingHorizontal: wp('4%'),
+    borderRadius: moderateScale(12),
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: wp('32%'),
+  },
 
   buyButton: {
-    backgroundColor: "#16A34A",
+    backgroundColor: '#16A34A',
   },
 
   sellButton: {
-    backgroundColor: "#EF4444",
+    backgroundColor: '#EF4444',
   },
 
   actionText: {
-    color: "#FFF",
-    fontSize: 15,
-    fontWeight: "700",
+    color: '#FFF',
+    fontSize: moderateScale(13),
+    fontWeight: '700',
   },
-
-
-actionRow: {
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-  marginTop: 14,
-},
-
-profitBox: {
-  // flex: 1,
-  backgroundColor: "#ECFDF5",
-  paddingVertical: 12,
-  paddingHorizontal: 12,
-  borderRadius: 12,
-  marginRight: 10,
-},
-
-actionButton: {
-  // flex: 1,
-  paddingVertical: 12,
-  paddingHorizontal: 12,
-  borderRadius: 12,
-  alignItems: "center",
-  justifyContent: "center",
-},
-
 });

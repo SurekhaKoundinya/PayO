@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,44 +6,58 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-} from "react-native";
+} from 'react-native';
 
-import { useFocusEffect } from "@react-navigation/native";
-import api from "../../api/axios";
-import Icon from "react-native-vector-icons/Feather";
+import { useFocusEffect } from '@react-navigation/native';
+import api from '../../api/axios';
+import Icon from 'react-native-vector-icons/Feather';
 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
+import { moderateScale } from 'react-native-size-matters';
 
-export default function Recents({ navigation, setSelectedUser, setActiveTab }) {
+export default function Recents({
+  navigation,
+  setSelectedUser,
+  setActiveTab,
+}) {
   const [recents, setRecents] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchRecents = async () => {
     try {
       setLoading(true);
-      const res = await api.get("api/wallet/recents-page");
+      const res = await api.get('api/wallet/recents-page');
 
       let data = res.data || [];
 
-      // 🔁 Remove duplicates (by walletAddress)
       const uniqueMap = new Map();
+
       data.forEach((item) => {
         uniqueMap.set(item.walletAddress, item);
       });
 
       let uniqueList = Array.from(uniqueMap.values());
 
-      // ⭐ Sort by latest (newest first)
       uniqueList.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        (a, b) =>
+          new Date(b.createdAt) -
+          new Date(a.createdAt),
       );
 
-      // 🧠 Limit to last 5 users
-      const finalList = uniqueList.slice(0, 5);
+      const finalList =
+        uniqueList.slice(0, 5);
 
       setRecents(finalList);
     } catch (err) {
-      console.log("Recents error:", err.response?.data || err.message);
+      console.log(
+        'Recents error:',
+        err.response?.data ||
+          err.message,
+      );
     } finally {
       setLoading(false);
     }
@@ -52,63 +66,103 @@ export default function Recents({ navigation, setSelectedUser, setActiveTab }) {
   useFocusEffect(
     useCallback(() => {
       fetchRecents();
-    }, [])
+    }, []),
   );
 
-  const formatTime = (timestamp) => {
+  const formatTime = (
+    timestamp,
+  ) => {
     const now = new Date();
     const date = new Date(timestamp);
-    const diff = (now - date) / (1000 * 60 * 60);
+    const diff =
+      (now - date) /
+      (1000 * 60 * 60);
 
-    if (diff < 1) return "Just now";
-    if (diff < 24) return `${Math.floor(diff)} hours ago`;
-    if (diff < 48) return "Yesterday";
+    if (diff < 1)
+      return 'Just now';
+    if (diff < 24)
+      return `${Math.floor(
+        diff,
+      )} hours ago`;
+    if (diff < 48)
+      return 'Yesterday';
+
     return date.toLocaleDateString();
   };
 
-  
-  const renderItem = ({ item }) => (
-  <TouchableOpacity
-    style={styles.card}
-    onPress={() => {
-      setSelectedUser({
-        name: item.receiverName,
-        address: item.walletAddress,
-      });
+  const renderItem = ({
+    item,
+  }) => (
+    <TouchableOpacity
+      style={styles.card}
+      activeOpacity={0.8}
+      onPress={() => {
+        setSelectedUser({
+          name: item.receiverName,
+          address:
+            item.walletAddress,
+        });
 
-      setActiveTab("amount");
-    }}
-  >
-    <View style={styles.left}>
-      <View style={styles.icon}>
-        <Text style={{ fontSize: 12 }}>
-          <Icon name="arrow-up-right" size={18} color="black" />
-        </Text>
+        setActiveTab('amount');
+      }}>
+      <View style={styles.left}>
+        <View style={styles.icon}>
+          <Icon
+            name="arrow-up-right"
+            size={moderateScale(18)}
+            color="black"
+          />
+        </View>
+
+        <View style={styles.userInfo}>
+          <Text
+            style={styles.name}
+            numberOfLines={1}>
+            {item.receiverName}
+          </Text>
+
+          <Text
+            style={styles.address}
+            numberOfLines={1}>
+            {item.walletAddress}
+          </Text>
+        </View>
       </View>
 
-      <View>
-        <Text style={styles.name}>{item.receiverName}</Text>
-        <Text style={styles.address}>{item.walletAddress}</Text>
-      </View>
-    </View>
+      <Text
+        style={styles.time}
+        numberOfLines={1}>
+        {formatTime(
+          item.createdAt,
+        )}
+      </Text>
+    </TouchableOpacity>
+  );
 
-    <Text style={styles.time}>{formatTime(item.createdAt)}</Text>
-  </TouchableOpacity>
-);
   return (
-   <View style={styles.container}>
-      <Text style={styles.section}>Recent Contacts</Text>
+    <View style={styles.container}>
+      <Text style={styles.section}>
+        Recent Contacts
+      </Text>
 
       {loading ? (
         <ActivityIndicator color="#fff" />
       ) : recents.length === 0 ? (
-        <Text style={styles.empty}>No recent contacts</Text>
+        <Text style={styles.empty}>
+          No recent contacts
+        </Text>
       ) : (
         <FlatList
           data={recents}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) =>
+            item._id
+          }
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom:
+              hp('18%'),
+          }}
         />
       )}
     </View>
@@ -116,61 +170,78 @@ export default function Recents({ navigation, setSelectedUser, setActiveTab }) {
 }
 
 const styles = StyleSheet.create({
-container: {
-  paddingTop: 10,
-},
+  container: {
+    flex: 1,
+    paddingTop: hp('1.5%'),
+    paddingHorizontal: wp('1%'),
+  },
 
   section: {
-    color: "#fff",
-    fontSize: 14,
-    marginBottom: 12,
+    color: '#fff',
+    fontSize: moderateScale(14),
+    marginBottom: hp('1.5%'),
+    fontWeight: '600',
   },
 
   empty: {
-    color: "#ccc",
-    textAlign: "center",
-    marginTop: 20,
+    color: '#ccc',
+    textAlign: 'center',
+    marginTop: hp('3%'),
+    fontSize: moderateScale(13),
   },
 
   card: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#6A35C1",
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent:
+      'space-between',
+    alignItems: 'center',
+    backgroundColor: '#6A35C1',
+    paddingVertical: hp('1.8%'),
+    paddingHorizontal: wp('4%'),
+    borderRadius:
+      moderateScale(12),
+    marginBottom: hp('1.2%'),
   },
 
   left: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    paddingRight: wp('3%'),
   },
 
   icon: {
-   
-    backgroundColor: "#fff",
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
+    backgroundColor: '#fff',
+    width: wp('9%'),
+    height: wp('9%'),
+    borderRadius: wp('4.5%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: wp('3%'),
+    minWidth: 34,
+    minHeight: 34,
+  },
+
+  userInfo: {
+    flex: 1,
   },
 
   name: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: 14,
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: moderateScale(14),
   },
 
   address: {
-    color: "#ccc",
-    fontSize: 11,
+    color: '#ccc',
+    fontSize: moderateScale(11),
+    marginTop: hp('0.3%'),
   },
 
   time: {
-    color: "#fff",
-    fontSize: 12,
+    color: '#fff',
+    fontSize: moderateScale(11),
+    maxWidth: wp('24%'),
+    textAlign: 'right',
   },
 });

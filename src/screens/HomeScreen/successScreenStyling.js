@@ -1,6 +1,9 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { moderateScale } from 'react-native-size-matters';
 
 export default StyleSheet.create({
 
@@ -12,19 +15,23 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: wp('8%'),
   },
 
-  // SUCCESS ICON
   iconContainer: {
-    width: width * 0.28,
-    height: width * 0.28,
-    borderRadius: width * 0.14,
+    width: wp('28%'),
+    height: wp('28%'),
+    borderRadius: wp('14%'),
+
     backgroundColor: '#2ED573',
+
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: height * 0.04,
+
+    marginBottom: hp('4%'),
 
     elevation: 10,
+
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -35,32 +42,38 @@ export default StyleSheet.create({
   },
 
   check: {
-    fontSize: width * 0.14,
+    fontSize: moderateScale(44),
     color: '#fff',
     fontWeight: 'bold',
   },
 
+  textWrapper: {
+    alignItems: 'center',
+    width: '100%',
+  },
+
   title: {
-    fontSize: width * 0.06,
+    fontSize: moderateScale(24),
     fontWeight: '700',
     color: '#fff',
-    marginBottom: 10,
+    marginBottom: hp('1.2%'),
     textAlign: 'center',
   },
 
   subtitle: {
-    fontSize: width * 0.04,
+    fontSize: moderateScale(15),
     color: '#fff',
     opacity: 0.95,
-    marginBottom: 8,
+    marginBottom: hp('1%'),
     textAlign: 'center',
+    lineHeight: moderateScale(22),
   },
 
   time: {
-    fontSize: width * 0.035,
+    fontSize: moderateScale(13),
     color: '#fff',
     opacity: 0.8,
     textAlign: 'center',
+    lineHeight: moderateScale(18),
   },
-
 });

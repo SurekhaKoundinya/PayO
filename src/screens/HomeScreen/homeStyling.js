@@ -1,693 +1,482 @@
-import { StatusBar, StyleSheet,Platform, Dimensions } from 'react-native';
- 
+// homeStyling.js — PART 1
+
+import { StyleSheet } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { moderateScale } from 'react-native-size-matters';
+
 export default StyleSheet.create({
-container: {
-  flex: 1,
-  backgroundColor: "#3B0A6B",
-  paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-},
- 
- 
-actions: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-},
-
-button: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  backgroundColor: '#FDE68A',
-  paddingHorizontal: 16,
-  paddingVertical: 10,
-  borderRadius: 30,
-  zIndex: 2, // keeps button above line
-},
-
-label: {
-  marginLeft: 8,
-  fontWeight: '600',
-},
-
-iconCircle: {
-  width: 28,
-  height: 28,
-  borderRadius: 14,
-  backgroundColor: '#000',
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-
-// 🔥 MAGIC LINE
-connector: {
-  height: 12,
-  width: 20, // adjust this for spacing
-  backgroundColor: '#FDE68A',
-  marginHorizontal: -2, // removes gap between button & line
-  zIndex: 1,
-},
-
-
-
- 
-  header: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  paddingHorizontal: 20,
-  // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight + 10 : 10,
-  alignItems: 'center',
-},
-walletNumber:{
-  color:"white"
-},
-  menuIcon: {
-    fontSize: 22,
-    color: '#fff',
+  container: {
+    flex: 1,
+    backgroundColor: '#3B0A6B',
   },
+
+  scrollContent: {
+    paddingBottom: hp('15%'),
+  },
+
+  /* HEADER */
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: wp('6%'),
+    paddingTop: hp('1.5%'),
+    paddingBottom: hp('1%'),
+  },
+
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: wp('3%'),
   },
-  notificationIcon: {
-    fontSize: 18,
-    color: '#fff',
-  },
+
   profileIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: wp('9%'),
+    height: wp('9%'),
+    borderRadius: wp('4.5%'),
     backgroundColor: '#FFD700',
     justifyContent: 'center',
     alignItems: 'center',
   },
- 
 
-cardContainer: {
-  paddingHorizontal: 20,
-  marginTop: 20,
-    marginBottom: 10,
-},
-
-
-
-card: {
-  backgroundColor: '#1C1C1E',
-  borderRadius: 18,
-  padding: 18,
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  overflow: 'hidden',
-  height: 180,
-},
-
-
-addBankButton: {
-  position: 'absolute',
-  bottom: 15,
-  left: 15,
-  backgroundColor: '#fff',
-  paddingHorizontal: 14,
-  paddingVertical: 8,
-  borderRadius: 20,
-  flexDirection: 'row',
-  alignItems: 'center',
-  // opacity:0.6
-},
-
-bankIcon: {
-  marginRight: 6,
-},
-
-addBankText: {
-  fontSize: 14,
-  fontWeight: '600',
-  color: '#000',
-},
-
-balanceLabel: {
-  color: '#d8d4d4',
-  fontSize: 14,
-  marginBottom: 6,
-  fontWeight:"700"
-},
-
-balanceRow: {
-  flexDirection: 'row',
-  alignItems: 'baseline', // aligns text nicely
-},
-
-balanceAmount: {
-  color: '#fff',
-  fontSize: 22,
-  fontWeight: 'bold',
-  letterSpacing: 4,
-},
-
-payoLabel: {
-  color: '#22c55e',
-  fontSize: 12,
-  marginLeft: 6,
-},
-
-
-cardRight: {
-  justifyContent: 'space-between',
-  alignItems: 'flex-end',
-},
-
-walletRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-},
-
-walletText: {
-  color: '#ccc',
-  marginRight: 8,
-},
-
-arrowCircle: {
-  width: 26,
-  height: 26,
-  borderRadius: 13,
-  backgroundColor: '#fff',
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-
-/* Decorative shapes */
-
-topRightCurve: {
-  position: 'absolute',
-  top: -20,
-  right: -20,
-  width: 90,
-  height: 100,
-  borderRadius: 50,
-  backgroundColor: '#F59E0B',
-},
-
-bottomLeftCurve: {
-  position: 'absolute',
-  bottom: -25,
-  left: -25,
-  width: 90,
-  height: 90,
-  borderRadius: 40,
-  // backgroundColor: '#E5E7EB',
-},
-
-cardFooter: {
-  marginTop: 10,
-},
-
-walletLabel: {
-  color: '#aaa',
-  fontSize: 12,
-},
-
-   headerContent: {
-    paddingTop: 40,        // space from top (status bar)
-    paddingBottom: 40,     // space before tabs
-    paddingHorizontal: 20,
-    alignItems: 'center',  // center text horizontally
+  walletNumber: {
+    color: '#fff',
+    fontSize: moderateScale(11),
   },
 
-  headerText: {
-    color: '#FFFFFF',
-    fontSize: 22,
-    fontWeight: '700',
-    textAlign: 'center',   // important for long text
-    lineHeight: 24,        // better readability
+  /* CARD */
+  cardContainer: {
+    paddingHorizontal: wp('5%'),
+    marginTop: hp('2%'),
+    marginBottom: hp('1%'),
   },
-  tabs: {
+
+  card: {
+    backgroundColor: '#1C1C1E',
+    borderRadius: moderateScale(20),
+    padding: wp('5%'),
     flexDirection: 'row',
-    backgroundColor: '#4B1FA7',
-    marginHorizontal: 20,
-    borderRadius: 12,
-    padding: 10,
     justifyContent: 'space-between',
+    overflow: 'hidden',
+    minHeight: hp('18%'),
   },
 
-  tab: {
-    color: '#cbb6ff',
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    fontSize: 13,
+  topRightCurve: {
+    position: 'absolute',
+    top: hp('-2%'),
+    right: wp('-5%'),
+    width: wp('22%'),
+    height: wp('24%'),
+    borderRadius: moderateScale(50),
+    backgroundColor: '#F59E0B',
   },
 
-  activeTab: {
-    color: '#000',
-    backgroundColor: '#fff',
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    fontSize: 13,
-    fontWeight: '600',
+  bottomLeftCurve: {
+    position: 'absolute',
+    bottom: hp('-2%'),
+    left: wp('-5%'),
+    width: wp('22%'),
+    height: wp('22%'),
+    borderRadius: moderateScale(40),
   },
 
-  /* CONTENT AREA */
-  content: {
-    flex: 1,
-    marginTop: 20,
-    paddingHorizontal: 20,
+  balanceLabel: {
+    color: '#d8d4d4',
+    fontSize: moderateScale(13),
+    marginBottom: hp('0.7%'),
+    fontWeight: '700',
   },
 
- 
-  /* ACTION BUTTONS (FIXED LIKE FIGMA) */
-  actionsContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
+  balanceRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    flexWrap: 'wrap',
   },
 
+  balanceAmount: {
+    color: '#fff',
+    fontSize: moderateScale(22),
+    fontWeight: 'bold',
+    letterSpacing: 2,
+  },
 
-actionButton: {
-  backgroundColor: '#FDE68A',
-  paddingVertical: 12,
-  paddingHorizontal: 22,
-  borderRadius: 30,
-  flexDirection: 'row',
-  alignItems: 'center',
-  elevation: 3,
-},
-  actionWrapper: {
+  payoLabel: {
+    color: '#22c55e',
+    fontSize: moderateScale(11),
+    marginLeft: wp('1.5%'),
+  },
+
+  cardRight: {
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+
+  walletRow: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  
-  actionIcon: {
-    fontSize: 14,
-    marginRight: 6,
+
+  walletText: {
+    color: '#ccc',
+    marginRight: wp('2%'),
+    fontSize: moderateScale(12),
   },
-  actionLabel: {
-    color: '#000',
-    fontSize: 12,
+
+  arrowCircle: {
+    width: wp('7%'),
+    height: wp('7%'),
+    borderRadius: wp('3.5%'),
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  addBankButton: {
+    position: 'absolute',
+    bottom: hp('2%'),
+    left: wp('4%'),
+    backgroundColor: '#fff',
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('1%'),
+    borderRadius: moderateScale(20),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  bankIcon: {
+    marginRight: wp('1.5%'),
+  },
+
+  addBankText: {
+    fontSize: moderateScale(13),
     fontWeight: '600',
+    color: '#000',
   },
 
-statsContainer: {
-  marginTop: 20,
-  paddingHorizontal: 20,
-},
+  /* ACTIONS */
+  actionsContainer: {
+    marginTop: hp('1.8%'),
+    paddingHorizontal: wp('5%'),
+  },
 
-statsCard: {
-  backgroundColor: "#1C1C1E",
-  borderRadius: 16,
-  paddingVertical: 16,
-  paddingHorizontal: 20,
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  overflow: "hidden"
-  
-},
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
-statItem: {
-  flexDirection: "row",
-  alignItems: "center",
-  gap: 10,
-},
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FDE68A',
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('1.2%'),
+    borderRadius: moderateScale(30),
+    zIndex: 2,
+  },
 
-textBlock: {
-  flexDirection: "column",
-},
+  iconCircle: {
+    width: wp('7%'),
+    height: wp('7%'),
+    borderRadius: wp('3.5%'),
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
-statLabel: {
-  color: "#aaa",
-  fontSize: 12,
-},
+  label: {
+    marginLeft: wp('2%'),
+    fontWeight: '600',
+    fontSize: moderateScale(12),
+    color: '#000',
+  },
 
-amountRow: {
-  flexDirection: "row",
-  alignItems: "flex-end",
-},
+  connector: {
+    height: hp('1.4%'),
+    width: wp('5%'),
+    backgroundColor: '#FDE68A',
+    marginHorizontal: wp('-0.5%'),
+    zIndex: 1,
+  },
+ 
 
-statValue: {
-  color: "#fff",
-  fontWeight: "bold",
-  fontSize: 18,
-},
+  statsContainer: {
+    marginTop: hp('2.5%'),
+    paddingHorizontal: wp('5%'),
+  },
 
-unit: {
-  color: "#53D258",
-  fontSize: 10,
-  marginLeft: 4,
-},
-
-divider: {
-  width: 1,
-  height: 35,
-  backgroundColor: "#444",
-},
-
-cornerLeft: {
-  position: "absolute",
-  width: 30,
-  height: 30,
-  backgroundColor: "#fff",
-  borderRadius: 15,
-  bottom: -10,
-  left: 10,
-  opacity: 0.2
-},
-
-cornerRight: {
-  position: "absolute",
-  width: 30,
-  height: 30,
-  backgroundColor: "#fff",
-  borderRadius: 15,
-  top: -10,
-  right: 10,
-  opacity: 0.2
-},
-  /* TRANSACTIONS */
-  transactionsHeader: {
-    marginTop: 32,
-    paddingHorizontal: 20,
+  statsCard: {
+    backgroundColor: '#1C1C1E',
+    borderRadius: moderateScale(16),
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('5%'),
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  transactionsTitle: {
+
+  statItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  textBlock: {
+    marginLeft: wp('2.5%'),
+  },
+
+  statLabel: {
+    color: '#aaa',
+    fontSize: moderateScale(11),
+  },
+
+  amountRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+
+  statValue: {
     color: '#fff',
-    fontSize: 16,
     fontWeight: 'bold',
+    fontSize: moderateScale(17),
+  },
+
+  unit: {
+    color: '#53D258',
+    fontSize: moderateScale(9),
+    marginLeft: wp('1%'),
+  },
+
+  divider: {
+    width: 1,
+    height: hp('4.5%'),
+    backgroundColor: '#444',
+  },
+
+  expertContainer: {
+    paddingHorizontal: wp('5%'),
+    marginTop: hp('4%'),
+  },
+
+  expertHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: hp('1.5%'),
+  },
+
+  expertTitle: {
+    color: '#fff',
+    fontSize: moderateScale(17),
+    fontWeight: '700',
   },
 
   viewAllText: {
     color: '#FDE68A',
-      fontSize: 14,
-  fontWeight: "600",
-  },
- 
-  transactionsList: {
-    paddingHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 120,
+    fontSize: moderateScale(13),
+    fontWeight: '600',
   },
 
-  noTransactionContainer: {
-  height:250,
-  justifyContent: "center",
-  alignItems: "center",
-},
+  expertCard: {
+    width: wp('42%'),
+    backgroundColor: '#fff',
+    borderRadius: moderateScale(16),
+    padding: wp('3.5%'),
+    marginRight: wp('3%'),
+  },
 
-noTransactionText: {
-  fontSize: 16,
-  color: "#999",
-  textAlign: "center",
-},
- 
-transactionItem: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: 18,
-},
+  expertTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 
-transactionLeft: {
-  flexDirection: "row",
-  alignItems: "center",
-},
+  coinInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 
-transactionAvatar: {
-  width: 28,
-  height: 28,
-  borderRadius: 14,
-  justifyContent: "center",
-  alignItems: "center",
-  marginRight: 10,
-},
+  coinImage: {
+    width: wp('6.5%'),
+    height: wp('6.5%'),
+    marginRight: wp('1.5%'),
+  },
 
-transactionInfo: {
-  flexDirection: "column",
-},
+  coinSymbol: {
+    fontWeight: '700',
+    fontSize: moderateScale(13),
+  },
 
-transactionName: {
-  color: "#fff",
-  fontSize: 16,
-  fontWeight: "600",
-    textTransform: "capitalize",
+  badge: {
+    paddingHorizontal: wp('2%'),
+    paddingVertical: hp('0.5%'),
+    borderRadius: moderateScale(6),
+  },
 
-},
+  longBadge: {
+    backgroundColor: '#22c55e',
+  },
 
-transactionTime: {
-  color: "#C7B8FF",
-  fontSize: 11,
-},
+  shortBadge: {
+    backgroundColor: '#ef4444',
+  },
 
-amountBlock: {
-  alignItems: "flex-end",
-},
+  badgeText: {
+    color: '#fff',
+    fontSize: moderateScale(10),
+    fontWeight: '600',
+  },
 
-amountRow: {
-  flexDirection: "row",
-  alignItems: "flex-end",
-},
+  entryLabel: {
+    marginTop: hp('1.5%'),
+    color: '#6b7280',
+    fontSize: moderateScale(11),
+  },
 
-transactionAmount: {
-  fontSize: 18,
-  fontWeight: "bold",
-},
+  entryPrice: {
+    fontSize: moderateScale(14),
+    fontWeight: '700',
+  },
 
-payo: {
-  fontSize: 9,
-  color: "#8AFF9C",
-  marginLeft: 3,
-},
+  profitBox: {
+    marginTop: hp('1.5%'),
+    backgroundColor: '#ecfdf5',
+    padding: wp('2%'),
+    borderRadius: moderateScale(8),
+  },
 
-amountPositive: {
-  color: "#56F27B",
-},
+  profitText: {
+    color: '#16a34a',
+    fontWeight: '700',
+    fontSize: moderateScale(10),
+  },
 
-amountNegative: {
-  color: "#FF6B6B",
-},
+  marketCardsContainer: {
+    marginTop: hp('3%'),
+    paddingHorizontal: wp('4%'),
+  },
 
-statusText: {
-  fontSize: 10,
-  color: "#C7B8FF",
-},
+  marketCard: {
+    width: '100%',
+    backgroundColor: '#fcf2bd',
+    borderRadius: moderateScale(28),
+    padding: wp('5%'),
+    elevation: 5,
+    marginBottom: hp('2%'),
+  },
 
-expertContainer: {
-  paddingHorizontal: 20,
-  marginTop: 40,
+  marketHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 
-},
+  marketCoinRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 
-expertHeader: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: 14,
-},
+  marketCoinImage: {
+    width: wp('14%'),
+    height: wp('14%'),
+    borderRadius: wp('7%'),
+    marginRight: wp('3%'),
+  },
 
-// viewAllText: {
-//   color: "#4F46E5",
-//   fontSize: 14,
-//   fontWeight: "600",
-// },
+  marketCoinName: {
+    fontSize: moderateScale(18),
+    fontWeight: '700',
+    color: '#111',
+  },
 
-expertTitle: {
-  color: "#fff",
-  fontSize: 18,
-  fontWeight: "700",
-  marginBottom: 15,
-},
+  marketCoinSymbol: {
+    fontSize: moderateScale(13),
+    color: '#888',
+    marginTop: hp('0.3%'),
+  },
 
-expertCard: {
-  width: 170,
-  backgroundColor: "#fff",
-  borderRadius: 16,
-  padding: 12,
-  marginRight: 14,
-},
+  marketBadge: {
+    paddingHorizontal: wp('3.5%'),
+    paddingVertical: hp('1%'),
+    borderRadius: moderateScale(30),
+  },
 
-expertTopRow: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-},
+  priceSection: {
+    marginTop: hp('2%'),
+  },
 
-coinInfo: {
-  flexDirection: "row",
-  alignItems: "center",
-},
+  marketPrice: {
+    fontSize: moderateScale(24),
+    fontWeight: '800',
+    color: '#000',
+  },
 
-coinImage: {
-  width: 26,
-  height: 26,
-  marginRight: 6,
-},
+  marketChange: {
+    marginTop: hp('1%'),
+    fontSize: moderateScale(15),
+    fontWeight: '700',
+  },
 
-coinSymbol: {
-  fontWeight: "700",
-  fontSize: 14,
-},
+  chartStyle: {
+    marginTop: hp('2%'),
+    borderRadius: moderateScale(20),
+  },
 
-badge: {
-  paddingHorizontal: 8,
-  paddingVertical: 4,
-  borderRadius: 6,
-},
-
-longBadge: {
-  backgroundColor: "#22c55e",
-},
-
-shortBadge: {
-  backgroundColor: "#ef4444",
-},
-
-badgeText: {
-  color: "#fff",
-  fontSize: 11,
-  fontWeight: "600",
-},
-
-entryLabel: {
-  marginTop: 12,
-  color: "#6b7280",
-  fontSize: 12,
-},
-
-entryPrice: {
-  fontSize: 15,
-  fontWeight: "700",
-},
-
-profitBox: {
-  marginTop: 12,
-  backgroundColor: "#ecfdf5",
-  padding: 6,
-  borderRadius: 8,
-},
-
-profitText: {
-  color: "#16a34a",
-  fontWeight: "700",
-},
-
-  /* BOTTOM NAV */
- bottomNav: {
+bottomNav: {
   position: 'absolute',
   bottom: 0,
   left: 0,
   right: 0,
-  height: 85,
+
   backgroundColor: '#2E1065',
-  borderTopLeftRadius: 25,
-  borderTopRightRadius: 25,
+
+  borderTopLeftRadius: moderateScale(30),
+  borderTopRightRadius: moderateScale(30),
+
   flexDirection: 'row',
   justifyContent: 'space-around',
   alignItems: 'center',
-  paddingBottom: 10,
+
+  paddingHorizontal: wp('2%'),
+
+  elevation: 20,
+  zIndex: 999,
 },
+
   navItem: {
-    alignItems: 'center',
-    marginLeft:30
-  },
- 
-  navIcon: {
-    fontSize: 20,
-  },
- 
+  alignItems: 'center',
+  justifyContent: 'center',
+  flex: 1,
+  paddingTop: hp('1%'),
+},
+
   navLabel: {
-    fontSize: 10,
-    marginTop: 4,
+    fontSize: moderateScale(9),
+    marginTop: hp('0.5%'),
+    fontWeight: '600',
   },
- 
+
   navActive: {
     color: '#F472B6',
   },
- 
+
   navInactive: {
     color: '#aaa',
   },
- 
-  /* CENTER BUTTON */
-centerIcon: {
-  width: 65,
-  height: 65,
-  borderRadius: 35,
-  backgroundColor: '#7C3AED',
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'absolute',
-  top: -40,
-  alignSelf: 'center',
-  elevation: 10,
-},
 
-marketCardsContainer: {
-  marginTop: 25,
-  paddingHorizontal: 16,
-},
-
-marketCard: {
-  width: '100%',
-  backgroundColor: '#fcf2bd',
-  borderRadius: 30,
-  padding: 20,
-  shadowColor: '#000',
-  shadowOffset: {
-    width: 0,
-    height: 5,
+  centerIcon: {
+    position: 'absolute',
+    top: hp('-4.2%'),
+    width: wp('18%'),
+    height: wp('18%'),
+    borderRadius: wp('9%'),
+    backgroundColor: '#7C3AED',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    elevation: 25,
+    zIndex: 1000,
   },
-  shadowOpacity: 0.08,
-  shadowRadius: 10,
-  elevation: 5,
-},
-
-marketHeader: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-},
-
-marketCoinRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-},
-
-marketCoinImage: {
-  width: 55,
-  height: 55,
-  borderRadius: 30,
-  marginRight: 14,
-},
-
-marketCoinName: {
-  fontSize: 20,
-  fontWeight: '700',
-  color: '#111',
-},
-
-marketCoinSymbol: {
-  fontSize: 15,
-  color: '#888',
-  marginTop: 4,
-},
-
-marketBadge: {
-  paddingHorizontal: 14,
-  paddingVertical: 8,
-  borderRadius: 30,
-},
-
-priceSection: {
-  marginTop: 16,
-},
-
-marketPrice: {
-  fontSize: 28,
-  fontWeight: '800',
-  color: '#000',
-},
-
-marketChange: {
-  marginTop: 10,
-  fontSize: 18,
-  fontWeight: '700',
-},
 });

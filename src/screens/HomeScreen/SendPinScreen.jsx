@@ -1,321 +1,47 @@
-// import React, { useState } from 'react';
-// import {
-//   View,
-//   Text,
-//   StyleSheet,
-//   TouchableOpacity,
-//   Platform,
-//   StatusBar,
-// } from 'react-native';
-
-// export default function SendPinScreen({ route, navigation }) {
-//   const { amount, name, address,sender ,senderData} = route.params;
-//   console.log( senderData,"0005")
-
-//   const [pin, setPin] = useState('');
-
-//   const handlePress = (val) => {
-//     if (val === 'back') {
-//       setPin(pin.slice(0, -1));
-//     } else if (val === 'submit') {
-//       handleSubmit();
-//     } else {
-//       if (pin.length < 4) {
-//         setPin(pin + val);
-//       }
-//     }
-//   };
-
-//   const handleSubmit = () => {
-//     if (pin.length !== 4) {
-//       alert('Enter 4 digit PIN');
-//       return;
-//     }
-
-//     // ✅ FIXED HERE
-//     navigation.navigate('loading', {
-//       amount,
-//       name,
-//       toAddress: address,
-//       pin,
-//     });
-//   };
-
-//    const Key = ({ num, onPress }) => {
-//       return (
-//         <TouchableOpacity
-//           style={styles.key}
-//           onPress={() => onPress(num)}
-//         >
-//           <Text style={styles.keyText}>{num}</Text>
-//         </TouchableOpacity>
-//       );
-//     };
-
-//   const renderBoxes = () => {
-//     return [...Array(4)].map((_, i) => (
-//       <View key={i} style={styles.box}>
-//         <Text style={styles.dot}>{pin[i] ? '*' : ''}</Text>
-//       </View>
-//     ));
-//   };
-
-
-//     const handleDelete = () => {
-//     setPin((prev) => prev.slice(0, -1));
-//   };
-
-//   return (
-//     <View style={styles.container}>
-
-//       <Text style={styles.cancel} onPress={() => navigation.navigate("Main")}>Cancel</Text>
-
-//      <View style={styles.card}>
-//   {/* FROM SECTION */}
-//   <View style={styles.section}>
-//     <Text style={styles.small}>From wallet</Text>
-//     <Text style={styles.name}>{sender?.name || senderData?.name}</Text>
-//     <Text style={styles.wallet}>{sender?.wallet || senderData?.walletAddress }</Text>
-//   </View>
-
-//   {/* TO SECTION */}
-//   <View style={styles.toSection}>
-//     <View style={styles.rowBetween}>
-//       <Text style={styles.small}>To wallet</Text>
-//       <Text style={styles.amount}>{amount} PAYO</Text>
-//     </View>
-
-//     <Text style={styles.name}>{name}</Text>
-//     <Text style={styles.address}>{address}</Text>
-//   </View>
-// </View>
-
-//       <Text style={styles.title}>ENTER 4-DIGIT TRANSACTION PIN</Text>
-
-//       <View style={styles.pinRow}>{renderBoxes()}</View>
-
-//       <View style={styles.warning}>
-//         <Text style={styles.warningText}>
-//           ⚠ You are sending {amount} payo from your account
-//         </Text>
-//       </View>
-
-
-
-//       <View style={styles.keypad}>
-
-//         {/* ROW 1 */}
-//         <View style={styles.row}>
-//           <Key num="1" onPress={handlePress} />
-//           <Key num="2" onPress={handlePress} />
-//           <Key num="3" onPress={handlePress} />
-//         </View>
-
-//         {/* ROW 2 */}
-//         <View style={styles.row}>
-//           <Key num="4" onPress={handlePress} />
-//           <Key num="5" onPress={handlePress} />
-//           <Key num="6" onPress={handlePress} />
-//         </View>
-
-//         {/* ROW 3 */}
-//         <View style={styles.row}>
-//           <Key num="7" onPress={handlePress} />
-//           <Key num="8" onPress={handlePress} />
-//           <Key num="9" onPress={handlePress} />
-//         </View>
-
-//         {/* ROW 4 */}
-//         <View style={styles.row}>
-//           <View style={styles.emptyKey} />
-//           <Key num="0" onPress={handlePress} />
-//           <Key num="×" onPress={handleDelete} />
-       
-//         </View>
-
-       
-
-//       </View>
-// <View style={styles.submitRow}>
-//   <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-//     <Text style={styles.submitText}>Submit</Text>
-//   </TouchableOpacity>
-// </View>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: { flex: 1, backgroundColor: '#eee', padding: 20 , paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0},
-//   cancel: { marginBottom: 10, color: '#444' },
-
-// card: {
-//   borderRadius: 12,
-//   overflow: 'hidden', // important for section backgrounds
-//   marginBottom: 20,
-// },
-
-// section: {
-//   backgroundColor: '#fff',
-//   padding: 15,
-// },
-
-// toSection: {
-//   backgroundColor: '#dcd6f7',
-//   padding: 15,
-// },
-
-// small: {
-//   color: '#777',
-//   fontSize: 12,
-// },
-
-// rowBetween: {
-//   flexDirection: 'row',
-//   justifyContent: 'space-between',
-//   alignItems: 'center',
-// },
-
-// amount: {
-//   fontWeight: '700',
-//   color: '#3c8c5a', // greenish like screenshot
-// },
-
-// name: {
-//   fontWeight: '600',
-//   marginTop: 5,
-//   textTransform:"capitalize"
-// },
-
-// wallet: {
-//   fontWeight: '600',
-//   color: '#000',
-// },
-
-// address: {
-//   color: '#777',
-//   fontSize: 12,
-// },
-
-//   title: { textAlign: 'center', marginBottom: 15 },
-
-//   pinRow: {
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     marginBottom: 20,
-//   },
-
-//   box: {
-//     width: 50,
-//     height: 50,
-//     backgroundColor: '#fff',
-//     marginHorizontal: 8,
-//     borderRadius: 8,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-
-//   dot: { fontSize: 24 },
-
-//   warning: {
-//     backgroundColor: '#fff3cd',
-//     padding: 10,
-//     borderRadius: 8,
-//     marginBottom: 20,
-//   },
-
-//   warningText: { textAlign: 'center' },
-
-// keypad: {
-//   marginTop: 10,
-//   width: "70%",   // smaller width
-//   alignSelf: "center",
-// },
-
-// row: {
-//   flexDirection: "row",
-//   justifyContent: "space-between",
-//   marginBottom: 15, // smaller vertical spacing
-// },
-
-// key: {
-//   width: 55,      // smaller key
-//   height: 55,
-//   borderRadius: 28,
-//   backgroundColor: "#F2F2F2",
-//   justifyContent: "center",
-//   alignItems: "center",
-//   shadowColor: "#000",
-//   shadowOpacity: 0.1,
-//   shadowRadius: 3,
-//   elevation: 2,
-// },
-
-// emptyKey: {
-//   width: 55,
-//   height: 55,
-// },
-
-// keyText: {
-//   fontSize: 18,  // smaller text
-//   fontWeight: "600",
-// },
-// submitRow: {
-//   marginTop: 25,
-//   alignItems: "center",
-// },
-
-// submitButton: {
-//   backgroundColor: "#22C55E",
-//   width: "70%",
-//   paddingVertical: 15,
-//   borderRadius: 12,
-//   alignItems: "center",
-//   elevation: 3,
-// },
-
-// submitText: {
-//   color: "#fff",
-//   fontSize: 18,
-//   fontWeight: "600",
-// },
- 
-// });
-
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Platform,
-  StatusBar,
+  ScrollView,
+  Alert,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function SendPinScreen({ route, navigation }) {
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
-  const { amount, name, address, sender, senderData } = route.params;
+import { moderateScale } from 'react-native-size-matters';
+
+export default function SendPinScreen({
+  route,
+  navigation,
+}) {
+  const {
+    amount,
+    name,
+    address,
+    sender,
+    senderData,
+  } = route.params;
 
   const [pin, setPin] = useState('');
 
   const handlePress = (val) => {
-
     if (pin.length < 4) {
       setPin(pin + val);
     }
   };
 
   const handleSubmit = () => {
-
     if (pin.length !== 4) {
-      alert('Enter 4 digit PIN');
+      Alert.alert(
+        'Error',
+        'Enter 4 digit PIN',
+      );
       return;
     }
 
@@ -328,720 +54,530 @@ export default function SendPinScreen({ route, navigation }) {
   };
 
   const handleDelete = () => {
-    setPin((prev) => prev.slice(0, -1));
-  };
-
-  const Key = ({ num, letters, onPress }) => {
-    return (
-      <TouchableOpacity
-        style={styles.key}
-        onPress={() => onPress(num)}
-      >
-        <Text style={styles.keyText}>{num}</Text>
-
-        {letters ? (
-          <Text style={styles.keyLetters}>{letters}</Text>
-        ) : null}
-      </TouchableOpacity>
+    setPin((prev) =>
+      prev.slice(0, -1),
     );
   };
 
-  const renderDots = () => {
-    return [...Array(4)].map((_, i) => (
-      <View
-        key={i}
-        style={[
-          styles.pinDot,
-          pin[i]
-            ? styles.activeDot
-            : styles.inactiveDot,
-        ]}
-      />
-    ));
-  };
+  const Key = ({
+    num,
+    letters,
+    onPress,
+  }) => (
+    <TouchableOpacity
+      style={styles.key}
+      activeOpacity={0.8}
+      onPress={() =>
+        onPress(num)
+      }>
+      <Text style={styles.keyText}>
+        {num}
+      </Text>
+
+      {letters ? (
+        <Text
+          style={
+            styles.keyLetters
+          }>
+          {letters}
+        </Text>
+      ) : null}
+    </TouchableOpacity>
+  );
+
+  const renderDots = () =>
+    [...Array(4)].map(
+      (_, i) => (
+        <View
+          key={i}
+          style={[
+            styles.pinDot,
+            pin[i]
+              ? styles.activeDot
+              : styles.inactiveDot,
+          ]}
+        />
+      ),
+    );
 
   return (
-
-    <View style={styles.container}>
-
-      {/* CANCEL */}
-      <Text
-        style={styles.cancel}
-        onPress={() => navigation.goBack()}
-      >
-        Cancel
-      </Text>
-
-      {/* CARD */}
-      <View style={styles.card}>
-
-        {/* FROM */}
-        <View style={styles.section}>
-
-          <Text style={styles.small}>
-            From wallet
+    <SafeAreaView
+      style={styles.container}
+      edges={['top', 'bottom']}>
+      <ScrollView
+        showsVerticalScrollIndicator={
+          false
+        }
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={
+          styles.scrollContent
+        }>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() =>
+            navigation.goBack()
+          }>
+          <Text
+            style={styles.cancel}>
+            Cancel
           </Text>
+        </TouchableOpacity>
 
-          <Text style={styles.name}>
-            {sender?.name || senderData?.name}
-          </Text>
-
-          <Text style={styles.wallet}>
-            {sender?.wallet || senderData?.walletAddress}
-          </Text>
-
-        </View>
-
-        {/* TO */}
-        <View style={styles.toSection}>
-
-          <View style={styles.rowBetween}>
-
-            <Text style={styles.small}>
-              To wallet
+        <View style={styles.card}>
+          <View
+            style={styles.section}>
+            <Text
+              style={styles.small}>
+              From wallet
             </Text>
 
-            <Text style={styles.amount}>
-              {amount} PAYO
+            <Text
+              style={styles.name}
+              numberOfLines={1}>
+              {sender?.name ||
+                senderData?.name}
             </Text>
 
+            <Text
+              style={styles.wallet}
+              numberOfLines={1}>
+              {sender?.wallet ||
+                senderData?.walletAddress}
+            </Text>
           </View>
 
-          <Text style={styles.name}>
-            {name}
-          </Text>
+          <View
+            style={styles.toSection}>
+            <View
+              style={
+                styles.rowBetween
+              }>
+              <Text
+                style={
+                  styles.small
+                }>
+                To wallet
+              </Text>
 
-          <Text style={styles.address}>
-            {address}
-          </Text>
+              <Text
+                style={
+                  styles.amount
+                }>
+                {amount} PAYO
+              </Text>
+            </View>
 
-        </View>
-
-      </View>
-
-      {/* TITLE */}
-      <Text style={styles.title}>
-        ENTER 4-DIGIT TRANSACTION PIN
-      </Text>
-
-      {/* DOTS */}
-      <View style={styles.dotsRow}>
-        {renderDots()}
-      </View>
-
-
-      {/* KEYPAD */}
-      <View style={styles.keypad}>
-
-        {/* ROW 1 */}
-        <View style={styles.row}>
-
-          <Key
-            num="1"
-            onPress={handlePress}
-          />
-
-          <Key
-            num="2"
-            letters="ABC"
-            onPress={handlePress}
-          />
-
-          <Key
-            num="3"
-            letters="DEF"
-            onPress={handlePress}
-          />
-
-        </View>
-
-        {/* ROW 2 */}
-        <View style={styles.row}>
-
-          <Key
-            num="4"
-            letters="GHI"
-            onPress={handlePress}
-          />
-
-          <Key
-            num="5"
-            letters="JKL"
-            onPress={handlePress}
-          />
-
-          <Key
-            num="6"
-            letters="MNO"
-            onPress={handlePress}
-          />
-
-        </View>
-
-        {/* ROW 3 */}
-        <View style={styles.row}>
-
-          <Key
-            num="7"
-            letters="PQRS"
-            onPress={handlePress}
-          />
-
-          <Key
-            num="8"
-            letters="TUV"
-            onPress={handlePress}
-          />
-
-          <Key
-            num="9"
-            letters="WXYZ"
-            onPress={handlePress}
-          />
-
-        </View>
-
-        {/* ROW 4 */}
-        <View style={styles.row}>
-
-          {/* DELETE */}
-          <TouchableOpacity
-            style={styles.deleteKey}
-            onPress={handleDelete}
-          >
-            <Text style={styles.deleteText}>
-              ⌫
+            <Text
+              style={styles.name}
+              numberOfLines={1}>
+              {name}
             </Text>
-          </TouchableOpacity>
 
-          {/* ZERO */}
-          <Key
-            num="0"
-            onPress={handlePress}
-          />
-
-          {/* PAY */}
-          <TouchableOpacity
-            style={styles.payButton}
-            onPress={handleSubmit}
-          >
-            <Text style={styles.payText}>
-              PAY
+            <Text
+              style={
+                styles.address
+              }
+              numberOfLines={2}>
+              {address}
             </Text>
-          </TouchableOpacity>
-
+          </View>
         </View>
 
-      </View>
+        <Text style={styles.title}>
+          ENTER 4-DIGIT
+          TRANSACTION PIN
+        </Text>
 
-    </View>
+        <View
+          style={styles.dotsRow}>
+          {renderDots()}
+        </View>
+
+        <View
+          style={styles.keypad}>
+          <View style={styles.row}>
+            <Key
+              num="1"
+              onPress={
+                handlePress
+              }
+            />
+            <Key
+              num="2"
+              letters="ABC"
+              onPress={
+                handlePress
+              }
+            />
+            <Key
+              num="3"
+              letters="DEF"
+              onPress={
+                handlePress
+              }
+            />
+          </View>
+
+          <View style={styles.row}>
+            <Key
+              num="4"
+              letters="GHI"
+              onPress={
+                handlePress
+              }
+            />
+            <Key
+              num="5"
+              letters="JKL"
+              onPress={
+                handlePress
+              }
+            />
+            <Key
+              num="6"
+              letters="MNO"
+              onPress={
+                handlePress
+              }
+            />
+          </View>
+
+          <View style={styles.row}>
+            <Key
+              num="7"
+              letters="PQRS"
+              onPress={
+                handlePress
+              }
+            />
+            <Key
+              num="8"
+              letters="TUV"
+              onPress={
+                handlePress
+              }
+            />
+            <Key
+              num="9"
+              letters="WXYZ"
+              onPress={
+                handlePress
+              }
+            />
+          </View>
+
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={
+                styles.deleteKey
+              }
+              activeOpacity={0.8}
+              onPress={
+                handleDelete
+              }>
+              <Text
+                style={
+                  styles.deleteText
+                }>
+                ⌫
+              </Text>
+            </TouchableOpacity>
+
+            <Key
+              num="0"
+              onPress={
+                handlePress
+              }
+            />
+
+            <TouchableOpacity
+              style={
+                styles.payButton
+              }
+              activeOpacity={0.8}
+              onPress={
+                handleSubmit
+              }>
+              <Text
+                style={
+                  styles.payText
+                }>
+                PAY
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const styles =
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor:
+        '#F5F5F5',
+    },
 
-  container: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
-    paddingHorizontal: 16,
-    paddingTop:
-      Platform.OS === 'android'
-        ? StatusBar.currentHeight
-        : 0,
-    justifyContent: 'space-between',
-  },
+    scrollContent: {
+      flexGrow: 1,
+      paddingHorizontal:
+        wp('4%'),
+      paddingTop: hp('1%'),
+      paddingBottom:
+        hp('4%'),
+    },
 
-  cancel: {
-    marginTop: 10,
-    marginBottom: 10,
-    color: '#444',
-    fontSize: 15,
-  },
+    cancel: {
+      marginBottom:
+        hp('1.5%'),
+      color: '#444',
+      fontSize:
+        moderateScale(
+          15,
+        ),
+    },
 
-  /* CARD */
+    card: {
+      borderRadius:
+        moderateScale(
+          16,
+        ),
+      overflow: 'hidden',
+      width: '100%',
+      alignSelf: 'center',
+    },
 
-  card: {
-    borderRadius: 16,
-    overflow: 'hidden',
-    width: '92%',
-    alignSelf: 'center',
-    marginBottom: 5,
-  },
+    section: {
+      backgroundColor:
+        '#FFFFFF',
+      paddingVertical:
+        hp('1.5%'),
+      paddingHorizontal:
+        wp('4%'),
+    },
 
-  section: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-  },
+    toSection: {
+      backgroundColor:
+        '#D9D2F3',
+      paddingVertical:
+        hp('1.5%'),
+      paddingHorizontal:
+        wp('4%'),
+    },
 
-  toSection: {
-    backgroundColor: '#D9D2F3',
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-  },
+    small: {
+      color: '#777',
+      fontSize:
+        moderateScale(
+          11,
+        ),
+      marginBottom:
+        hp('0.2%'),
+    },
 
-  small: {
-    color: '#777',
-    fontSize: 11,
-    marginBottom: 2,
-  },
+    rowBetween: {
+      flexDirection:
+        'row',
+      justifyContent:
+        'space-between',
+      alignItems:
+        'center',
+    },
 
-  rowBetween: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+    amount: {
+      fontWeight: '700',
+      color: '#2E8B57',
+      fontSize:
+        moderateScale(
+          13,
+        ),
+    },
 
-  amount: {
-    fontWeight: '700',
-    color: '#2E8B57',
-    fontSize: 13,
-  },
+    name: {
+      fontWeight: '700',
+      marginTop:
+        hp('0.2%'),
+      fontSize:
+        moderateScale(
+          17,
+        ),
+      textTransform:
+        'capitalize',
+      color: '#111',
+    },
 
-  name: {
-    fontWeight: '700',
-    marginTop: 1,
-    fontSize: 17,
-    textTransform: 'capitalize',
-    color: '#111',
-  },
+    wallet: {
+      fontWeight: '600',
+      color: '#111',
+      marginTop:
+        hp('0.2%'),
+      fontSize:
+        moderateScale(
+          11,
+        ),
+    },
 
-  wallet: {
-    fontWeight: '600',
-    color: '#111',
-    marginTop: 1,
-    fontSize: 11,
-  },
+    address: {
+      color: '#666',
+      fontSize:
+        moderateScale(
+          10,
+        ),
+      marginTop:
+        hp('0.2%'),
+    },
 
-  address: {
-    color: '#666',
-    fontSize: 10,
-    marginTop: 1,
-  },
+    title: {
+      textAlign: 'center',
+      fontSize:
+        moderateScale(
+          16,
+        ),
+      fontWeight: '600',
+      color: '#444',
+      marginTop:
+        hp('5%'),
+      marginBottom:
+        hp('3%'),
+    },
 
-  /* TITLE */
+    dotsRow: {
+      flexDirection:
+        'row',
+      justifyContent:
+        'center',
+      marginBottom:
+        hp('3%'),
+    },
 
-  title: {
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#444',
-    marginTop: 55,
-    marginBottom: 28,
-  },
+    pinDot: {
+      width:
+        moderateScale(
+          14,
+        ),
+      height:
+        moderateScale(
+          14,
+        ),
+      borderRadius:
+        moderateScale(
+          7,
+        ),
+      marginHorizontal:
+        wp('2%'),
+    },
 
-  /* PIN DOTS */
+    activeDot: {
+      backgroundColor:
+        '#1F2F8A',
+    },
 
-  dotsRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 15,
-  },
+    inactiveDot: {
+      backgroundColor:
+        '#D3D3D3',
+    },
 
-  pinDot: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    marginHorizontal: 9,
-  },
+    keypad: {
+      marginTop: 'auto',
+    },
 
-  activeDot: {
-    backgroundColor: '#1F2F8A',
-  },
+    row: {
+      flexDirection:
+        'row',
+      justifyContent:
+        'space-between',
+      alignItems:
+        'center',
+      marginBottom:
+        hp('1.8%'),
+    },
 
-  inactiveDot: {
-    backgroundColor: '#D3D3D3',
-  },
+    key: {
+      width: wp('28%'),
+      minWidth: 90,
+      height: hp('7%'),
+      minHeight: 58,
+      borderRadius:
+        moderateScale(
+          18,
+        ),
+      backgroundColor:
+        '#FFFFFF',
+      justifyContent:
+        'center',
+      alignItems:
+        'center',
+    },
 
-  check: {
-    textAlign: 'center',
-    color: '#1F2F8A',
-    fontSize: 28,
-    marginBottom: 20,
-    fontWeight: 'bold',
-  },
+    keyText: {
+      fontSize:
+        moderateScale(
+          28,
+        ),
+      color: '#111',
+      fontWeight: '400',
+    },
 
-  /* KEYPAD */
+    keyLetters: {
+      fontSize:
+        moderateScale(
+          10,
+        ),
+      color: '#777',
+      marginTop:
+        hp('0.1%'),
+    },
 
-  keypad: {
-    marginTop: 'auto',
-    paddingBottom: 22,
-    paddingHorizontal: 4,
-  },
+    deleteKey: {
+      width: wp('28%'),
+      minWidth: 90,
+      height: hp('7%'),
+      minHeight: 58,
+      borderRadius:
+        moderateScale(
+          18,
+        ),
+      backgroundColor:
+        '#C7D0EA',
+      justifyContent:
+        'center',
+      alignItems:
+        'center',
+    },
 
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+    deleteText: {
+      fontSize:
+        moderateScale(
+          24,
+        ),
+      color: '#111',
+    },
 
-  key: {
-    width: 92,
-    height: 58,
-    borderRadius: 18,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    payButton: {
+      width: wp('28%'),
+      minWidth: 90,
+      height: hp('7%'),
+      minHeight: 58,
+      borderRadius:
+        moderateScale(
+          18,
+        ),
+      backgroundColor:
+        '#223B99',
+      justifyContent:
+        'center',
+      alignItems:
+        'center',
+    },
 
-  keyText: {
-    fontSize: 28,
-    color: '#111',
-    fontWeight: '400',
-  },
-
-  keyLetters: {
-    fontSize: 10,
-    color: '#777',
-    marginTop: 1,
-  },
-
-  /* DELETE */
-
-  deleteKey: {
-    width: 92,
-    height: 58,
-    borderRadius: 18,
-    backgroundColor: '#C7D0EA',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  deleteText: {
-    fontSize: 26,
-    color: '#111',
-  },
-
-  /* PAY BUTTON */
-
-  payButton: {
-    width: 92,
-    height: 58,
-    borderRadius: 18,
-    backgroundColor: '#223B99',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  payText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-
-});
-
-
-// import React, { useState } from 'react';
-// import {
-//   View,
-//   Text,
-//   StyleSheet,
-//   TouchableOpacity,
-//   Platform,
-//   StatusBar,
-// } from 'react-native';
- 
-// export default function SendPinScreen({ route, navigation }) {
-//   const { amount, name, address, sender, senderData } = route.params;
-//   console.log(senderData, "0005")
- 
-//   const [pin, setPin] = useState('');
- 
-//   const handlePress = (val) => {
-//     if (val === 'back') {
-//       setPin(pin.slice(0, -1));
-//     } else if (val === 'submit') {
-//       handleSubmit();
-//     } else {
-//       if (pin.length < 4) {
-//         setPin(pin + val);
-//       }
-//     }
-//   };
- 
-//   const handleSubmit = () => {
-//     if (pin.length !== 4) {
-//       alert('Enter 4 digit PIN');
-//       return;
-//     }
- 
-//     // ✅ FIXED HERE
-//     navigation.navigate('loading', {
-//       amount,
-//       name,
-//       toAddress: address,
-//       pin,
-//     });
-//   };
- 
-//   const Key = ({ num, letters, onPress }) => {
-//     return (
-//       <TouchableOpacity
-//         style={styles.key}
-//         onPress={() => onPress(num)}
-//       >
-//         <Text style={styles.keyText}>{num}</Text>
- 
-//         {letters ? (
-//           <Text style={styles.keyLetters}>{letters}</Text>
-//         ) : null}
-//       </TouchableOpacity>
-//     );
-//   };
- 
-//   const renderBoxes = () => {
-//     return [...Array(4)].map((_, i) => (
-//       <View key={i} style={styles.box}>
-//         <Text style={styles.dot}>{pin[i] ? '*' : ''}</Text>
-//       </View>
-//     ));
-//   };
- 
- 
-//   const handleDelete = () => {
-//     setPin((prev) => prev.slice(0, -1));
-//   };
- 
-//   return (
-//     <View style={styles.container}>
- 
-//       <Text style={styles.cancel} onPress={() => navigation.goBack()}>Cancel</Text>
- 
-//       <View style={styles.card}>
-//         {/* FROM SECTION */}
-//         <View style={styles.section}>
-//           <Text style={styles.small}>From wallet</Text>
-//           <Text style={styles.name}>{sender?.name || senderData?.name}</Text>
-//           <Text style={styles.wallet}>{sender?.wallet || senderData?.walletAddress}</Text>
-//         </View>
- 
-//         {/* TO SECTION */}
-//         <View style={styles.toSection}>
-//           <View style={styles.rowBetween}>
-//             <Text style={styles.small}>To wallet</Text>
-//             <Text style={styles.amount}>{amount} PAYO</Text>
-//           </View>
- 
-//           <Text style={styles.name}>{name}</Text>
-//           <Text style={styles.address}>{address}</Text>
-//         </View>
-//       </View>
- 
-//       <Text style={styles.title}>ENTER 4-DIGIT TRANSACTION PIN</Text>
- 
-//       <View style={styles.pinRow}>{renderBoxes()}</View>
- 
-//       <View style={styles.warning}>
-//         <Text style={styles.warningText}>
-//           ⚠ You are sending {amount} payo from your account
-//         </Text>
-//       </View>
- 
- 
- 
-//       <View style={styles.keypad}>
- 
-//         {/* ROW 1 */}
-//         <View style={styles.row}>
-//           <Key num="1" onPress={handlePress} />
-//           <Key num="2" letters="ABC" onPress={handlePress} />
-//           <Key num="3" letters="DEF" onPress={handlePress} />
-//         </View>
- 
-//         {/* ROW 2 */}
-//         <View style={styles.row}>
-//           <Key num="4" letters="GHI" onPress={handlePress} />
-//           <Key num="5" letters="JKL" onPress={handlePress} />
-//           <Key num="6" letters="MNO" onPress={handlePress} />
-//         </View>
- 
-//         {/* ROW 3 */}
-//         <View style={styles.row}>
-//           <Key num="7" letters="PQRS" onPress={handlePress} />
-//           <Key num="8" letters="TUV" onPress={handlePress} />
-//           <Key num="9" letters="WXYZ" onPress={handlePress} />
-//         </View>
- 
-//         {/* ROW 4 */}
-//         <View style={styles.row}>
-//           <Key num="0" onPress={handlePress} />
- 
-//           <Key num="×" onPress={handleDelete} />
- 
-//           <TouchableOpacity
-//             style={styles.submitKey}
-//             onPress={handleSubmit}
-//           >
-//             <Text style={styles.submitKeyText}>Submit</Text>
-//           </TouchableOpacity>
-//         </View>
- 
- 
-//       </View>
-     
-//     </View>
-//   );
-// }
- 
-// const styles = StyleSheet.create({
-//   container: { flex: 1, backgroundColor: '#eee', padding: 20, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 },
-//   cancel: { marginBottom: 10, color: '#444' },
- 
-//   card: {
-//     borderRadius: 12,
-//     overflow: 'hidden', // important for section backgrounds
-//     marginBottom: 20,
-//   },
- 
-//   section: {
-//     backgroundColor: '#fff',
-//     padding: 15,
-//   },
- 
-//   toSection: {
-//     backgroundColor: '#dcd6f7',
-//     padding: 15,
-//   },
- 
-//   small: {
-//     color: '#777',
-//     fontSize: 12,
-//   },
- 
-//   rowBetween: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//   },
- 
-//   amount: {
-//     fontWeight: '700',
-//     color: '#3c8c5a', // greenish like screenshot
-//   },
- 
-//   name: {
-//     fontWeight: '600',
-//     marginTop: 5,
-//     textTransform: "capitalize"
-//   },
- 
-//   wallet: {
-//     fontWeight: '600',
-//     color: '#000',
-//   },
- 
-//   address: {
-//     color: '#777',
-//     fontSize: 12,
-//   },
- 
-//   title: { textAlign: 'center', marginBottom: 15 },
- 
-//   pinRow: {
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     marginBottom: 20,
-//   },
- 
-//   box: {
-//     width: 50,
-//     height: 50,
-//     backgroundColor: '#fff',
-//     marginHorizontal: 8,
-//     borderRadius: 8,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
- 
-//   dot: { fontSize: 24 },
- 
-//   warning: {
-//     backgroundColor: '#fff3cd',
-//     padding: 10,
-//     borderRadius: 8,
-//     marginBottom: 20,
-//   },
- 
-//   warningText: { textAlign: 'center' },
- 
-//   keypad: {
-//     marginTop: 10,
-//     width: "70%",   // smaller width
-//     alignSelf: "center",
-//   },
- 
-//   row: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     marginBottom: 15, // smaller vertical spacing
-//   },
- 
-//   key: {
-//     width: 60,
-//     height: 60,
-//     borderRadius: 30,
-//     backgroundColor: "#F2F2F2",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     shadowColor: "#000",
-//     shadowOpacity: 0.1,
-//     shadowRadius: 3,
-//     elevation: 2,
-//   },
- 
-//   keyLetters: {
-//     fontSize: 9,
-//     color: "#555",
-//     marginTop: 2,
-//     fontWeight: "500",
-//   },
- 
-//   emptyKey: {
-//     width: 55,
-//     height: 55,
-//   },
- 
-//   keyText: {
-//     fontSize: 18,  // smaller text
-//     fontWeight: "600",
-//   },
-//   submitRow: {
-//     marginTop: 25,
-//     alignItems: "center",
-//   },
- 
-//   submitButton: {
-//     backgroundColor: "#22C55E",
-//     width: "70%",
-//     paddingVertical: 15,
-//     borderRadius: 12,
-//     alignItems: "center",
-//     elevation: 3,
-//   },
- 
-//   submitText: {
-//     color: "#fff",
-//     fontSize: 18,
-//     fontWeight: "600",
-//   },
- 
-//   submitKey: {
-//   width: 60,
-//   height: 60,
-//   borderRadius: 14,
-//   backgroundColor: "#1E8E3E",
-//   justifyContent: "center",
-//   alignItems: "center",
-//   elevation: 3,
-// },
- 
-// submitKeyText: {
-//   color: "#fff",
-//   fontSize: 11,
-//   fontWeight: "600",
-// },
- 
-// });
- 
+    payText: {
+      color: '#fff',
+      fontSize:
+        moderateScale(
+          18,
+        ),
+      fontWeight: '700',
+    },
+  });

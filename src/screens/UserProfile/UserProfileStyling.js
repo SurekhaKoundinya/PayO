@@ -1,230 +1,242 @@
-import { StatusBar, StyleSheet,Platform} from 'react-native';
- 
+import { StyleSheet } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { moderateScale } from 'react-native-size-matters';
+
 export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#2b007a',
-    padding: 20,
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-      paddingBottom:100
-    
+    paddingHorizontal: wp('5%'),
   },
- 
-  /* HEADER */
+
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    minHeight: hp('7%'),
+    marginTop: hp('1%'),
   },
- 
+
   back: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: moderateScale(20),
   },
- 
+
   title: {
     color: '#fff',
-    fontSize: 22,
+    fontSize: moderateScale(22),
     fontWeight: '700',
   },
- 
-  /* PROFILE */
+
   profileSection: {
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: hp('2.5%'),
   },
- 
+
   profileCircle: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
+    width: moderateScale(90),
+    height: moderateScale(90),
+    borderRadius: moderateScale(45),
     backgroundColor: '#ccc',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: hp('1.2%'),
   },
 
-  personalHeading: {
-  color: "#fff",
-  fontSize: 16,
-  fontWeight: "600",
-  marginBottom: 10
-},
-
-labelItem: {
-  color: "#ccc",
-  fontSize: 14
-},
- 
   profileText: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
   },
- 
+
   phone: {
     color: '#fff',
-    marginTop: 5,
+    marginTop: hp('0.5%'),
+    fontSize: moderateScale(14),
   },
- 
+
   verified: {
     color: '#00ff99',
-    fontSize: 12,
-    marginTop: 5,
+    fontSize: moderateScale(12),
+    marginTop: hp('0.5%'),
   },
- 
-  /* BALANCE */
+
   balanceCard: {
     backgroundColor: '#111',
-    borderRadius: 15,
-    padding: 15,
+    borderRadius: moderateScale(15),
+    padding: wp('4%'),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
+    alignItems: 'center',
   },
- 
+
   label: {
     color: '#aaa',
-    fontSize: 12,
+    fontSize: moderateScale(12),
   },
- 
+
   balance: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: '700',
   },
- 
+
   token: {
     color: '#00ff99',
-    fontSize: 12,
-
+    fontSize: moderateScale(12),
   },
 
   transactionRow: {
-  flexDirection: "row",
-  alignItems: "center",
-},
- 
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
   transactions: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: '700',
-    textAlign:"center"
   },
- 
+
   divider: {
     width: 1,
     backgroundColor: '#333',
+    height: hp('6%'),
   },
- 
-  /* REFERRAL */
+
   referralBox: {
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#aaa',
-    padding: 15,
-    borderRadius: 12,
-    marginBottom: 15,
+    padding: wp('4%'),
+    borderRadius: moderateScale(12),
+    marginBottom: hp('2%'),
   },
- 
+
   refLabel: {
     color: '#ccc',
+    fontSize: moderateScale(13),
   },
- 
+
   refCode: {
     color: '#fff',
     fontWeight: '700',
-    marginTop: 5,
+    marginTop: hp('0.6%'),
+    fontSize: moderateScale(14),
   },
- 
-  /* BUTTONS */
+
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
+    flexWrap: 'wrap',
   },
- 
+
   btn: {
     backgroundColor: '#5e2bb8',
-    padding: 12,
-    borderRadius: 10,
+    paddingVertical: hp('1.6%'),
+    borderRadius: moderateScale(10),
     width: '48%',
     alignItems: 'center',
   },
- 
+
   btnText: {
     color: '#fff',
+    fontSize: moderateScale(13),
   },
 
-    addBankBtn: {
-    marginTop: 18,
-    marginBottom: 10,
+  addBankBtn: {
+    marginTop: hp('2%'),
+    marginBottom: hp('1.5%'),
     backgroundColor: '#5e2bb8',
-    borderRadius: 16,
-    paddingVertical: 16,
-    paddingHorizontal: 18,
+    borderRadius: moderateScale(16),
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('4.5%'),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // opacity:0.6
   },
 
   addBankText: {
     flex: 1,
     color: '#fff',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: '600',
-    marginLeft: 14,
+    marginLeft: wp('4%'),
   },
- 
-  /* SECTION */
+
   sectionTitle: {
     color: '#fff',
-    marginBottom: 10,
-    marginTop: 10,
+    marginBottom: hp('1.2%'),
+    marginTop: hp('1.2%'),
+    fontSize: moderateScale(15),
+    fontWeight: '600',
   },
- 
+
   card: {
     backgroundColor: '#6a1bb9',
-    padding: 15,
-    borderRadius: 15,
-    marginBottom: 15,
+    padding: wp('4%'),
+    borderRadius: moderateScale(15),
+    marginBottom: hp('1.8%'),
   },
- 
+
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: hp('1.2%'),
+    alignItems: 'flex-start',
   },
- 
+
   item: {
     color: '#fff',
+    fontSize: moderateScale(13),
   },
- 
+
+  labelItem: {
+    color: '#ccc',
+    fontSize: moderateScale(13),
+    width: '35%',
+  },
+
   value: {
     color: '#ccc',
+    fontSize: moderateScale(12),
+    width: '60%',
+    textAlign: 'right',
   },
- 
+
   arrow: {
     color: '#fff',
   },
- 
+
   green: {
     color: '#00ff99',
+    fontSize: moderateScale(13),
   },
-logoutBtn: {
-  marginTop: 20,
-  borderWidth: 1.5,
-  borderColor: '#ff4d4d',
-  padding: 15,
-  borderRadius: 12,
-  alignItems: 'center',
-  backgroundColor: 'transparent'
-},
 
-logoutText: {
-  color: '#ff4d4d',
-  fontWeight: '700',
-  fontSize: 16,
-},
+  logoutBtn: {
+    marginTop: hp('2%'),
+    marginBottom: hp('18%'),
+    borderWidth: 1.5,
+    borderColor: '#ff4d4d',
+    paddingVertical: hp('1.8%'),
+    borderRadius: moderateScale(12),
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+
+  logoutText: {
+    color: '#ff4d4d',
+    fontWeight: '700',
+    fontSize: moderateScale(16),
+  },
+
+// logoutText: {
+//   color: '#ff4d4d',
+//   fontWeight: '700',
+//   fontSize: 16,
+// },
 
 
 bankCard: {

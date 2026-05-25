@@ -1,88 +1,127 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
   Animated,
-  SafeAreaView,
+  Alert,
 } from 'react-native';
+
 import { useFocusEffect } from '@react-navigation/native';
 import {
   Camera,
   useCameraDevice,
   useCodeScanner,
 } from 'react-native-vision-camera';
-import { useRoute } from '@react-navigation/native';
+
 import { launchImageLibrary } from 'react-native-image-picker';
-import Icon from 'react-native-vector-icons/Feather';
 import api from '../api/axios';
 
-const { width } = Dimensions.get('window');
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
-export default function ScanQRScreen({ navigation, setSelectedUser, setActiveTab }) {
-  const route = useRoute();
+import { moderateScale } from 'react-native-size-matters';
+
+export default function ScanQRScreen({
+  setSelectedUser,
+  setActiveTab,
+}) {
   const device = useCameraDevice('back');
 
-  const [hasPermission, setHasPermission] = useState(false);
-  const [scannedData, setScannedData] = useState(null);
-  const [torch, setTorch] = useState('off');
-  const [isProcessingScan, setIsProcessingScan] = useState(false);
- 
+  const [hasPermission, setHasPermission] =
+    useState(false);
 
-  const scanLine = useRef(new Animated.Value(0)).current;
+  const [scannedData, setScannedData] =
+    useState(null);
 
-  // 🔥 Animation
+  const [torch, setTorch] =
+    useState('off');
+
+  const [
+    isProcessingScan,
+    setIsProcessingScan,
+  ] = useState(false);
+
+  const scanLine = useRef(
+    new Animated.Value(0),
+  ).current;
+
+  const scannerSize =
+    wp('65%') < 280
+      ? wp('65%')
+      : 280;
+
   useEffect(() => {
     Animated.loop(
-      Animated.timing(scanLine, {
-        toValue: 230,
-        duration: 2000,
-        useNativeDriver: true,
-      })
+      Animated.sequence([
+        Animated.timing(scanLine, {
+          toValue: scannerSize - 20,
+          duration: 1800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scanLine, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+      ]),
     ).start();
-  }, []);
+  }, [scannerSize]);
 
-  // 🔐 Camera Permission
   useEffect(() => {
     const getPermission = async () => {
-      const permission = await Camera.requestCameraPermission();
-      setHasPermission(permission === 'granted');
+      const permission =
+        await Camera.requestCameraPermission();
+
+      setHasPermission(
+        permission === 'granted',
+      );
     };
+
     getPermission();
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
       setScannedData(null);
-
-      return () => { };
-    }, [])
+      setIsProcessingScan(false);
+    }, []),
   );
 
-
-
   const handleQR = async (value) => {
-    // Prevent multiple API hits
-    if (scannedData || isProcessingScan) return;
- 
+    if (
+      scannedData ||
+      isProcessingScan
+    )
+      return;
+
     setIsProcessingScan(true);
- 
+
     try {
-      const res = await api.post('api/wallet/scan-qr', { qrData: value });
- 
+      const res = await api.post(
+        'api/wallet/scan-qr',
+        {
+          qrData: value,
+        },
+      );
+
       const user = {
         name: res?.data?.name,
-        address: res?.data?.walletAddress,
+        address:
+          res?.data?.walletAddress,
       };
- 
+
       setScannedData(user);
- 
-      // Navigate to amount screen
       setSelectedUser(user);
       setActiveTab('amount');
- 
     } catch (err) {
       Alert.alert(
         'Invalid QR',
@@ -90,279 +129,264 @@ export default function ScanQRScreen({ navigation, setSelectedUser, setActiveTab
         [
           {
             text: 'OK',
-            onPress: () => {
-              // Resume scanner only after user clicks OK
-              setIsProcessingScan(false);
-            },
+            onPress: () =>
+              setIsProcessingScan(false),
           },
         ],
-        { cancelable: false }
       );
-      return;
     }
- 
-    // Keep scanner blocked after successful scan
   };
- 
 
-  // 🔍 Scanner
-  const codeScanner = useCodeScanner({
-    codeTypes: ['qr'],
-    onCodeScanned: (codes) => {
-      if (codes.length > 0 && !scannedData) {
-        handleQR(codes[0].value);
-      }
-    },
-  });
+  const codeScanner =
+    useCodeScanner({
+      codeTypes: ['qr'],
+      onCodeScanned: (codes) => {
+        if (
+          codes.length > 0 &&
+          !scannedData
+        ) {
+          handleQR(codes[0].value);
+        }
+      },
+    });
 
-  // ❌ No Permission
   if (!device || !hasPermission) {
     return (
       <View style={styles.center}>
-        <Text>No Camera Permission</Text>
+        <Text style={styles.permissionText}>
+          No Camera Permission
+        </Text>
       </View>
     );
   }
 
-  console.log(scannedData, "999")
-
   return (
-
-    <SafeAreaView style={styles.container}>
-      
-      <View style={styles.scanWrapper}>
+    <View style={styles.container}>
+      <View
+        style={[
+          styles.scanWrapper,
+          {
+            width: scannerSize,
+            height: scannerSize,
+          },
+        ]}>
         {!scannedData && (
-          <Camera
-            style={styles.camera}
-            device={device}
-            isActive={!scannedData}
-            torch={torch}
-            codeScanner={codeScanner}
-          />
+          <>
+            <Camera
+              style={styles.camera}
+              device={device}
+              isActive
+              torch={torch}
+              codeScanner={codeScanner}
+            />
+
+            <View
+              style={styles.cameraOverlay}
+            />
+
+            <Animated.View
+              style={[
+                styles.scanLine,
+                {
+                  transform: [
+                    {
+                      translateY:
+                        scanLine,
+                    },
+                  ],
+                },
+              ]}
+            />
+          </>
         )}
-
-
-        {!scannedData && (
-          <Animated.View
-            style={[
-              styles.scanLine,
-              { transform: [{ translateY: scanLine }] },
-            ]}
-          />
-        )}
-
 
         <View style={styles.cornerTL} />
         <View style={styles.cornerTR} />
         <View style={styles.cornerBL} />
         <View style={styles.cornerBR} />
-
-        {/* ✅ Preview */}
-        {scannedData && (
-          <View style={styles.preview}>
-            <Text style={{ fontWeight: '600' }}>
-              {scannedData.name}
-            </Text>
-          </View>
-        )}
       </View>
 
-      {!scannedData ? (
-        <Text style={styles.scanText}>Scanning QR code...</Text>
-      ) : (
-        <>
-          <Text style={styles.success}>
-            QR detected. Enter amount to proceed
-          </Text>
+      <Text style={styles.scanText}>
+        Scanning QR code...
+      </Text>
 
-        </>
-      )}
-
-
-      {!scannedData && (
-        <View style={styles.row}>
-          <TouchableOpacity
-            style={styles.smallBtn}
-            onPress={async () => {
-              const res = await launchImageLibrary({ mediaType: 'photo' });
-              if (res.assets?.length) {
-                handleQR('uploaded-image');
-              }
-            }}
-          >
-            <Text style={styles.smallText}>Upload QR</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.smallBtn}
-            onPress={() =>
-              setTorch(torch === 'off' ? 'on' : 'off')
-            }
-          >
-            <Text style={styles.smallText}>
-              {torch === 'off' ? 'Torch' : 'Torch Off'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-
-      {!scannedData && (
-        <View style={styles.text}>
-          <Text style={{ fontWeight: '400', color: "white", fontSize: 14, paddingBottom: 5,textAlign:"center" }}>
-            Point your camera at a QR code to continue.   </Text>
-          <Text style={{ fontWeight: '400', color: "white", fontSize: 14, textAlign:"center" }}>Hold steady for faster scanning
-          </Text>
-        </View>
-      )}
-
-
-
-      {/* {!scannedData && (
+      <View style={styles.row}>
         <TouchableOpacity
-          style={styles.simulate}
-          onPress={() => handleQR('test-wallet-address')}
+          style={styles.smallBtn}
+          onPress={async () => {
+            const res =
+              await launchImageLibrary({
+                mediaType: 'photo',
+              });
 
-        >
-          <Text style={{ color: '#fff' }}>Simulate Scan</Text>
+            if (res.assets?.length) {
+              handleQR('uploaded-image');
+            }
+          }}>
+          <Text style={styles.smallText}>
+            Upload QR
+          </Text>
         </TouchableOpacity>
-      )} */}
-    </SafeAreaView>
 
+        <TouchableOpacity
+          style={styles.smallBtn}
+          onPress={() =>
+            setTorch(
+              torch === 'off'
+                ? 'on'
+                : 'off',
+            )
+          }>
+          <Text style={styles.smallText}>
+            Torch
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.text}>
+        <Text style={styles.infoText}>
+          Point your camera at a QR code
+        </Text>
+
+        <Text style={styles.infoSubText}>
+          Hold steady for faster scanning
+        </Text>
+      </View>
+    </View>
   );
 }
 
-
-/* 🎨 STYLES */
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center' },
-
-  title: { color: '#fff', marginBottom: 20 },
-
-  tabs: {
-    flexDirection: 'row',
-    backgroundColor: '#6A00F4',
-    borderRadius: 12,
-    padding: 5,
-    width: '90%',
-    marginBottom: 20,
-  },
-  
-
-  tab: { flex: 1, alignItems: 'center', padding: 8 },
-
-  activeTab: {
+  container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    padding: 8,
-    borderRadius: 8,
+    paddingBottom: hp('18%'),
+    paddingHorizontal: wp('5%'),
   },
-
-  tabText: { color: '#fff' },
-  activeText: { color: '#6A00F4', fontWeight: '600' },
 
   scanWrapper: {
-    width: 225,
-    height: 225,
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     overflow: 'hidden',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: hp('2%'),
   },
 
-  camera: { width: '100%', height: '100%' },
+  camera: {
+    width: '100%',
+    height: '100%',
+  },
+
+  cameraOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor:
+      'rgba(106,0,244,0.35)',
+  },
 
   scanLine: {
     position: 'absolute',
     width: '100%',
     height: 2,
-    backgroundColor: 'lime',
-  },
-
-  preview: {
-    width: 120,
-    height: 120,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
 
   cornerTL: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    width: 40,
-    height: 40,
+    top: 10,
+    left: 10,
+    width: 28,
+    height: 28,
     borderTopWidth: 3,
     borderLeftWidth: 3,
     borderColor: '#fff',
   },
+
   cornerTR: {
     position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 40,
-    height: 40,
+    top: 10,
+    right: 10,
+    width: 28,
+    height: 28,
     borderTopWidth: 3,
     borderRightWidth: 3,
     borderColor: '#fff',
   },
+
   cornerBL: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: 40,
-    height: 40,
+    bottom: 10,
+    left: 10,
+    width: 28,
+    height: 28,
     borderBottomWidth: 3,
     borderLeftWidth: 3,
     borderColor: '#fff',
   },
+
   cornerBR: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 40,
-    height: 40,
+    bottom: 10,
+    right: 10,
+    width: 28,
+    height: 28,
     borderBottomWidth: 3,
     borderRightWidth: 3,
     borderColor: '#fff',
   },
 
-  scanText: { color: '#ccc', marginTop: 10 },
-  success: { color: '#00FFAA', marginTop: 15 },
-
-  continueBtn: {
-    backgroundColor: 'green',
-    padding: 14,
-    borderRadius: 10,
-    marginTop: 20,
-    width: '70%',
-    alignItems: 'center',
+  scanText: {
+    color: '#E9D5FF',
+    marginTop: hp('2%'),
+    fontSize: moderateScale(14),
   },
 
-  continueText: { color: '#fff', fontWeight: '600' },
-
-  row: { flexDirection: 'row', marginTop: 20 },
+  row: {
+    flexDirection: 'row',
+    marginTop: hp('2.5%'),
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
 
   smallBtn: {
     borderWidth: 1,
-    borderColor: '#fff',
-    padding: 10,
+    borderColor: '#8B5CF6',
+    paddingVertical: hp('1.2%'),
+    paddingHorizontal: wp('6%'),
     borderRadius: 20,
-    marginHorizontal: 10,
+    marginHorizontal: wp('2%'),
+    marginVertical: hp('0.6%'),
   },
-  text: { color: '#fff', padding: 25 },
-  smallText: { color: '#fff' },
 
-  simulate: {
-    backgroundColor: '#8A2BE2',
-    padding: 12,
-    borderRadius: 10,
-    width: width * 0.7,
+  smallText: {
+    color: '#fff',
+    fontSize: moderateScale(13),
+  },
+
+  text: {
+    marginTop: hp('4%'),
     alignItems: 'center',
-    marginTop: 8,
+    paddingHorizontal: wp('5%'),
   },
 
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  infoText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: moderateScale(14),
+  },
+
+  infoSubText: {
+    color: '#D8B4FE',
+    marginTop: 6,
+    textAlign: 'center',
+    fontSize: moderateScale(12),
+  },
+
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  permissionText: {
+    color: '#fff',
+    fontSize: moderateScale(14),
+  },
 });

@@ -21,7 +21,7 @@ export default function BankAccInit({ navigation }) {
           onPress={() => navigation.navigate('UserProfile')}
         >
           <Text style={styles.back}>
-            <Icon name="chevron-left" size={28} color="#000000" />     
+            <Icon name="chevron-left" size={28} color="#000000" />
           </Text>
         </TouchableOpacity>
 

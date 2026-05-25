@@ -1,193 +1,203 @@
 import { StyleSheet } from 'react-native';
- 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { moderateScale } from 'react-native-size-matters';
+
 export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingTop: 20,
-    paddingBottom: 110,
+    paddingHorizontal: wp('5%'),
+    paddingBottom: hp('16%'),
   },
- 
+
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
-    
+    marginBottom: hp('2.5%'),
   },
- 
+
   back: {
     color: '#fff',
-    fontSize: 22,
-    marginRight: 14,
+    marginRight: wp('3%'),
   },
- 
+
   header: {
     color: '#fff',
-    fontSize: 22,
+    fontSize: moderateScale(21),
     fontWeight: '700',
-    
+    justifyContent: 'center',
   },
- 
+
   filterRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: hp('2%'),
+    flexWrap: 'wrap',
   },
- 
+
   activeFilter: {
     backgroundColor: '#22c55e',
     color: '#fff',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 18,
-    marginRight: 10,
-    fontSize: 12,
+    paddingVertical: hp('0.8%'),
+    paddingHorizontal: wp('4%'),
+    borderRadius: moderateScale(20),
+    marginRight: wp('2.5%'),
+    fontSize: moderateScale(12),
     fontWeight: '600',
+    marginBottom: hp('1%'),
   },
- 
+
   dropdown: {
-    width: 110,
-    height: 36,
+    minWidth: wp('28%'),
+    height: hp('4.5%'),
     backgroundColor: '#4c1d95',
-    borderRadius: 18,
-    paddingHorizontal: 10,
-    marginRight: 10,
+    borderRadius: moderateScale(20),
+    paddingHorizontal: wp('3%'),
+    marginRight: wp('2.5%'),
+    marginBottom: hp('1%'),
     justifyContent: 'center',
   },
- 
+
   dropdownText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: moderateScale(11),
   },
- 
+
   section: {
     color: '#c4b5fd',
-    marginTop: 16,
-    marginBottom: 10,
+    marginTop: hp('2%'),
+    marginBottom: hp('1.2%'),
     fontWeight: '600',
-    fontSize: 13,
+    fontSize: moderateScale(13),
   },
- 
+
   item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 18,
+    marginBottom: hp('2%'),
   },
- 
+
   left: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
+    paddingRight: wp('2%'),
   },
- 
+
   avatar: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    width: wp('11%'),
+    height: wp('11%'),
+    borderRadius: wp('5.5%'),
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: wp('3%'),
   },
- 
+
   name: {
     color: '#fff',
     fontWeight: '600',
-    fontSize: 15,
+    fontSize: moderateScale(14),
+    maxWidth: wp('45%'),
   },
- 
+
   time: {
     color: '#9ca3af',
-    fontSize: 12,
-    marginTop: 3,
+    fontSize: moderateScale(11),
+    marginTop: hp('0.3%'),
   },
- 
+
   right: {
     alignItems: 'flex-end',
+    maxWidth: wp('30%'),
   },
- 
+
   amount: {
     fontWeight: '700',
-    fontSize: 15,
+    fontSize: moderateScale(14),
   },
- 
+
   status: {
     color: '#9ca3af',
-    fontSize: 11,
-    marginTop: 3,
+    fontSize: moderateScale(10),
+    marginTop: hp('0.3%'),
     textTransform: 'capitalize',
   },
 
-
   historySection: {
-  color: "#6b7280",
-  marginTop: 28,
-  marginBottom: 18,
-  fontWeight: "700",
-  fontSize: 15,
-  letterSpacing: 3,
-  textTransform: "uppercase",
-},
+    color: '#6b7280',
+    marginTop: hp('3%'),
+    marginBottom: hp('2%'),
+    fontWeight: '700',
+    fontSize: moderateScale(14),
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+  },
 
-historyCard: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  paddingVertical: 10,
-  paddingHorizontal: 8,
-  borderBottomWidth: 1,
-  borderBottomColor: "#ececec",
-},
+  historyCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: hp('1.5%'),
+    paddingHorizontal: wp('2%'),
+    borderBottomWidth: 1,
+    borderBottomColor: '#ececec',
+  },
 
-historyLeft: {
-  flexDirection: "row",
-  alignItems: "center",
-  flex: 1,
-},
+  historyLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    paddingRight: wp('2%'),
+  },
 
-historyIconBox: {
-  width: 48,
-  height: 48,
-  borderRadius: 16,
-  backgroundColor: "#f7faff",
-  justifyContent: "center",
-  alignItems: "center",
-  marginRight: 16,
-},
+  historyIconBox: {
+    width: wp('12%'),
+    height: wp('12%'),
+    borderRadius: moderateScale(16),
+    backgroundColor: '#f7faff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: wp('4%'),
+  },
 
-historyUserInfo: {
-  flex: 1,
-},
+  historyUserInfo: {
+    flex: 1,
+  },
 
-historyTypeText: {
-  color: "#c6cedd",
-  fontSize: 12,
-  marginBottom: 2,
-},
+  historyTypeText: {
+    color: '#c6cedd',
+    fontSize: moderateScale(11),
+    marginBottom: hp('0.2%'),
+  },
 
-historyUserName: {
-  color: "#fafafa",
-  fontSize: 16,
-  fontWeight: "500",
-},
+  historyUserName: {
+    color: '#fafafa',
+    fontSize: moderateScale(15),
+    fontWeight: '500',
+  },
 
-historyDateText: {
-  color: "#9ca3af",
-  fontSize: 12,
-  marginTop: 8,
-},
+  historyDateText: {
+    color: '#9ca3af',
+    fontSize: moderateScale(11),
+    marginTop: hp('0.8%'),
+  },
 
-historyAmountContainer: {
-  alignItems: "flex-end",
-},
+  historyAmountContainer: {
+    alignItems: 'flex-end',
+    maxWidth: wp('32%'),
+  },
 
-historyAmountText: {
-  fontSize: 20,
-  fontWeight: "700",
-},
+  historyAmountText: {
+    fontSize: moderateScale(16),
+    fontWeight: '700',
+  },
 
-historyStatusText: {
-  color: "#9ca3af",
-  fontSize: 14,
-  marginTop: 10,
-},
+  historyStatusText: {
+    color: '#9ca3af',
+    fontSize: moderateScale(11),
+    marginTop: hp('0.8%'),
+  },
 });
