@@ -25,6 +25,7 @@ const marketRoutes = require("./routes/marketRoutes");
 const updateMarketCache = require("./services/marketUpdater");
 const bankRoutes = require("./routes/bankRoutes");
 const tradingRoutes = require('./routes/tradingRoutes');
+const kycRoutes = require("./routes/kycRoutes");   // ← NEW
 
 // connect database
 connectDB();
@@ -42,10 +43,7 @@ binanceWebSocket.connect();
 
 // Connect WebSocket price updates to your cache and broadcast to clients
 binanceWebSocket.on('marketUpdate', (marketData) => {
-  // Update real-time price cache
   realtimePriceCache.updatePrices(marketData);
-  
-  // Broadcast to all connected WebSocket clients
   websocketManager.broadcastMarketData(marketData);
 });
 
@@ -64,6 +62,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/market", marketRoutes);
 app.use("/api/bank", bankRoutes);
 app.use("/api/trading", tradingRoutes);
+app.use("/api/kyc", kycRoutes);   // ← NEW
 
 // Root Route
 app.get("/", (req, res) => {

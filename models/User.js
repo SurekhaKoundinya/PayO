@@ -8,15 +8,16 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
 
-  mobile: {                 
+  mobile: {
     type: String,
     unique: true,
     required: true
-  }, referredBy: {
+  },
+
+  referredBy: {
     type: String,
     default: null
   },
-
 
   password: String,
 
@@ -31,12 +32,22 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Wallet"
   },
+
   myReferralCode: {
-  type: String
-},
-transactionPin:{
-  type:String,
-}
+    type: String
+  },
+
+  transactionPin: {
+    type: String
+  },
+
+  // ── KYC Status ────────────────────────────────────────────────────
+  kycStatus: {
+    type: String,
+    enum: ["not_submitted", "pending", "approved", "rejected"],
+    default: "not_submitted"
+  }
+
 });
 
 module.exports = mongoose.model("User", userSchema);
