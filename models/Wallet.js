@@ -8,7 +8,7 @@ const walletSchema = new mongoose.Schema({
 
   balance: { 
     type: Number, 
-    default: 50
+    default: 10000
   },
 
   walletAddress: String,
