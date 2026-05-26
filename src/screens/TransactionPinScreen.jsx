@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   View,
@@ -8,28 +9,28 @@ import {
   StatusBar,
   ScrollView,
 } from 'react-native';
-
+ 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import api from '../api/axios';
 import Icon from 'react-native-vector-icons/Feather';
-
+ 
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+ 
 import { moderateScale } from 'react-native-size-matters';
-
+ 
 export default function TransactionPinScreen({
   navigation,
 }) {
   const [pin, setPin] = useState('');
   const [error, setError] =
     useState('');
-
+ 
   const handlePress = (num) => {
     setError('');
-
+ 
     setPin((prev) => {
       if (prev.length < 4) {
         return prev + num;
@@ -37,13 +38,13 @@ export default function TransactionPinScreen({
       return prev;
     });
   };
-
+ 
   const handleDelete = () => {
     setPin((prev) =>
       prev.slice(0, -1),
     );
   };
-
+ 
   const handleContinue =
     async () => {
       if (pin.length !== 4) {
@@ -52,7 +53,7 @@ export default function TransactionPinScreen({
         );
         return;
       }
-
+ 
       try {
         const response =
           await api.post(
@@ -61,7 +62,7 @@ export default function TransactionPinScreen({
               pin,
             },
           );
-
+ 
         if (
           response.data.message
         ) {
@@ -73,7 +74,7 @@ export default function TransactionPinScreen({
                 text: 'OK',
                 onPress: () =>
                   navigation.replace(
-                    'Main',
+                    'KYCVerification',
                   ),
               },
             ],
@@ -88,7 +89,7 @@ export default function TransactionPinScreen({
         );
       }
     };
-
+ 
   const Key = ({
     num,
     letters,
@@ -103,7 +104,7 @@ export default function TransactionPinScreen({
       <Text style={styles.keyText}>
         {num}
       </Text>
-
+ 
       {letters ? (
         <Text
           style={
@@ -114,7 +115,7 @@ export default function TransactionPinScreen({
       ) : null}
     </TouchableOpacity>
   );
-
+ 
   return (
     <SafeAreaView
       style={styles.safeArea}
@@ -123,7 +124,7 @@ export default function TransactionPinScreen({
         backgroundColor="#EAEAEA"
         barStyle="dark-content"
       />
-
+ 
       <ScrollView
         showsVerticalScrollIndicator={
           false
@@ -148,7 +149,7 @@ export default function TransactionPinScreen({
                 color="#000000"
               />
             </TouchableOpacity>
-
+ 
             <Text
               style={
                 styles.titleCentered
@@ -156,7 +157,7 @@ export default function TransactionPinScreen({
               Set your
               Transaction Pin
             </Text>
-
+ 
             <View
               style={{
                 width:
@@ -166,7 +167,7 @@ export default function TransactionPinScreen({
               }}
             />
           </View>
-
+ 
           <Text style={styles.desc}>
             This 4-digit pin
             secures every
@@ -174,7 +175,7 @@ export default function TransactionPinScreen({
             private and
             memorable.
           </Text>
-
+ 
           <View
             style={
               styles.pinContainer
@@ -198,12 +199,12 @@ export default function TransactionPinScreen({
               ),
             )}
           </View>
-
+ 
           <Text
             style={styles.helper}>
             Enter 4 digits
           </Text>
-
+ 
           {error ? (
             <Text
               style={
@@ -212,7 +213,7 @@ export default function TransactionPinScreen({
               {error}
             </Text>
           ) : null}
-
+ 
           <View
             style={
               styles.keypad
@@ -242,7 +243,7 @@ export default function TransactionPinScreen({
                 }
               />
             </View>
-
+ 
             <View
               style={
                 styles.row
@@ -269,7 +270,7 @@ export default function TransactionPinScreen({
                 }
               />
             </View>
-
+ 
             <View
               style={
                 styles.row
@@ -296,7 +297,7 @@ export default function TransactionPinScreen({
                 }
               />
             </View>
-
+ 
             <View
               style={
                 styles.row
@@ -321,7 +322,7 @@ export default function TransactionPinScreen({
               />
             </View>
           </View>
-
+ 
           <TouchableOpacity
             style={
               styles.button
@@ -342,7 +343,7 @@ export default function TransactionPinScreen({
     </SafeAreaView>
   );
 }
-
+ 
 const styles =
   StyleSheet.create({
     safeArea: {
@@ -350,11 +351,11 @@ const styles =
       backgroundColor:
         '#EAEAEA',
     },
-
+ 
     scrollContent: {
       flexGrow: 1,
     },
-
+ 
     container: {
       flex: 1,
       backgroundColor:
@@ -368,7 +369,7 @@ const styles =
       paddingBottom:
         hp('4%'),
     },
-
+ 
     header: {
       flexDirection:
         'row',
@@ -380,7 +381,7 @@ const styles =
       marginTop:
         hp('1%'),
     },
-
+ 
     titleCentered: {
       fontSize:
         moderateScale(
@@ -395,7 +396,7 @@ const styles =
       marginHorizontal:
         wp('3%'),
     },
-
+ 
     desc: {
       marginTop:
         hp('4%'),
@@ -413,14 +414,14 @@ const styles =
       paddingHorizontal:
         wp('4%'),
     },
-
+ 
     pinContainer: {
       flexDirection:
         'row',
       marginTop:
         hp('4%'),
     },
-
+ 
     box: {
       width:
         moderateScale(
@@ -446,7 +447,7 @@ const styles =
       backgroundColor:
         '#fff',
     },
-
+ 
     pinText: {
       fontSize:
         moderateScale(
@@ -456,7 +457,7 @@ const styles =
         '600',
       color: '#000',
     },
-
+ 
     helper: {
       marginTop:
         hp('1.5%'),
@@ -466,7 +467,7 @@ const styles =
           13,
         ),
     },
-
+ 
     errorText: {
       color: 'red',
       marginTop:
@@ -478,7 +479,7 @@ const styles =
           12,
         ),
     },
-
+ 
     keypad: {
       marginTop:
         hp('4%'),
@@ -486,7 +487,7 @@ const styles =
       alignItems:
         'center',
     },
-
+ 
     row: {
       flexDirection:
         'row',
@@ -496,7 +497,7 @@ const styles =
       marginBottom:
         hp('2%'),
     },
-
+ 
     key: {
       width:
         moderateScale(
@@ -518,7 +519,7 @@ const styles =
         'center',
       elevation: 3,
     },
-
+ 
     emptyKey: {
       width:
         moderateScale(
@@ -529,7 +530,7 @@ const styles =
           70,
         ),
     },
-
+ 
     keyText: {
       fontSize:
         moderateScale(
@@ -539,7 +540,7 @@ const styles =
         '500',
       color: '#000',
     },
-
+ 
     keyLetters: {
       fontSize:
         moderateScale(9),
@@ -547,7 +548,7 @@ const styles =
       marginTop:
         hp('0.2%'),
     },
-
+ 
     button: {
       backgroundColor:
         '#5A00D1',
@@ -563,7 +564,7 @@ const styles =
       marginTop:
         hp('3%'),
     },
-
+ 
     buttonText: {
       color: '#fff',
       fontWeight:
@@ -574,3 +575,4 @@ const styles =
         ),
     },
   });
+ 
