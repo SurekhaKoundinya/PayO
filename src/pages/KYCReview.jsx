@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { AppCtx } from '../App';
 import { kycRequests as init } from '../data/mockData';
 
@@ -40,6 +40,120 @@ function DocCard({ title, emoji, submitted, fields, flagged }) {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+
+/* ── Status Filter Dropdown ── */
+function StatusFilterDropdown({ value, onChange, counts }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const h = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+
+  const options = [
+    { label: 'All',        value: 'All',       dot: '#94A3B8' },
+    { label: 'Pending',    value: 'Pending',   dot: '#D97706' },
+    { label: 'In Review',  value: 'In Review', dot: '#2563EB' },
+    { label: 'Approved',   value: 'Approved',  dot: '#059669' },
+    { label: 'Failed',     value: 'Failed',    dot: '#DC2626' },
+  ];
+
+  const selected = options.find(o => o.value === value) || options[0];
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 7,
+          padding: '7px 14px',
+          background: open ? '#EEF2FF' : 'var(--filter-btn-bg, #F5F3FF)',
+          border: '1.5px solid var(--filter-btn-border, #C7D2FE)',
+          borderRadius: 10,
+          color: 'var(--filter-btn-color, #4F46E5)',
+          fontSize: 13, fontWeight: 600,
+          cursor: 'pointer', fontFamily: "'Inter',sans-serif",
+          transition: 'all 0.18s',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+        </svg>
+        Filters
+        {value !== 'All' && (
+          <span style={{ background:'#4F46E5', color:'#fff', borderRadius:20, padding:'1px 6px', fontSize:10, fontWeight:700 }}>1</span>
+        )}
+        <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"
+          style={{ transition:'transform 0.18s', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+
+      {open && (
+        <div style={{
+          position: 'absolute', top: 'calc(100% + 8px)', right: 0,
+          background: 'var(--dropdown-bg, #fff)',
+          border: '1.5px solid var(--dropdown-border, #E2E8F0)',
+          borderRadius: 12, padding: '6px',
+          minWidth: 200,
+          boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+          zIndex: 500,
+          animation: 'fadeIn 0.15s ease',
+        }}>
+          <div style={{ padding:'6px 12px 8px', fontSize:10.5, fontWeight:700, color:'var(--gray-400)', textTransform:'uppercase', letterSpacing:'0.8px' }}>
+            Filter by Status
+          </div>
+          {options.map(opt => (
+            <div
+              key={opt.value}
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+              style={{
+                padding: '9px 12px',
+                borderRadius: 8,
+                fontSize: 13,
+                fontWeight: value === opt.value ? 600 : 400,
+                color: value === opt.value ? '#4F46E5' : 'var(--dropdown-text, #374151)',
+                background: value === opt.value ? '#EEF2FF' : 'transparent',
+                cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 9,
+                transition: 'background 0.12s',
+              }}
+              onMouseEnter={e => { if (value !== opt.value) e.currentTarget.style.background = 'var(--dropdown-hover, #F9FAFB)'; }}
+              onMouseLeave={e => { if (value !== opt.value) e.currentTarget.style.background = 'transparent'; }}
+            >
+              <span style={{ width:8, height:8, borderRadius:'50%', background:opt.dot, display:'inline-block', flexShrink:0 }}/>
+              <span style={{ flex:1 }}>{opt.label}</span>
+              <span style={{ fontSize:11, fontWeight:700, color: value===opt.value?'#4F46E5':'var(--gray-400)', background: value===opt.value?'#E0E7FF':'var(--gray-100)', padding:'1px 7px', borderRadius:20 }}>
+                {counts[opt.value] ?? 0}
+              </span>
+              {value === opt.value && (
+                <svg width="13" height="13" fill="none" stroke="#4F46E5" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              )}
+            </div>
+          ))}
+          {value !== 'All' && (
+            <div style={{ borderTop:'1px solid var(--dropdown-border, #E2E8F0)', marginTop:4, paddingTop:4 }}>
+              <div
+                onClick={() => { onChange('All'); setOpen(false); }}
+                style={{ padding:'8px 12px', borderRadius:8, fontSize:12, fontWeight:600, color:'#EF4444', cursor:'pointer', textAlign:'center' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#FEF2F2'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              >
+                Clear Filter
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -304,13 +418,7 @@ export default function KYCReview(){
         <div className="page-header-left"><h2>KYC Review</h2><p>Review all submitted identity documents and approve or reject user KYC requests.</p></div>
       </div>
 
-      <div className="chip-row">
-        {Object.entries(counts).map(([s,c])=>(
-          <div key={s} className={`chip${fStatus===s?' act':''}`} onClick={()=>{setFS(s);setPage(1);}}>
-            {s}<span className="chip-count">{c}</span>
-          </div>
-        ))}
-      </div>
+
 
       <div className="card">
         <div className="filter-bar">
@@ -318,6 +426,7 @@ export default function KYCReview(){
             <svg width="14" height="14" fill="none" stroke="var(--gray-400)" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input placeholder="Search by name or ID..." value={search} onChange={e=>{setSrch(e.target.value);setPage(1);}}/>
           </div>
+          <StatusFilterDropdown value={fStatus} onChange={(v) => { setFS(v); setPage(1); }} counts={counts} />
           <div className="filter-count">{filtered.length} results</div>
         </div>
 

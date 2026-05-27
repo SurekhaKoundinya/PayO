@@ -3,8 +3,8 @@ import './App.css';
 import { useState, useEffect, createContext, useContext } from 'react';
 import Sidebar from './components/Sidebar';
 import ConfirmDialog from './components/ConfirmDialog';
+import AdminProfile from './components/AdminProfile';
 import Login from './pages/Login';
-import { PayoIconLogo } from './components/PayoLogo';
 import Dashboard from './pages/Dashboard';
 import KYCReview from './pages/KYCReview';
 import Users from './pages/Users';
@@ -13,7 +13,6 @@ import Analytics from './pages/Analytics';
 import AuditLog from './pages/AuditLog';
 import Notifications from './pages/Notifications';
 
-/* ── Global Context: dark mode + confirm dialog ── */
 export const AppCtx = createContext({});
 
 const titles = {
@@ -22,11 +21,22 @@ const titles = {
   '/audit':'Audit Log', '/notifications':'Notifications',
 };
 
-function Topbar({ admin, onLogout, dark, toggleDark }) {
+function Topbar({ admin, onAdminUpdate, onLogout, dark, toggleDark }) {
   const loc = useLocation();
   const nav  = useNavigate();
   const [search, setSearch] = useState('');
+  const { confirm } = useContext(AppCtx);
   const title = titles[loc.pathname] || 'Dashboard';
+
+  const handleLogout = () => {
+    confirm({
+      title: 'Sign Out',
+      message: 'Are you sure you want to sign out of the PayO Admin Portal?',
+      confirmLabel: 'Yes, Sign Out',
+      cancelLabel: 'Stay',
+      type: 'danger',
+    }, onLogout);
+  };
 
   return (
     <header className="topbar">
@@ -54,25 +64,19 @@ function Topbar({ admin, onLogout, dark, toggleDark }) {
           <span className="notif-dot">5</span>
         </button>
 
-        {/* Admin chip */}
-        <div className="admin-chip">
-          <div className="admin-avatar">
-            {admin?.name?.split(' ').map(w=>w[0]).join('').slice(0,2)}
-          </div>
-          <div>
-            <div className="admin-name">{admin?.name}</div>
-            <div className="admin-role">{admin?.role}</div>
-          </div>
-          <svg width="14" height="14" fill="none" stroke="var(--gray-400)" strokeWidth="2" viewBox="0 0 24 24">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-        </div>
+        {/* Admin Profile — replaces old static chip */}
+        <AdminProfile
+          admin={admin}
+          onUpdate={onAdminUpdate}
+          onLogout={handleLogout}
+          dark={dark}
+        />
       </div>
     </header>
   );
 }
 
-function Portal({ admin, onLogout, dark, toggleDark }) {
+function Portal({ admin, onAdminUpdate, onLogout, dark, toggleDark }) {
   const { confirm } = useContext(AppCtx);
 
   const handleLogout = () => {
@@ -89,7 +93,13 @@ function Portal({ admin, onLogout, dark, toggleDark }) {
     <div className="layout">
       <Sidebar onLogout={handleLogout} />
       <div className="main">
-        <Topbar admin={admin} onLogout={handleLogout} dark={dark} toggleDark={toggleDark} />
+        <Topbar
+          admin={admin}
+          onAdminUpdate={onAdminUpdate}
+          onLogout={onLogout}
+          dark={dark}
+          toggleDark={toggleDark}
+        />
         <Routes>
           <Route path="/"              element={<Dashboard />} />
           <Route path="/kyc"           element={<KYCReview />} />
@@ -105,17 +115,18 @@ function Portal({ admin, onLogout, dark, toggleDark }) {
 }
 
 function AppInner() {
-  const [admin, setAdmin]       = useState(null);   // null = logged out
-  const [dark, setDark]         = useState(false);
-  const [dlg, setDlg]           = useState(null);   // { config, onConfirm }
+  const [admin, setAdmin] = useState(null);
+  const [dark, setDark]   = useState(() => {
+    try { return localStorage.getItem('payo-dark') === 'true'; } catch { return false; }
+  });
+  const [dlg, setDlg] = useState(null);
 
-  /* Apply dark class to body */
   useEffect(() => {
     document.body.classList.toggle('dark', dark);
+    try { localStorage.setItem('payo-dark', dark); } catch {}
   }, [dark]);
 
-  /* Global confirm function — any page can call it via context */
-  const confirm = (config, onConfirm) => setDlg({ config, onConfirm });
+  const confirm     = (config, onConfirm) => setDlg({ config, onConfirm });
   const closeDialog = () => setDlg(null);
 
   return (
@@ -124,13 +135,12 @@ function AppInner() {
         ? <Login onLogin={setAdmin} />
         : <Portal
             admin={admin}
+            onAdminUpdate={(updated) => setAdmin(updated)}
             onLogout={() => setAdmin(null)}
             dark={dark}
             toggleDark={() => setDark(d => !d)}
           />
       }
-
-      {/* Global Confirm Dialog */}
       <ConfirmDialog
         config={dlg?.config}
         onConfirm={() => { dlg?.onConfirm?.(); closeDialog(); }}

@@ -501,3 +501,185 @@ body.dark { --dlg-title: #F1F5F9; --dlg-msg: #9CA3AF; --dlg-border: #374151; --d
 .sidebar-logo {
   border-bottom: 1px solid rgba(255,255,255,0.07);
 }
+
+/* ═══════════════════════════════════════════════
+   NEW DARK STAT CARDS — Dashboard v2
+   ═══════════════════════════════════════════════ */
+
+/* Dark cards look great in both light and dark mode already
+   since they use a fixed dark background (#141B2D).
+   In light mode we give them a subtle lift. */
+body:not(.dark) .stat-card-dark {
+  box-shadow: 0 4px 24px rgba(20, 27, 45, 0.18);
+}
+
+/* On dark mode the card blends more naturally */
+body.dark .stat-card-dark {
+  background: #1a2235 !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+
+/* Make sure the stats grid overrides old 4-col layout */
+.stats-new-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1100px) {
+  .stats-new-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .stats-new-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Stat card theme variables ── */
+/* Light mode */
+:root {
+  --stat-card-bg:     #ffffff;
+  --stat-card-border: #E2E8F0;
+  --stat-card-value:  #0D1B3E;
+  --stat-card-label:  #94A3B8;
+}
+
+/* Dark mode */
+body.dark {
+  --stat-card-bg:     #141B2D;
+  --stat-card-border: rgba(255,255,255,0.07);
+  --stat-card-value:  #FFFFFF;
+  --stat-card-label:  rgba(255,255,255,0.45);
+}
+
+/* ── Filter Button & Dropdown ── */
+:root {
+  --filter-btn-bg:      #F5F3FF;
+  --filter-btn-border:  #C7D2FE;
+  --filter-btn-color:   #4F46E5;
+  --dropdown-bg:        #ffffff;
+  --dropdown-border:    #E2E8F0;
+  --dropdown-text:      #374151;
+  --dropdown-hover:     #F9FAFB;
+}
+
+body.dark {
+  --filter-btn-bg:      rgba(79,70,229,0.15);
+  --filter-btn-border:  rgba(99,102,241,0.35);
+  --filter-btn-color:   #818CF8;
+  --dropdown-bg:        #1F2937;
+  --dropdown-border:    #374151;
+  --dropdown-text:      #E5E7EB;
+  --dropdown-hover:     #374151;
+}
+
+/* ── Admin Profile Panel ── */
+:root {
+  --profile-panel-bg:      #ffffff;
+  --profile-panel-border:  #E2E8F0;
+  --profile-input-bg:      #ffffff;
+  --profile-input-border:  #E2E8F0;
+  --profile-input-disabled:#F8FAFC;
+  --pref-item-bg:          #F8FAFC;
+  --toggle-off:            #CBD5E1;
+}
+body.dark {
+  --profile-panel-bg:      #111827;
+  --profile-panel-border:  #1F2937;
+  --profile-input-bg:      #1F2937;
+  --profile-input-border:  #374151;
+  --profile-input-disabled:#111827;
+  --pref-item-bg:          #1a2235;
+  --toggle-off:            #374151;
+}
+body.dark .admin-chip { background: var(--gray-100); border-color: var(--gray-200); }
+
+/* ═══════════════════════════════════════════════
+   1. PAGE TRANSITIONS
+   ═══════════════════════════════════════════════ */
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page { animation: pageIn 0.28s cubic-bezier(0.22,1,0.36,1); }
+
+/* ═══════════════════════════════════════════════
+   2. SIDEBAR ACTIVE GLOW INDICATOR
+   ═══════════════════════════════════════════════ */
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(37,99,235,0.85), rgba(139,92,246,0.7)) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 14px rgba(37,99,235,0.35) !important;
+  position: relative !important;
+}
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -8px; top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background: linear-gradient(180deg, #60A5FA, #A78BFA);
+  border-radius: 0 4px 4px 0;
+  box-shadow: 0 0 10px rgba(96,165,250,0.8), 0 0 20px rgba(167,139,250,0.4);
+}
+
+/* ═══════════════════════════════════════════════
+   3. SKELETON SHIMMER
+   ═══════════════════════════════════════════════ */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--sk-base,#E2E8F0) 25%, var(--sk-shine,#F1F5F9) 50%, var(--sk-base,#E2E8F0) 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite ease-in-out;
+  border-radius: 8px;
+}
+body.dark .skeleton {
+  --sk-base:  #1F2937;
+  --sk-shine: #374151;
+}
+.sk-row  { height: 44px; margin-bottom: 10px; border-radius: 10px; }
+.sk-card { border-radius: 14px; }
+.sk-text { height: 13px; border-radius: 6px; margin-bottom: 8px; }
+.sk-text.wide  { width: 70%; }
+.sk-text.med   { width: 45%; }
+.sk-text.short { width: 28%; }
+
+/* ═══════════════════════════════════════════════
+   USER STATUS BADGES
+   ═══════════════════════════════════════════════ */
+.b-status-active   { background: #F0FDF4; color: #059669; }
+.b-status-inactive { background: #F8FAFC; color: #64748B; }
+.b-status-banned   { background: #FEF2F2; color: #DC2626; }
+.b-status-suspended{ background: #FFF7ED; color: #D97706; }
+
+/* ═══════════════════════════════════════════════
+   DATE RANGE PICKER
+   ═══════════════════════════════════════════════ */
+.date-range-bar {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+}
+.date-range-btn {
+  padding: 7px 14px; border-radius: 8px;
+  border: 1.5px solid var(--gray-200);
+  background: var(--white); color: var(--gray-600);
+  font-size: 12.5px; font-weight: 500; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.18s;
+}
+.date-range-btn:hover { border-color: var(--blue); color: var(--blue); }
+.date-range-btn.active {
+  background: var(--blue); border-color: var(--blue);
+  color: #fff; font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+}
+body.dark .date-range-btn {
+  background: #1F2937; border-color: #374151; color: #9CA3AF;
+}
+body.dark .date-range-btn.active {
+  background: var(--blue); border-color: var(--blue); color: #fff;
+}
