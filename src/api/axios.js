@@ -1,9 +1,8 @@
 import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
-import React, {useEffect, useState} from 'react';
 
 const api = axios.create({
-  baseURL: 'http://payo-app.duckdns.org:3001',
+  baseURL: 'http://payo-new.duckdns.org:3001',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

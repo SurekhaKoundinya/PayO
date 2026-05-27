@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Header from '../components/header';
+import Header from '../../components/common/Header';
 import Icon from 'react-native-vector-icons/Feather';
 
 import {
@@ -20,31 +20,34 @@ import {
 } from 'react-native-responsive-screen';
 
 import { moderateScale } from 'react-native-size-matters';
+import { useFocusEffect } from '@react-navigation/native';
+import api from '../../api/axios';
 
 const MarketScreen = ({ navigation }) => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchExpertCoins();
-  }, []);
+   useFocusEffect(
+     useCallback(() => {
+       fetchExpertCoins();
+     }, []),
+   );
 
   const fetchExpertCoins = async () => {
-    try {
-      const res = await fetch(
-        'http://payo-app.duckdns.org:3001/api/market/overview',
-      );
+  try {
+    setLoading(true);
 
-      const result = await res.json();
+    const res = await api.get('/api/market/overview');
 
-      console.log(result, 'data');
+    console.log(res.data, 'data');
 
-      setCoins(result.data.slice(0, 50));
-      setLoading(false);
-    } catch (error) {
-      console.log('Expert picks error:', error);
-    }
-  };
+    setCoins(res?.data?.data?.slice(0, 50));
+    setLoading(false);
+  } catch (error) {
+    console.log('Expert picks error:', error);
+    setLoading(false);
+  }
+};
 
   const renderItem = ({ item }) => {
     const isLong =
@@ -67,8 +70,8 @@ const MarketScreen = ({ navigation }) => {
             <Image
               source={{
                 uri:
-                  item.image ||
-                  'https://via.placeholder.com/40',
+                  item?.image ||
+                  'https://cdn-icons-png.flaticon.com/512/825/825508.png',
               }}
               style={styles.coinImage}
             />
@@ -104,10 +107,14 @@ const MarketScreen = ({ navigation }) => {
         <View style={styles.actionRow}>
           <View style={styles.profitBox}>
             <Text style={styles.profitText}>
-              {Math.abs(
+              {/* {Math.abs(
                 item.priceChangePercentage24h ||
                   0,
-              ).toFixed(2)}
+              ).toFixed(2)} */}
+
+                     {(
+  item.priceChangePercentage24h || 0
+).toFixed(2)}
               % Expected profit
             </Text>
           </View>

@@ -5,7 +5,9 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+
 import styles from './BankAccInitStyles';
+import Icon from "react-native-vector-icons/Feather";
 
 export default function BankAccInit({ navigation }) {
   return (
@@ -13,13 +15,21 @@ export default function BankAccInit({ navigation }) {
 
       {/* HEADER */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() =>navigation.navigate('UserProfile')}>
-          <Text style={styles.back}>←</Text>
+
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.navigate('UserProfile')}
+        >
+          <Text style={styles.back}>
+            <Icon name="chevron-left" size={28} color="#000000" />
+          </Text>
         </TouchableOpacity>
+
+        <Text style={styles.title}>Add Bank Account</Text>
+
       </View>
 
-      {/* TITLE */}
-      <Text style={styles.title}>Add Bank Account</Text>
+      {/* SUBTITLE */}
       <Text style={styles.subtitle}>
         Securely link your bank account{"\n"}
         to send and receive money
@@ -74,7 +84,7 @@ export default function BankAccInit({ navigation }) {
       {/* BUTTON */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('AddBankDetails')}   // ✅ FIXED HERE
+        onPress={() => navigation.navigate('AddBankDetails')}
       >
         <Text style={styles.buttonText}>
           Add New Bank Account

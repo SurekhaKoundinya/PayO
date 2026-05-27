@@ -102,15 +102,24 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import axios from "axios";
 import styles from "./TpinStyles";
+import api from "../../api/axios";
 
 const TpinScreen = ({ navigation, route }) => {
+
+  const account = String(route?.params?.account || "").trim();
+  const bankResponse = route?.params?.bankResponse?._id || {};
+
+  console.log("ACCOUNT:", account);
+  console.log("BANK RESPONSE:", bankResponse);
+
   const [pin, setPin] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ ONLY THIS — correct extraction
- const account = String(route?.params?.account || "").trim();
 
-console.log("FINAL ACCOUNT:", account);
+  // ✅ ONLY THIS — correct extraction
+  // const account = String(route?.params?.account || "").trim();
+
+  console.log("FINAL ACCOUNT:", account);
 
   const handlePress = (num) => {
     if (pin.length < 4) {
@@ -122,49 +131,90 @@ console.log("FINAL ACCOUNT:", account);
     setPin(pin.slice(0, -1));
   };
 
+  // const handleSubmit = async () => {
+  //   if (pin.length !== 4) {
+  //     alert("Enter 4 digit TPIN");
+  //     return;
+  //   }
+
+  //   console.log("ACCOUNT FROM TPIN:", account);
+
+  //   if (!account) {
+  //     alert("Account not found ❌");
+  //     return;
+  //   }
+
+  //   if (loading) return;
+
+  //   try {
+  //     setLoading(true);
+
+  //     const res = await axios.post(
+  //       "http://10.0.2.2:3001/save-tpin",
+  //       {
+  //         account: account.trim(),
+  //         tpin: pin,
+  //       }
+  //     );
+
+  //     console.log("API RESPONSE:", res.data);
+
+  //     if (res?.data?.success) {
+  //       alert("TPIN Created Successfully");
+  //       navigation.navigate("BankAddedScreen");
+  //     } else {
+  //       alert("Account not found ❌");
+  //     }
+
+  //   } catch (err) {
+  //     // console.log("TPIN API ERROR:", err?.response?.data || err.message);
+  //     // alert("Error saving TPIN");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async () => {
-    if (pin.length !== 4) {
-      alert("Enter 4 digit TPIN");
-      return;
-    }
+  if (pin.length !== 4) {
+    alert("Enter 4 digit TPIN");
+    return;
+  }
 
-    console.log("ACCOUNT FROM TPIN:", account);
+  if (!account) {
+    alert("Account not found ❌");
+    return;
+  }
 
-    if (!account) {
+  if (loading) return;
+
+  try {
+    setLoading(true);
+
+    const res = await api.post(
+      "api/bank/set-tpin",
+      {
+        // account: account,
+        tpin: pin,
+        bankId: bankResponse   // ✅ send previous API response also
+      }
+    );
+
+    console.log("TPIN API RESPONSE:", res.data);
+
+    if (res?.data?.success) {
+      alert("TPIN Created Successfully");
+      navigation.navigate("BankAddedScreen");
+    } else {
       alert("Account not found ❌");
-      return;
     }
 
-    if (loading) return;
-
-    try {
-      setLoading(true);
-
-      // const res = await axios.post(
-      //   "http://10.0.2.2:3001/save-tpin",
-      //   {
-      //     account: account.trim(),
-      //     tpin: pin,
-      //   }
-      // );
-
-      // console.log("API RESPONSE:", res.data);
-
-      // if (res?.data?.success) {
-        alert("TPIN Created Successfully");
-        navigation.navigate("BankAddedScreen");
-      // } else {
-      //   alert("Account not found ❌");
-      // }
-
-    } catch (err) {
-      // console.log("TPIN API ERROR:", err?.response?.data || err.message);
-      // alert("Error saving TPIN");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  } catch (err) {
+    console.log("TPIN API ERROR:", err?.response?.data || err.message);
+    alert("Error saving TPIN");
+  } finally {
+    setLoading(false);
+  }
+};
   const renderDot = (index) => (
     <View
       key={index}
@@ -177,7 +227,7 @@ console.log("FINAL ACCOUNT:", account);
 
   return (
     <View style={styles.container}>
-    <Text>ACCOUNT: {account}</Text>
+      <Text>ACCOUNT: {account}</Text>
 
       <Text style={styles.title}>Create TPIN</Text>
       <Text style={styles.subtitle}>Enter 4-digit secure PIN</Text>
@@ -187,7 +237,7 @@ console.log("FINAL ACCOUNT:", account);
       </View>
 
       <View style={styles.numpad}>
-        {[1,2,3,4,5,6,7,8,9].map((num) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
           <TouchableOpacity
             key={num}
             style={styles.key}

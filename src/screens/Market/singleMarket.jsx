@@ -1,1530 +1,1014 @@
-// import React from 'react';
-// import {
-//   View,
-//   Text,
-//   StyleSheet,
-//   Image,
-//   ScrollView,
-// } from 'react-native';
 
-// import { SafeAreaView } from 'react-native-safe-area-context';
-// import { LineChart } from 'react-native-chart-kit';
-// import Header from '../components/header';
 
-// import {
-//   widthPercentageToDP as wp,
-//   heightPercentageToDP as hp,
-// } from 'react-native-responsive-screen';
-
-// import { moderateScale } from 'react-native-size-matters';
-
-// export default function CoinDetailsScreen({
-//   route,
-// }) {
-//   const { coin } = route.params;
-
-//   const isNegative =
-//     coin.priceChangePercentage24h < 0;
-
-//   const graphData = [
-//     coin.price + coin.price * 0.15,
-//     coin.price + coin.price * 0.1,
-//     coin.price + coin.price * 0.05,
-//     coin.price,
-//     coin.price - coin.price * 0.03,
-//     coin.price + coin.price * 0.02,
-//     coin.price - coin.price * 0.04,
-//     coin.price,
-//   ];
-
-//   return (
-//     <SafeAreaView
-//       style={styles.container}
-//       edges={['top', 'bottom']}>
-//       <ScrollView
-//         showsVerticalScrollIndicator={false}
-//         keyboardShouldPersistTaps="handled"
-//         contentContainerStyle={
-//           styles.scrollContent
-//         }>
-//         <Header />
-
-//         <View style={styles.marketCard}>
-//           <View
-//             style={
-//               styles.marketHeader
-//             }>
-//             <View
-//               style={
-//                 styles.marketCoinRow
-//               }>
-//               <Image
-//                 source={{
-//                   uri:
-//                     coin.image ||
-//                     'https://via.placeholder.com/60',
-//                 }}
-//                 style={
-//                   styles.marketCoinImage
-//                 }
-//               />
-
-//               <View
-//                 style={
-//                   styles.coinInfo
-//                 }>
-//                 <Text
-//                   style={
-//                     styles.marketCoinName
-//                   }
-//                   numberOfLines={1}>
-//                   {coin.name}
-//                 </Text>
-
-//                 <Text
-//                   style={
-//                     styles.marketCoinSymbol
-//                   }>
-//                   {coin.symbol?.toUpperCase()}
-//                 </Text>
-//               </View>
-//             </View>
-
-//             <View
-//               style={[
-//                 styles.marketBadge,
-//                 {
-//                   backgroundColor:
-//                     isNegative
-//                       ? '#FFE5EA'
-//                       : '#E7FFF1',
-//                 },
-//               ]}>
-//               <Text
-//                 style={[
-//                   styles.badgeText,
-//                   {
-//                     color:
-//                       isNegative
-//                         ? '#FF4D6D'
-//                         : '#00C853',
-//                   },
-//                 ]}>
-//                 {isNegative
-//                   ? 'Bearish'
-//                   : 'Bullish'}
-//               </Text>
-//             </View>
-//           </View>
-
-//           <View
-//             style={
-//               styles.priceSection
-//             }>
-//             <Text
-//               style={
-//                 styles.marketPrice
-//               }>
-//               $
-//               {coin?.price?.toLocaleString()}
-//             </Text>
-
-//             <Text
-//               style={[
-//                 styles.marketChange,
-//                 {
-//                   color:
-//                     isNegative
-//                       ? '#FF4D6D'
-//                       : '#00C853',
-//                 },
-//               ]}>
-//               {isNegative
-//                 ? '▼'
-//                 : '▲'}{' '}
-//               {Math.abs(
-//                 coin.priceChangePercentage24h,
-//               ).toFixed(2)}
-//               %
-//             </Text>
-//           </View>
-
-//           <LineChart
-//             data={{
-//               datasets: [
-//                 {
-//                   data: graphData,
-//                 },
-//               ],
-//             }}
-//             width={wp('77%')}
-//             height={hp('28%')}
-//             withDots={false}
-//             withInnerLines={false}
-//             withOuterLines={false}
-//             withHorizontalLabels={false}
-//             withVerticalLabels={false}
-//             withShadow={false}
-//             transparent
-//             bezier
-//             chartConfig={{
-//               backgroundGradientFrom:
-//                 '#fff',
-//               backgroundGradientTo:
-//                 '#fff',
-//               decimalPlaces: 6,
-//               color: () =>
-//                 isNegative
-//                   ? '#FF4D6D'
-//                   : '#00C853',
-//               strokeWidth: 3,
-//               propsForBackgroundLines:
-//                 {
-//                   stroke:
-//                     'transparent',
-//                 },
-//             }}
-//             style={
-//               styles.chart
-//             }
-//           />
-
-//           <View style={styles.statsBox}>
-//             <View
-//               style={
-//                 styles.statItem
-//               }>
-//               <Text
-//                 style={
-//                   styles.statLabel
-//                 }>
-//                 Market Cap
-//               </Text>
-
-//               <Text
-//                 style={
-//                   styles.statValue
-//                 }
-//                 numberOfLines={1}>
-//                 $
-//                 {coin?.marketCap?.toLocaleString() ||
-//                   'N/A'}
-//               </Text>
-//             </View>
-
-//             <View
-//               style={
-//                 styles.statItem
-//               }>
-//               <Text
-//                 style={
-//                   styles.statLabel
-//                 }>
-//                 24h High
-//               </Text>
-
-//               <Text
-//                 style={
-//                   styles.statValue
-//                 }>
-//                 $
-//                 {coin?.high24h?.toLocaleString()}
-//               </Text>
-//             </View>
-
-//             <View
-//               style={
-//                 styles.statItem
-//               }>
-//               <Text
-//                 style={
-//                   styles.statLabel
-//                 }>
-//                 24h Low
-//               </Text>
-
-//               <Text
-//                 style={
-//                   styles.statValue
-//                 }>
-//                 $
-//                 {coin?.low24h?.toLocaleString()}
-//               </Text>
-//             </View>
-//           </View>
-//         </View>
-//       </ScrollView>
-//     </SafeAreaView>
-//   );
-// }
-
-// const styles =
-//   StyleSheet.create({
-//     container: {
-//       flex: 1,
-//       backgroundColor:
-//         '#3B0A6B',
-//     },
-
-//     scrollContent: {
-//       paddingHorizontal:
-//         wp('4.5%'),
-//       paddingBottom:
-//         hp('4%'),
-//       flexGrow: 1,
-//     },
-
-//     marketCard: {
-//       backgroundColor:
-//         '#cecdfa',
-//       borderRadius:
-//         moderateScale(28),
-//       padding: wp('5%'),
-//       marginTop: hp('2%'),
-//       marginBottom: hp('4%'),
-//     },
-
-//     marketHeader: {
-//       flexDirection:
-//         'row',
-//       justifyContent:
-//         'space-between',
-//       alignItems:
-//         'flex-start',
-//     },
-
-//     marketCoinRow: {
-//       flexDirection:
-//         'row',
-//       alignItems:
-//         'center',
-//       flex: 1,
-//       paddingRight:
-//         wp('3%'),
-//     },
-
-//     coinInfo: {
-//       flex: 1,
-//     },
-
-//     marketCoinImage: {
-//       width: wp('15%'),
-//       height: wp('15%'),
-//       borderRadius:
-//         wp('7.5%'),
-//       marginRight:
-//         wp('4%'),
-//     },
-
-//     marketCoinName: {
-//       fontSize:
-//         moderateScale(
-//           22,
-//         ),
-//       fontWeight:
-//         '700',
-//       color: '#111',
-//     },
-
-//     marketCoinSymbol: {
-//       fontSize:
-//         moderateScale(
-//           14,
-//         ),
-//       color: '#777',
-//       marginTop:
-//         hp('0.5%'),
-//     },
-
-//     marketBadge: {
-//       paddingHorizontal:
-//         wp('4%'),
-//       paddingVertical:
-//         hp('1%'),
-//       borderRadius:
-//         moderateScale(
-//           24,
-//         ),
-//     },
-
-//     badgeText: {
-//       fontWeight: '700',
-//       fontSize:
-//         moderateScale(
-//           12,
-//         ),
-//     },
-
-//     priceSection: {
-//       marginTop:
-//         hp('3.5%'),
-//     },
-
-//     marketPrice: {
-//       fontSize:
-//         moderateScale(
-//           28,
-//         ),
-//       fontWeight:
-//         '800',
-//       color: '#000',
-//     },
-
-//     marketChange: {
-//       marginTop:
-//         hp('1%'),
-//       fontSize:
-//         moderateScale(
-//           18,
-//         ),
-//       fontWeight:
-//         '700',
-//     },
-
-//     chart: {
-//       marginTop:
-//         hp('3%'),
-//       borderRadius:
-//         moderateScale(
-//           20,
-//         ),
-//       alignSelf:
-//         'center',
-//     },
-
-//     statsBox: {
-//       marginTop:
-//         hp('4%'),
-//       backgroundColor:
-//         '#F7F8FA',
-//       borderRadius:
-//         moderateScale(
-//           20,
-//         ),
-//       padding: wp('5%'),
-//     },
-
-//     statItem: {
-//       marginBottom:
-//         hp('2.2%'),
-//     },
-
-//     statLabel: {
-//       fontSize:
-//         moderateScale(
-//           13,
-//         ),
-//       color: '#888',
-//       marginBottom:
-//         hp('0.6%'),
-//     },
-
-//     statValue: {
-//       fontSize:
-//         moderateScale(
-//           17,
-//         ),
-//       fontWeight:
-//         '700',
-//       color: '#111',
-//     },
-//   });
-// CryptoDetailsScreen.js
-
-// CryptoDetailsScreen.js
-
-// TradingScreen.js
-
-// TradingScreen.js
-
-// import React, { useState } from 'react';
-// import {
-//   SafeAreaView,
-//   View,
-//   Text,
-//   StyleSheet,
-//   TouchableOpacity,
-//   ScrollView,
-//   Dimensions,
-// } from 'react-native';
-
-// import LinearGradient from 'react-native-linear-gradient';
-// import Icon from 'react-native-vector-icons/Feather';
-// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
-// import {
-//   LineChart,
-//   BarChart,
-// } from 'react-native-gifted-charts';
-
-// const { width } = Dimensions.get('window');
-
-// export default function TradingScreen() {
-//   const [chartType, setChartType] =
-//     useState('line');
-
-//   const [selectedTab, setSelectedTab] =
-//     useState('1 day');
-
-//   const lineData = [
-//     { value: 74900 },
-//     { value: 75020 },
-//     { value: 74850 },
-//     { value: 75120 },
-//     { value: 75200 },
-//     { value: 75100 },
-//     { value: 75300 },
-//     { value: 75220 },
-//     { value: 75150 },
-//     { value: 75082 },
-//     { value: 75160 },
-//     { value: 75220 },
-//     { value: 75090 },
-//     { value: 75087 },
-//   ];
-
-//   const candleData = [
-//     {
-//       value: 40,
-//       frontColor: '#00C087',
-//     },
-//     {
-//       value: 70,
-//       frontColor: '#FF4D6D',
-//     },
-//     {
-//       value: 55,
-//       frontColor: '#00C087',
-//     },
-//     {
-//       value: 85,
-//       frontColor: '#FF4D6D',
-//     },
-//     {
-//       value: 65,
-//       frontColor: '#00C087',
-//     },
-//     {
-//       value: 75,
-//       frontColor: '#FF4D6D',
-//     },
-//     {
-//       value: 90,
-//       frontColor: '#00C087',
-//     },
-//     {
-//       value: 50,
-//       frontColor: '#FF4D6D',
-//     },
-//     {
-//       value: 72,
-//       frontColor: '#00C087',
-//     },
-//     {
-//       value: 68,
-//       frontColor: '#FF4D6D',
-//     },
-//     {
-//       value: 78,
-//       frontColor: '#00C087',
-//     },
-//     {
-//       value: 52,
-//       frontColor: '#FF4D6D',
-//     },
-//   ];
-
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <LinearGradient
-//         colors={['#0B1220', '#111827']}
-//         style={styles.container}
-//       >
-//         <ScrollView
-//           showsVerticalScrollIndicator={false}
-//           contentContainerStyle={{
-//             paddingBottom: 60,
-//           }}
-//         >
-//           {/* HEADER */}
-
-//           <View style={styles.header}>
-//             <TouchableOpacity>
-//               <Icon
-//                 name="menu"
-//                 size={28}
-//                 color="#fff"
-//               />
-//             </TouchableOpacity>
-
-//             <View style={styles.logoRow}>
-//               <View style={styles.coinIcon}>
-//                 <FontAwesome5
-//                   name="bitcoin"
-//                   size={18}
-//                   color="#fff"
-//                 />
-//               </View>
-
-//               <Text style={styles.logoText}>
-//                 BTC/USDT
-//               </Text>
-//             </View>
-
-//             <TouchableOpacity>
-//               <Icon
-//                 name="search"
-//                 size={24}
-//                 color="#fff"
-//               />
-//             </TouchableOpacity>
-//           </View>
-
-//           {/* PRICE */}
-
-//           <View style={styles.priceSection}>
-//             <View>
-//               <Text style={styles.price}>
-//                 76,717.27
-//               </Text>
-
-//               <View style={styles.row}>
-//                 <Text style={styles.subPrice}>
-//                   INR
-//                 </Text>
-
-//                 <Text style={styles.loss}>
-//                   {' '}
-//                   -118.75
-//                 </Text>
-//               </View>
-//             </View>
-
-//             <TouchableOpacity
-//               style={styles.startBtn}
-//             >
-//               <Text style={styles.startText}>
-//                 Get started
-//               </Text>
-//             </TouchableOpacity>
-//           </View>
-
-//           {/* FULL CHART */}
-
-//           <TouchableOpacity
-//             style={styles.fullChartBtn}
-//           >
-//             <Icon
-//               name="maximize-2"
-//               size={20}
-//               color="#fff"
-//             />
-
-//             <Text style={styles.fullChartText}>
-//               Full chart
-//             </Text>
-//           </TouchableOpacity>
-
-//           {/* GRAPH */}
-
-//           <View style={styles.graphContainer}>
-//             {chartType === 'candle' ? (
-//               <BarChart
-//                 data={candleData}
-//                 width={width - 50}
-//                 height={420}
-//                 spacing={18}
-//                 barWidth={14}
-//                 roundedTop
-//                 hideRules={false}
-//                 hideYAxisText={false}
-//                 yAxisColor="#374151"
-//                 xAxisColor="#374151"
-//                 rulesColor="#1F2937"
-//                 xAxisLabelTextStyle={{
-//                   color: '#8E98A7',
-//                 }}
-//                 yAxisTextStyle={{
-//                   color: '#8E98A7',
-//                 }}
-//                 noOfSections={5}
-//               />
-//             ) : (
-//               <LineChart
-//                 areaChart
-//                 curved
-//                 data={lineData}
-//                 height={420}
-//                 width={width - 40}
-//                 color="#FF4D6D"
-//                 startFillColor="#FF4D6D"
-//                 endFillColor="#FF4D6D"
-//                 startOpacity={0.35}
-//                 endOpacity={0.05}
-//                 spacing={24}
-//                 thickness={3}
-//                 hideDataPoints={false}
-//                 dataPointsColor="#FF4D6D"
-//                 yAxisColor="#374151"
-//                 xAxisColor="#374151"
-//                 color1="#FF4D6D"
-//                 textColor="#9CA3AF"
-//                 hideRules={false}
-//                 rulesColor="#1F2937"
-//                 noOfSections={5}
-//               />
-//             )}
-//           </View>
-
-//           {/* SWITCH */}
-
-//           <View style={styles.switchRow}>
-//             <TouchableOpacity
-//               style={[
-//                 styles.switchBtn,
-//                 chartType === 'line' &&
-//                   styles.activeSwitch,
-//               ]}
-//               onPress={() =>
-//                 setChartType('line')
-//               }
-//             >
-//               <Icon
-//                 name="trending-up"
-//                 size={18}
-//                 color={
-//                   chartType === 'line'
-//                     ? '#fff'
-//                     : '#8E98A7'
-//                 }
-//               />
-
-//               <Text
-//                 style={[
-//                   styles.switchText,
-//                   chartType === 'line' &&
-//                     styles.activeSwitchText,
-//                 ]}
-//               >
-//                 Line
-//               </Text>
-//             </TouchableOpacity>
-
-//             <TouchableOpacity
-//               style={[
-//                 styles.switchBtn,
-//                 chartType === 'candle' &&
-//                   styles.activeSwitch,
-//               ]}
-//               onPress={() =>
-//                 setChartType('candle')
-//               }
-//             >
-//               <Icon
-//                 name="bar-chart-2"
-//                 size={18}
-//                 color={
-//                   chartType === 'candle'
-//                     ? '#fff'
-//                     : '#8E98A7'
-//                 }
-//               />
-
-//               <Text
-//                 style={[
-//                   styles.switchText,
-//                   chartType === 'candle' &&
-//                     styles.activeSwitchText,
-//                 ]}
-//               >
-//                 Candle
-//               </Text>
-//             </TouchableOpacity>
-//           </View>
-
-//           {/* TIME TABS */}
-
-//           <View style={styles.tabs}>
-//             {[
-//               '1 day',
-//               '5 days',
-//               '1 month',
-//               '6 months',
-//             ].map(item => (
-//               <TouchableOpacity
-//                 key={item}
-//                 style={[
-//                   styles.tabBtn,
-//                   selectedTab === item &&
-//                     styles.activeTab,
-//                 ]}
-//                 onPress={() =>
-//                   setSelectedTab(item)
-//                 }
-//               >
-//                 <Text
-//                   style={[
-//                     styles.tabTitle,
-//                     selectedTab === item &&
-//                       styles.activeTabText,
-//                   ]}
-//                 >
-//                   {item}
-//                 </Text>
-
-//                 <Text style={styles.tabPercent}>
-//                   -0.12%
-//                 </Text>
-//               </TouchableOpacity>
-//             ))}
-//           </View>
-
-//           {/* ABOUT */}
-
-//           <View style={styles.aboutSection}>
-//             <Text style={styles.aboutTitle}>
-//               About Bitcoin
-//             </Text>
-
-//             <Text style={styles.aboutText}>
-//               Bitcoin is a decentralized digital
-//               currency that enables secure
-//               peer-to-peer transactions without
-//               banks or central authorities.
-//             </Text>
-
-//             <Text style={styles.aboutText}>
-//               BTC prices move based on trading
-//               activity, investor sentiment,
-//               worldwide economic events, and
-//               cryptocurrency market demand.
-//             </Text>
-
-//             <Text style={styles.aboutText}>
-//               Bitcoin is widely used for trading,
-//               investment, digital payments, and
-//               blockchain innovation globally.
-//             </Text>
-//           </View>
-
-//           {/* KEY DATA */}
-
-//           <View style={styles.keyData}>
-//             <Text style={styles.aboutTitle}>
-//               Key data points
-//             </Text>
-
-//             <View style={styles.dataRow}>
-//               <Text style={styles.dataLabel}>
-//                 Volume
-//               </Text>
-
-//               <Text style={styles.dataValue}>
-//                 8.61 M
-//               </Text>
-//             </View>
-
-//             <View style={styles.dataRow}>
-//               <Text style={styles.dataLabel}>
-//                 Previous close
-//               </Text>
-
-//               <Text style={styles.dataValue}>
-//                 75,200.85
-//               </Text>
-//             </View>
-
-//             <View style={styles.dataRow}>
-//               <Text style={styles.dataLabel}>
-//                 Open
-//               </Text>
-
-//               <Text style={styles.dataValue}>
-//                 74,806.49
-//               </Text>
-//             </View>
-
-//             <View style={styles.dataRow}>
-//               <Text style={styles.dataLabel}>
-//                 Day range
-//               </Text>
-
-//               <Text style={styles.dataValue}>
-//                 74,529 - 75,244
-//               </Text>
-//             </View>
-//           </View>
-//         </ScrollView>
-//       </LinearGradient>
-//     </SafeAreaView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#0B1220',
-//   },
-
-//   header: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     paddingHorizontal: 18,
-//     paddingTop: 16,
-//   },
-
-//   logoRow: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-
-//   coinIcon: {
-//     width: 38,
-//     height: 38,
-//     borderRadius: 19,
-//     backgroundColor: '#F7931A',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginRight: 10,
-//   },
-
-//   logoText: {
-//     color: '#fff',
-//     fontSize: 28,
-//     fontWeight: '700',
-//   },
-
-//   priceSection: {
-//     paddingHorizontal: 18,
-//     marginTop: 28,
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//   },
-
-//   price: {
-//     color: '#00C087',
-//     fontSize: 48,
-//     fontWeight: '800',
-//   },
-
-//   row: {
-//     flexDirection: 'row',
-//     marginTop: 8,
-//   },
-
-//   subPrice: {
-//     color: '#fff',
-//     fontSize: 18,
-//   },
-
-//   loss: {
-//     color: '#FF4D6D',
-//     fontSize: 18,
-//     fontWeight: '700',
-//   },
-
-//   startBtn: {
-//     paddingHorizontal: 22,
-//     paddingVertical: 14,
-//     borderRadius: 16,
-//     backgroundColor: '#4F46E5',
-//   },
-
-//   startText: {
-//     color: '#fff',
-//     fontWeight: '700',
-//     fontSize: 16,
-//   },
-
-//   fullChartBtn: {
-//     marginTop: 30,
-//     marginLeft: 18,
-//     width: 160,
-//     height: 52,
-//     borderRadius: 14,
-//     borderWidth: 1,
-//     borderColor: '#374151',
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-
-//   fullChartText: {
-//     color: '#fff',
-//     fontSize: 18,
-//     marginLeft: 10,
-//   },
-
-//   graphContainer: {
-//     marginTop: 20,
-//     alignItems: 'center',
-//   },
-
-//   switchRow: {
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     marginTop: 22,
-//   },
-
-//   switchBtn: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     paddingHorizontal: 22,
-//     paddingVertical: 12,
-//     borderRadius: 14,
-//     backgroundColor: '#111827',
-//     marginHorizontal: 8,
-//   },
-
-//   activeSwitch: {
-//     backgroundColor: '#2563EB',
-//   },
-
-//   switchText: {
-//     color: '#8E98A7',
-//     marginLeft: 8,
-//     fontSize: 16,
-//     fontWeight: '600',
-//   },
-
-//   activeSwitchText: {
-//     color: '#fff',
-//   },
-
-//   tabs: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-around',
-//     marginTop: 32,
-//     paddingHorizontal: 12,
-//   },
-
-//   tabBtn: {
-//     paddingHorizontal: 16,
-//     paddingVertical: 14,
-//     borderRadius: 16,
-//     backgroundColor: '#111827',
-//     alignItems: 'center',
-//   },
-
-//   activeTab: {
-//     backgroundColor: '#1F2937',
-//   },
-
-//   tabTitle: {
-//     color: '#fff',
-//     fontSize: 16,
-//     fontWeight: '700',
-//   },
-
-//   activeTabText: {
-//     color: '#fff',
-//   },
-
-//   tabPercent: {
-//     color: '#FF4D6D',
-//     marginTop: 6,
-//     fontSize: 15,
-//     fontWeight: '600',
-//   },
-
-//   aboutSection: {
-//     marginTop: 40,
-//     paddingHorizontal: 18,
-//   },
-
-//   aboutTitle: {
-//     color: '#fff',
-//     fontSize: 34,
-//     fontWeight: '800',
-//     marginBottom: 18,
-//   },
-
-//   aboutText: {
-//     color: '#D1D5DB',
-//     fontSize: 18,
-//     lineHeight: 30,
-//     marginBottom: 18,
-//   },
-
-//   keyData: {
-//     marginTop: 20,
-//     paddingHorizontal: 18,
-//     paddingBottom: 50,
-//   },
-
-//   dataRow: {
-//     marginBottom: 28,
-//   },
-
-//   dataLabel: {
-//     color: '#8E98A7',
-//     fontSize: 16,
-//   },
-
-//   dataValue: {
-//     color: '#fff',
-//     fontSize: 24,
-//     fontWeight: '700',
-//     marginTop: 8,
-//   },
-// });
-// TradingScreen.js
-
-// TradingScreen.js
-
-// TradingScreen.js
-
-import React, {useState, useEffect} from 'react';
-
+import React, { useState, useEffect, useRef } from 'react';
 import {
   SafeAreaView,
+  ScrollView,
   View,
   Text,
-  StyleSheet,
+  Image,
   TouchableOpacity,
-  ScrollView,
+  StyleSheet,
   Dimensions,
+  ActivityIndicator,
+  PanResponder,
+  Animated,
 } from 'react-native';
-
-import axios from 'axios';
-
-import LinearGradient from 'react-native-linear-gradient';
-
-import Icon from 'react-native-vector-icons/Feather';
-
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
+import Svg, { Path, Defs, LinearGradient, Stop, Circle, Line as SvgLine } from 'react-native-svg';
 import {
-  LineChart,
-  BarChart,
-} from 'react-native-gifted-charts';
+  PinchGestureHandler,
+  State,
+} from 'react-native-gesture-handler';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { moderateScale } from 'react-native-size-matters';
+import api from '../../api/axios';
 
-const {width} = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get('window');
 
-export default function TradingScreen({navigation}) {
-  const [chartType, setChartType] =
-    useState('candle');
+export default function CoinDetailsScreen({ route }) {
+  // State
+  const [selectedTF, setSelectedTF] = useState("1D");
+  const [chartType, setChartType] = useState("line");
+  const [loading, setLoading] = useState(true);
+  const [coinData, setCoinData] = useState(null);
+  const [marketData, setMarketData] = useState(null);
+  const [chartData, setChartData] = useState([]);
+  const [candleData, setCandleData] = useState([]);
+  const [selectedPoint, setSelectedPoint] = useState(null);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [tooltipValue, setTooltipValue] = useState(null);
+  
+  // Zoom and Pan states
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [panOffset, setPanOffset] = useState(0);
+  
+  const scale = useRef(new Animated.Value(1)).current;
+  const lastScale = useRef(1);
+  const translateX = useRef(new Animated.Value(0)).current;
+  const lastTranslateX = useRef(0);
+  const maxTranslateX = useRef(0);
+  const minTranslateX = useRef(0);
 
-  const [selectedTab, setSelectedTab] =
-    useState('1D');
-
-  const [btcPrice, setBtcPrice] =
-    useState('0');
-
-  const [time, setTime] =
-    useState('');
-
-  // LIVE IST TIME
-
+  const symbol = `${route?.params?.coin?.symbol?.toUpperCase()}USDT`;
+  
+  // Responsive chart size
+  const chartHeight = hp('34%');
+  const chartWidth = wp('78%');
+/* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    const interval = setInterval(() => {
-      const ist =
-        new Date().toLocaleTimeString(
-          'en-IN',
-          {
-            timeZone: 'Asia/Kolkata',
-            hour: '2-digit',
-            minute: '2-digit',
-          },
-        );
-
-      setTime(ist);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // LIVE BTC PRICE
-
+    fetchCoinData();
+    fetchMarketData();
+  }, [symbol]);
+/* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    fetchBTC();
+    if (coinData && selectedTF) {
+      updateChartData();
+      generateCandleData();
+    }
+  }, [selectedTF, coinData]);
 
-    const interval = setInterval(() => {
-      fetchBTC();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchBTC = async () => {
+  const fetchCoinData = async () => {
     try {
-      const response = await axios.get(
-        'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT',
-      );
-
-      setBtcPrice(response.data.price);
-    } catch (e) {
-      console.log(e);
+      setLoading(true);
+      const response = await api.get(`/api/trading/market/${symbol}`);
+      const result = response.data;
+      if (result.success) {
+        setCoinData(result.data);
+        updateChartData(result.data, selectedTF);
+        generateCandleData(result.data, selectedTF);
+      }
+    } catch (error) {
+      console.error('Error fetching coin data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // CANDLE DATA
+  const fetchMarketData = async () => {
+    try {
+      const response = await api.get(`/api/trading/coin/${symbol}`);
+      const result = response.data;
+      if (result.success) {
+        setMarketData(result?.data);
+      }
+    } catch (error) {
+      console.error('Error fetching coin data:', error);
+    }
+  };
 
-  const candleData = [
-    {value: 45, frontColor: '#00C087'},
-    {value: 70, frontColor: '#FF4D6D'},
-    {value: 58, frontColor: '#00C087'},
-    {value: 82, frontColor: '#00C087'},
-    {value: 63, frontColor: '#FF4D6D'},
-    {value: 91, frontColor: '#00C087'},
-    {value: 74, frontColor: '#00C087'},
-    {value: 48, frontColor: '#FF4D6D'},
-    {value: 86, frontColor: '#00C087'},
-    {value: 66, frontColor: '#FF4D6D'},
-    {value: 95, frontColor: '#00C087'},
-    {value: 72, frontColor: '#00C087'},
-    {value: 59, frontColor: '#FF4D6D'},
-    {value: 88, frontColor: '#00C087'},
-    {value: 76, frontColor: '#00C087'},
-    {value: 69, frontColor: '#FF4D6D'},
-    {value: 97, frontColor: '#00C087'},
-    {value: 81, frontColor: '#00C087'},
-  ];
+  const updateChartData = (data = coinData, timeframe = selectedTF) => {
+    if (!data) return;
 
-  // LINE DATA
+    let actualTimeframe = timeframe.toLowerCase();
+    
+    if (timeframe === "1D") {
+      actualTimeframe = "1h";
+    } else if (timeframe === "1W" || timeframe === "1M") {
+      actualTimeframe = "1d";
+    }
 
-  const lineData = [
-    {value: 74900},
-    {value: 75100},
-    {value: 74850},
-    {value: 75300},
-    {value: 75550},
-    {value: 75220},
-    {value: 75620},
-    {value: 75100},
-    {value: 75700},
-    {value: 75450},
-    {value: 75950},
-    {value: 75520},
-    {value: 76000},
-    {value: 75800},
-    {value: 76200},
-  ];
+    const timeframeData = data.timeframes[actualTimeframe];
+    if (!timeframeData) return;
+
+    const ma7Data = timeframeData.movingAverages.MA7;
+    
+    const formattedData = ma7Data?.map((item) => ({
+      timestamp: item.time,
+      value: item.value,
+      date: new Date(item.time),
+    }));
+
+    setChartData(formattedData);
+    
+    // Reset zoom and pan when timeframe changes
+    resetZoomAndPan();
+  };
+
+  const generateCandleData = (data = coinData, timeframe = selectedTF) => {
+    if (!data) return;
+
+    let actualTimeframe = timeframe.toLowerCase();
+    
+    if (timeframe === "1D") {
+      actualTimeframe = "1h";
+    } else if (timeframe === "1W" || timeframe === "1M") {
+      actualTimeframe = "1d";
+    }
+
+    const timeframeData = data.timeframes[actualTimeframe];
+    if (!timeframeData) return;
+
+    const ma7Data = timeframeData.movingAverages.MA7;
+    const high = timeframeData.high;
+    const low = timeframeData.low;
+    
+    const candles = [];
+    for (let i = 0; i < ma7Data.length; i++) {
+      const currentClose = ma7Data[i].value;
+      const prevClose = i > 0 ? ma7Data[i - 1].value : currentClose * 0.998;
+      
+      const open = prevClose;
+      const close = currentClose;
+      const volatility = (high - low) * 0.15;
+      const highPrice = Math.max(open, close) + (Math.random() * volatility);
+      const lowPrice = Math.min(open, close) - (Math.random() * volatility);
+      
+      candles.push({
+        timestamp: ma7Data[i].time,
+        open: parseFloat(open.toFixed(2)),
+        high: parseFloat(Math.min(highPrice, high).toFixed(2)),
+        low: parseFloat(Math.max(lowPrice, low).toFixed(2)),
+        close: parseFloat(close.toFixed(2)),
+      });
+    }
+    
+    setCandleData(candles);
+    resetZoomAndPan();
+  };
+
+  const resetZoomAndPan = () => {
+    scale.setValue(1);
+    translateX.setValue(0);
+    lastScale.current = 1;
+    lastTranslateX.current = 0;
+    setZoomLevel(1);
+    setPanOffset(0);
+  };
+
+  const handleChartTouch = (event, index, point) => {
+    const { locationX, locationY } = event.nativeEvent;
+    setTooltipVisible(true);
+    setTooltipPosition({ x: locationX, y: locationY - hp('5%') });
+    setTooltipValue(point);
+    setSelectedPoint(index);
+    
+    setTimeout(() => {
+      setTooltipVisible(false);
+      setSelectedPoint(null);
+    }, 3000);
+  };
+
+  const onPinchEvent = Animated.event(
+    [{ nativeEvent: { scale: scale } }],
+    { useNativeDriver: true }
+  );
+
+  const onPinchStateChange = (event) => {
+    if (event.nativeEvent.oldState === State.ACTIVE) {
+      let newScale = lastScale.current * event.nativeEvent.scale;
+      
+      if (newScale < 1) {
+        newScale = 1;
+      }
+      if (newScale > 4) {
+        newScale = 4;
+      }
+      
+      lastScale.current = newScale;
+      scale.setValue(lastScale.current);
+      setZoomLevel(lastScale.current);
+      
+      // Update max translate constraints based on zoom level
+      const maxPan = (chartWidth * (lastScale.current - 1)) / 2;
+      maxTranslateX.current = maxPan;
+      minTranslateX.current = -maxPan;
+      
+      // Clamp current translation
+      if (lastTranslateX.current > maxTranslateX.current) {
+        lastTranslateX.current = maxTranslateX.current;
+        translateX.setValue(lastTranslateX.current);
+      } else if (lastTranslateX.current < minTranslateX.current) {
+        lastTranslateX.current = minTranslateX.current;
+        translateX.setValue(lastTranslateX.current);
+      }
+    }
+  };
+
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: () => zoomLevel > 1,
+    
+    onPanResponderGrant: () => {
+      translateX.setOffset(lastTranslateX.current);
+      translateX.setValue(0);
+    },
+    
+    onPanResponderMove: (evt, gestureState) => {
+      if (zoomLevel > 1) {
+        let newTranslateX = gestureState.dx;
+        
+        // Apply constraints
+        if (newTranslateX > maxTranslateX.current) {
+          newTranslateX = maxTranslateX.current;
+        } else if (newTranslateX < minTranslateX.current) {
+          newTranslateX = minTranslateX.current;
+        }
+        
+        translateX.setValue(newTranslateX);
+      }
+    },
+    
+    onPanResponderRelease: (evt, gestureState) => {
+      translateX.flattenOffset();
+      lastTranslateX.current += gestureState.dx;
+      
+      // Clamp final position
+      if (lastTranslateX.current > maxTranslateX.current) {
+        lastTranslateX.current = maxTranslateX.current;
+        translateX.setValue(lastTranslateX.current);
+      } else if (lastTranslateX.current < minTranslateX.current) {
+        lastTranslateX.current = minTranslateX.current;
+        translateX.setValue(lastTranslateX.current);
+      }
+      
+      setPanOffset(lastTranslateX.current);
+    },
+  });
+
+  const getCubicBezierPath = (points, minValue, maxValue, graphHeight, graphWidth) => {
+    if (points.length < 2) return '';
+    
+    const valueRange = maxValue - minValue;
+    
+    const getX = (index) => {
+      return (index / (points.length - 1)) * graphWidth;
+    };
+    
+    const getY = (value) => {
+      return graphHeight - ((value - minValue) / valueRange) * graphHeight;
+    };
+    
+    let path = `M ${getX(0)} ${getY(points[0].value)}`;
+    
+    for (let i = 1; i < points.length; i++) {
+      const prev = points[i - 1];
+      const curr = points[i];
+      
+      const x0 = getX(i - 1);
+      const y0 = getY(prev.value);
+      const x1 = getX(i);
+      const y1 = getY(curr.value);
+      
+      const cp1x = x0 + (x1 - x0) * 0.4;
+      const cp1y = y0;
+      const cp2x = x1 - (x1 - x0) * 0.4;
+      const cp2y = y1;
+      
+      path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${x1} ${y1}`;
+    }
+    
+    return path;
+  };
+
+  const formatXAxis = (timestamp) => {
+    const date = new Date(timestamp);
+
+    if (selectedTF === "1H") {
+      return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+    }
+
+    if (selectedTF === "4H") {
+      return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        hour12: true,
+      });
+    }
+
+    if (selectedTF === "1D") {
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const hour12 = hours % 12 || 12;
+      
+      if (minutes === 0) {
+        return `${hour12}${ampm}`;
+      }
+      return `${hour12}:${minutes?.toString()?.padStart(2, '0')}${ampm}`;
+    }
+
+    if (selectedTF === "1W") {
+      return date.getDate().toString();
+    }
+
+    if (selectedTF === "1M") {
+      const dayOfMonth = date.getDate();
+      if (dayOfMonth <= 3 || dayOfMonth >= 28) {
+        return date?.toLocaleString("en-US", { month: "short" });
+      }
+      return dayOfMonth.toString();
+    }
+
+    return "";
+  };
+
+  const getXAxisLabels = () => {
+    if (!chartData.length) return [];
+
+    if (selectedTF === "1D") {
+      const labels = [];
+      const dataLength = chartData.length;
+      const indices = [
+        0,
+        Math.floor(dataLength * 0.2),
+        Math.floor(dataLength * 0.4),
+        Math.floor(dataLength * 0.6),
+        Math.floor(dataLength * 0.8),
+        dataLength - 1
+      ];
+      
+      indices.forEach((index) => {
+        if (index < dataLength && chartData[index]) {
+          labels.push(chartData[index]);
+        }
+      });
+      
+      return labels;
+    }
+    
+    if (selectedTF === "1W") {
+      const labels = [];
+      const dataLength = chartData.length;
+      const daysToShow = Math.min(7, dataLength);
+      
+      for (let i = 0; i < daysToShow; i++) {
+        const index = dataLength - daysToShow + i;
+        if (index >= 0 && chartData[index]) {
+          labels.push(chartData[index]);
+        }
+      }
+      return labels;
+    }
+    
+    if (selectedTF === "1M") {
+      const labels = [];
+      const dataLength = chartData.length;
+      const step = Math.max(1, Math.floor(dataLength / 7));
+      
+      for (let i = 0; i < Math.min(8, dataLength); i++) {
+        const index = Math.min(dataLength - 1 - (i * step), dataLength - 1);
+        if (index >= 0 && chartData[index]) {
+          labels.unshift(chartData[index]);
+        }
+      }
+      return labels.slice(0, 8);
+    }
+    
+    const labels = [];
+    const dataLength = chartData.length;
+    const targetCount = selectedTF === "1H" ? 6 : 5;
+    const step = Math.max(1, Math.floor(dataLength / (targetCount - 1)));
+    
+    for (let i = 0; i < targetCount; i++) {
+      const index = Math.min(i * step, dataLength - 1);
+      if (chartData[index]) {
+        labels.push(chartData[index]);
+      }
+    }
+    return labels;
+  };
+
+  const renderSmoothLineChart = () => {
+    if (!chartData.length) return null;
+
+    const graphHeight = chartHeight - hp('2.5%');
+    const graphWidth = chartWidth * zoomLevel;
+    const visibleWidth = chartWidth;
+
+    const values = chartData.map(d => d.value);
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+    const isProfit = chartData[chartData.length - 1].value > chartData[0].value;
+    const lineColor = isProfit ? "#00C853" : "#FF4D6D";
+
+    const smoothPath = getCubicBezierPath(chartData, minValue, maxValue, graphHeight, graphWidth);
+    const firstX = 0;
+    const lastX = graphWidth;
+    const bottomY = graphHeight;
+    const fillPath = `${smoothPath} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
+
+    const step = (maxValue - minValue) / 4;
+    const yAxisValues = [
+      maxValue.toFixed(0),
+      (maxValue - step).toFixed(0),
+      (maxValue - step * 2).toFixed(0),
+      (maxValue - step * 3).toFixed(0),
+      minValue.toFixed(0),
+    ];
+
+    const xAxisLabels = getXAxisLabels();
+
+    return (
+      <View style={{ marginTop: hp('1.5%') }}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ justifyContent: 'space-between', height: chartHeight, marginRight: wp('2%'), width: wp('12%') }}>
+            {yAxisValues.map((price, index) => (
+              <Text key={index} style={{ color: "#6B7280", fontSize: moderateScale(10), textAlign: 'right' }}>
+                ${price}
+              </Text>
+            ))}
+          </View>
+
+          <View style={{ flex: 1, overflow: 'hidden' }}>
+            <PinchGestureHandler
+              onGestureEvent={onPinchEvent}
+              onHandlerStateChange={onPinchStateChange}
+            >
+              <Animated.View
+                {...(zoomLevel > 1 ? panResponder.panHandlers : {})}
+                style={{
+                  transform: [
+                    { scale: scale },
+                    { translateX: translateX },
+                  ],
+                }}
+              >
+                <Svg
+                  height={chartHeight}
+                  width={graphWidth}
+                  onTouchStart={(e) => {
+                    if (zoomLevel === 1) {
+                      const touchX = e.nativeEvent.locationX;
+                      const pointIndex = Math.floor((touchX / visibleWidth) * chartData.length);
+                      if (pointIndex >= 0 && pointIndex < chartData.length) {
+                        handleChartTouch(e, pointIndex, chartData[pointIndex]);
+                      }
+                    }
+                  }}
+                >
+                  <Defs>
+                    <LinearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                      <Stop offset="0%" stopColor={lineColor} stopOpacity="0.3" />
+                      <Stop offset="100%" stopColor={lineColor} stopOpacity="0.0" />
+                    </LinearGradient>
+                  </Defs>
+
+                  {yAxisValues.map((_, index) => {
+                    const y = (index / 4) * graphHeight;
+                    return (
+                      <SvgLine
+                        key={`grid-${index}`}
+                        x1={0}
+                        y1={y}
+                        x2={graphWidth}
+                        y2={y}
+                        stroke="#1F2937"
+                        strokeWidth={1}
+                        strokeDasharray="5,5"
+                      />
+                    );
+                  })}
+
+                  <Path d={fillPath} fill="url(#gradient)" />
+                  <Path
+                    d={smoothPath}
+                    stroke={lineColor}
+                    strokeWidth={moderateScale(3)}
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+
+                  {chartData.map((point, index) => {
+                    if (selectedPoint === index && tooltipVisible && zoomLevel === 1) {
+                      const valueRange = maxValue - minValue;
+                      const x = (index / (chartData.length - 1)) * visibleWidth;
+                      const y = graphHeight - ((point.value - minValue) / valueRange) * graphHeight;
+                      
+                      return (
+                        <Circle
+                          key={`point-${index}`}
+                          cx={x}
+                          cy={y}
+                          r={moderateScale(6)}
+                          fill="#FCD535"
+                          stroke={lineColor}
+                          strokeWidth="2"
+                        />
+                      );
+                    }
+                    return null;
+                  })}
+                </Svg>
+              </Animated.View>
+            </PinchGestureHandler>
+
+            {tooltipVisible && tooltipValue && zoomLevel === 1 && (
+              <View
+                style={[
+                  styles.tooltip,
+                  {
+                    position: 'absolute',
+                    left: Math.max(10, Math.min(tooltipPosition.x - 50, visibleWidth - 110)),
+                    top: tooltipPosition.y,
+                  },
+                ]}
+              >
+                <Text style={styles.tooltipText}>
+                  ${tooltipValue?.value?.toLocaleString()}
+                </Text>
+                <Text style={styles.tooltipSubtext}>
+                  {formatXAxis(tooltipValue.timestamp)}
+                </Text>
+                <View style={styles.tooltipArrow} />
+              </View>
+            )}
+
+            {/* Zoom indicator */}
+            {zoomLevel > 1 && (
+              <View style={styles.zoomIndicator}>
+                <Text style={styles.zoomIndicatorText}>
+                  Zoom: {zoomLevel.toFixed(1)}x
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        <View style={{ marginLeft: wp('10%'), marginTop: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', paddingRight: 0 }}>
+          {xAxisLabels.map((item, index) => {
+            const labelText = formatXAxis(item.timestamp);
+            const isMonthName = selectedTF === "1M" && (labelText.length <= 3);
+            
+            return (
+              <Text
+                key={index}
+                style={[
+                  isMonthName ? styles.xAxisLabelMonth : styles.xAxisLabel,
+                  {
+                    fontSize: selectedTF === "1D" ? moderateScale(10) : moderateScale(11),
+                    fontWeight: isMonthName ? '600' : '400',
+                    textAlign: 'center',
+                    flex: 1,
+                  }
+                ]}
+                numberOfLines={1}
+              >
+                {labelText}
+              </Text>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
+  const renderCandlestickChart = () => {
+    if (!candleData.length) return null;
+
+    const graphHeight = chartHeight - hp('2.5%');
+    const graphWidth = chartWidth * zoomLevel;
+    const visibleWidth = chartWidth;
+
+    const allValues = candleData.flatMap(d => [d.high, d.low]);
+    const minValue = Math.min(...allValues);
+    const maxValue = Math.max(...allValues);
+    const valueRange = maxValue - minValue;
+
+    const getYCoordinate = (value) => {
+      return graphHeight - ((value - minValue) / valueRange) * graphHeight;
+    };
+
+    const getXCoordinate = (index, totalWidth) => {
+      const candleWidth = (totalWidth / candleData.length) * 0.7;
+      const candleSpacing = (totalWidth / candleData.length) * 0.3;
+      return (index * (candleWidth + candleSpacing)) + (candleSpacing / 2);
+    };
+
+    const step = (maxValue - minValue) / 4;
+    const yAxisValues = [
+      maxValue.toFixed(0),
+      (maxValue - step).toFixed(0),
+      (maxValue - step * 2).toFixed(0),
+      (maxValue - step * 3).toFixed(0),
+      minValue.toFixed(0),
+    ];
+
+    const xAxisLabels = getXAxisLabels();
+
+    return (
+      <View style={{ marginTop: hp('1.5%') }}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ justifyContent: 'space-between', height: chartHeight, marginRight: wp('2%'), width: wp('12%') }}>
+            {yAxisValues.map((price, index) => (
+              <Text key={index} style={{ color: "#6B7280", fontSize: moderateScale(10), textAlign: 'right' }}>
+                ${price}
+              </Text>
+            ))}
+          </View>
+
+          <View style={{ flex: 1, overflow: 'hidden' }}>
+            <PinchGestureHandler
+              onGestureEvent={onPinchEvent}
+              onHandlerStateChange={onPinchStateChange}
+            >
+              <Animated.View
+                {...(zoomLevel > 1 ? panResponder.panHandlers : {})}
+                style={{
+                  transform: [
+                    { scale: scale },
+                    { translateX: translateX },
+                  ],
+                }}
+              >
+                <Svg
+                  height={chartHeight}
+                  width={graphWidth}
+                  onTouchStart={(e) => {
+                    if (zoomLevel === 1) {
+                      const touchX = e.nativeEvent.locationX;
+                      const candleIndex = Math.floor((touchX / visibleWidth) * candleData.length);
+                      if (candleIndex >= 0 && candleIndex < candleData.length) {
+                        handleChartTouch(e, candleIndex, candleData[candleIndex]);
+                      }
+                    }
+                  }}
+                >
+                  {yAxisValues.map((_, index) => {
+                    const y = (index / 4) * graphHeight;
+                    return (
+                      <SvgLine
+                        key={`grid-${index}`}
+                        x1={0}
+                        y1={y}
+                        x2={graphWidth}
+                        y2={y}
+                        stroke="#1F2937"
+                        strokeWidth={1}
+                        strokeDasharray="5,5"
+                      />
+                    );
+                  })}
+
+                  {candleData?.map((candle, index) => {
+                    const x = getXCoordinate(index, graphWidth);
+                    const yHigh = getYCoordinate(candle.high);
+                    const yLow = getYCoordinate(candle.low);
+                    const yOpen = getYCoordinate(candle.open);
+                    const yClose = getYCoordinate(candle.close);
+
+                    const isPositive = candle.close >= candle.open;
+                    const bodyTop = isPositive ? yClose : yOpen;
+                    const bodyHeight = Math.abs(yClose - yOpen);
+                    const color = isPositive ? "#00C853" : "#FF4D6D";
+
+                    return (
+                      <React.Fragment key={`candle-${index}`}>
+                        <SvgLine
+                          x1={x + (graphWidth / candleData.length) * 0.35}
+                          y1={yHigh}
+                          x2={x + (graphWidth / candleData.length) * 0.35}
+                          y2={yLow}
+                          stroke={color}
+                          strokeWidth={1.5}
+                        />
+                        <SvgLine
+                          x1={x}
+                          y1={bodyTop}
+                          x2={x + (graphWidth / candleData.length) * 0.7}
+                          y2={bodyTop}
+                          stroke={color}
+                          strokeWidth={bodyHeight}
+                        />
+                      </React.Fragment>
+                    );
+                  })}
+                </Svg>
+              </Animated.View>
+            </PinchGestureHandler>
+
+            {tooltipVisible && tooltipValue && zoomLevel === 1 && (
+              <View
+                style={[
+                  styles.tooltip,
+                  {
+                    position: 'absolute',
+                    left: Math.max(10, Math.min(tooltipPosition.x - 60, visibleWidth - 130)),
+                    top: tooltipPosition.y,
+                  },
+                ]}
+              >
+                <Text style={styles.tooltipText}>
+                  Open: ${tooltipValue.open}
+                </Text>
+                <Text style={styles.tooltipSubtext}>
+                  Close: ${tooltipValue.close}
+                </Text>
+                <Text style={styles.tooltipSubtext}>
+                  {formatXAxis(tooltipValue.timestamp)}
+                </Text>
+                <View style={styles.tooltipArrow} />
+              </View>
+            )}
+
+            {/* Zoom indicator */}
+            {zoomLevel > 1 && (
+              <View style={styles.zoomIndicator}>
+                <Text style={styles.zoomIndicatorText}>
+                  Zoom: {zoomLevel.toFixed(1)}x
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        <View style={{ marginLeft: wp('10%'), marginTop: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', paddingRight: 0 }}>
+          {xAxisLabels.map((item, index) => {
+            const labelText = formatXAxis(item.timestamp);
+            const isMonthName = selectedTF === "1M" && (labelText.length <= 3);
+            
+            return (
+              <Text
+                key={index}
+                style={[
+                  isMonthName ? styles.xAxisLabelMonth : styles.xAxisLabel,
+                  {
+                    fontSize: selectedTF === "1D" ? moderateScale(10) : moderateScale(11),
+                    fontWeight: isMonthName ? '600' : '400',
+                    textAlign: 'center',
+                    flex: 1,
+                  }
+                ]}
+                numberOfLines={1}
+              >
+                {labelText}
+              </Text>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
+  const getCurrentPrice = () => {
+    if (!coinData) return 0;
+    return coinData.currentPrice;
+  };
+
+  const getPriceChange = () => {
+    if (!coinData) return 0;
+    return coinData.priceChangePercent24h;
+  };
+
+  const getHigh24h = () => {
+    if (!coinData) return 0;
+    return coinData.high24h;
+  };
+
+  const getLow24h = () => {
+    if (!coinData) return 0;
+    return coinData.low24h;
+  };
+
+  const getVolume = () => {
+    if (!coinData) return '0';
+    const volume = coinData.volume24h;
+    if (volume > 1000000) {
+      return `${(volume / 1000000).toFixed(2)}M`;
+    }
+    if (volume > 1000) {
+      return `${(volume / 1000).toFixed(2)}K`;
+    }
+    return volume.toString();
+  };
+
+  const getOpenPrice = () => {
+    if (!coinData) return '0';
+    const timeframeKey = selectedTF === "1D" ? "1h" : (selectedTF === "1W" || selectedTF === "1M" ? "1d" : selectedTF.toLowerCase());
+    const timeframeData = coinData.timeframes[timeframeKey];
+    if (timeframeData && timeframeData.movingAverages?.MA7?.length > 0) {
+      return timeframeData.movingAverages.MA7[0].value.toFixed(2);
+    }
+    return '0';
+  };
+
+  const getPrevClose = () => {
+    if (!coinData) return '0';
+    const timeframeKey = selectedTF === "1D" ? "1h" : (selectedTF === "1W" || selectedTF === "1M" ? "1d" : selectedTF.toLowerCase());
+    const timeframeData = coinData.timeframes[timeframeKey];
+    if (timeframeData && timeframeData.movingAverages?.MA7?.length > 1) {
+      return timeframeData.movingAverages.MA7[
+        timeframeData.movingAverages.MA7.length - 2
+      ].value.toFixed(2);
+    }
+    return '0';
+  };
+
+  const getDayRange = () => {
+    if (!coinData) return '0 - 0';
+    const timeframeKey = selectedTF === "1D" ? "1h" : (selectedTF === "1W" || selectedTF === "1M" ? "1d" : selectedTF.toLowerCase());
+    const timeframeData = coinData.timeframes[timeframeKey];
+    if (timeframeData) {
+      return `${timeframeData.low.toFixed(2)} - ${timeframeData.high.toFixed(2)}`;
+    }
+    return '0 - 0';
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={[styles.container, styles.centerContent]}>
+        <ActivityIndicator size="large" color="#FCD535" />
+      </SafeAreaView>
+    );
+  }
+
+  if (!coinData) {
+    return (
+      <SafeAreaView style={[styles.container, styles.centerContent]}>
+        <Text style={styles.errorText}>Failed to load data</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={['#07111F', '#08131F']}
-        style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: 50,
-          }}>
-
-          {/* HEADER */}
-
-          <View style={styles.header}>
-            <View style={styles.logoRow}>
-              <View style={styles.coinIcon}>
-                <FontAwesome5
-                  name="bitcoin"
-                  size={14}
-                  color="#fff"
-                />
-              </View>
-
-              <Text style={styles.logoText}>
-                BTC/USDT
-              </Text>
-            </View>
-
-            <Text style={styles.time}>
-              IST {time}
-            </Text>
-          </View>
-
-          {/* PRICE */}
-
-          <View style={styles.priceSection}>
-            <Text style={styles.price}>
-              {Number(btcPrice).toFixed(2)}
-            </Text>
-
-            <View style={styles.row}>
-              <Text style={styles.subPrice}>
-                INR
-              </Text>
-
-              <Text style={styles.loss}>
-                {' '}
-                -118.75
-              </Text>
-            </View>
-          </View>
-
-          {/* FULL CHART */}
-
-          <TouchableOpacity
-            style={styles.fullChartBtn}
-            activeOpacity={0.8}
-            onPress={() =>
-              console.log('Full Chart')
-            }>
-            <Icon
-              name="maximize-2"
-              size={16}
-              color="#fff"
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.headerRow}>
+          <View style={styles.coinRow}>
+            <Image
+              source={{ uri: route?.params?.coin?.image || `https://assets.coingecko.com/coins/images/1/large/bitcoin.png` }}
+              style={styles.coinImage}
             />
+            <View>
+              <Text style={styles.coinSymbol}>{coinData.symbol}/USDT</Text>
+              <Text style={styles.coinName}>{coinData.symbol}</Text>
+            </View>
+          </View>
 
-            <Text style={styles.fullChartText}>
-              Full chart
-            </Text>
+          <View style={styles.tradeButtons}>
+            <TouchableOpacity style={styles.buyBtn}>
+              <Text style={styles.tradeText}>Buy</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.sellBtn}>
+              <Text style={styles.tradeText}>Sell</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <Text style={styles.price}>
+          ${getCurrentPrice()?.toLocaleString()}
+        </Text>
+
+        <Text
+          style={[
+            styles.change,
+            { color: getPriceChange() < 0 ? "#FF4D6D" : "#00C853" },
+          ]}
+        >
+          {getPriceChange() > 0 ? '+' : ''}{getPriceChange().toFixed(2)}%
+        </Text>
+
+        <View style={styles.statsRow}>
+          <View>
+            <Text style={styles.statLabel}>24h High</Text>
+            <Text style={styles.statValue}>${getHigh24h()?.toLocaleString()}</Text>
+          </View>
+          <View>
+            <Text style={styles.statLabel}>24h Low</Text>
+            <Text style={styles.statValue}>${getLow24h()?.toLocaleString()}</Text>
+          </View>
+          <View>
+            <Text style={styles.statLabel}>Volume</Text>
+            <Text style={styles.statValue}>{getVolume()}</Text>
+          </View>
+        </View>
+
+        <View style={styles.timeframeContainer}>
+          {["1H", "4H", "1D", "1W", "1M"]?.map((tf) => (
+            <TouchableOpacity
+              key={tf}
+              onPress={() => {
+                setSelectedTF(tf);
+                setTooltipVisible(false);
+                setSelectedPoint(null);
+              }}
+              style={[
+                styles.timeframeButton,
+                selectedTF === tf && styles.timeframeButtonActive
+              ]}
+            >
+              <Text style={[
+                styles.timeframeText,
+                selectedTF === tf && styles.timeframeTextActive
+              ]}>{tf}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+       
+
+        {chartType === "line" ? renderSmoothLineChart() : renderCandlestickChart()}
+
+         <View style={styles.chartTypeContainer}>
+          <TouchableOpacity onPress={() => setChartType("line")}>
+            <Text style={[styles.chartTypeText, chartType === "line" && styles.chartTypeTextActive]}>Line Chart</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => setChartType("candle")}>
+            <Text style={[styles.chartTypeText, chartType === "candle" && styles.chartTypeTextActive]}>Candlestick</Text>
+          </TouchableOpacity>
+        </View>
 
-          {/* GRAPH */}
+        <View style={styles.dataCard}>
+          <Text style={styles.dataTitle}>Key Data Points</Text>
 
-          <View style={styles.graphContainer}>
-            {chartType === 'candle' ? (
-              <BarChart
-                data={candleData}
-                width={width - 30}
-                height={320}
-                spacing={6}
-                barWidth={6}
-                roundedTop
-                hideRules={false}
-                hideYAxisText={false}
-                yAxisColor="#1F2937"
-                xAxisColor="#1F2937"
-                rulesColor="#1F2937"
-                noOfSections={5}
-                initialSpacing={10}
-                yAxisTextStyle={{
-                  color: '#6B7280',
-                  fontSize: 9,
-                }}
-                xAxisLabelTextStyle={{
-                  color: '#6B7280',
-                  fontSize: 9,
-                }}
-                showGradient
-              />
-            ) : (
-              <LineChart
-                areaChart
-                curved
-                data={lineData}
-                height={320}
-                width={width - 30}
-                color="#00C087"
-                startFillColor="#00C087"
-                endFillColor="#00C087"
-                startOpacity={0.25}
-                endOpacity={0.02}
-                spacing={20}
-                thickness={3}
-                hideDataPoints={false}
-                dataPointsColor="#00C087"
-                yAxisColor="#1F2937"
-                xAxisColor="#1F2937"
-                textColor="#6B7280"
-                hideRules={false}
-                rulesColor="#1F2937"
-                noOfSections={5}
-                yAxisTextStyle={{
-                  color: '#6B7280',
-                  fontSize: 9,
-                }}
-                animateOnDataChange
-                animationDuration={500}
-              />
-            )}
+          <View style={styles.dataRow}>
+            <Text style={styles.dataLabel}>Previous Close</Text>
+            <Text style={styles.dataValue}>${getPrevClose()}</Text>
           </View>
 
-          {/* SWITCH BUTTON */}
-
-          <View style={styles.switchRow}>
-            <TouchableOpacity
-              style={[
-                styles.switchBtn,
-                chartType === 'line' &&
-                  styles.activeSwitch,
-              ]}
-              onPress={() =>
-                setChartType('line')
-              }>
-              <Icon
-                name="trending-up"
-                size={14}
-                color={
-                  chartType === 'line'
-                    ? '#fff'
-                    : '#8E98A7'
-                }
-              />
-
-              <Text
-                style={[
-                  styles.switchText,
-                  chartType === 'line' &&
-                    styles.activeSwitchText,
-                ]}>
-                Line
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.switchBtn,
-                chartType === 'candle' &&
-                  styles.activeSwitch,
-              ]}
-              onPress={() =>
-                setChartType('candle')
-              }>
-              <Icon
-                name="bar-chart-2"
-                size={14}
-                color={
-                  chartType === 'candle'
-                    ? '#fff'
-                    : '#8E98A7'
-                }
-              />
-
-              <Text
-                style={[
-                  styles.switchText,
-                  chartType === 'candle' &&
-                    styles.activeSwitchText,
-                ]}>
-                Candle
-              </Text>
-            </TouchableOpacity>
+          <View style={styles.dataRow}>
+            <Text style={styles.dataLabel}>Open</Text>
+            <Text style={styles.dataValue}>${getOpenPrice()}</Text>
           </View>
 
-          {/* TIME TABS */}
-
-          <View style={styles.tabs}>
-            {['1H', '4H', '1D', '1W', '1M'].map(
-              item => (
-                <TouchableOpacity
-                  key={item}
-                  style={[
-                    styles.tabBtn,
-                    selectedTab === item &&
-                      styles.activeTab,
-                  ]}
-                  onPress={() =>
-                    setSelectedTab(item)
-                  }>
-                  <Text
-                    style={[
-                      styles.tabTitle,
-                      selectedTab === item &&
-                        styles.activeTabText,
-                    ]}>
-                    {item}
-                  </Text>
-                </TouchableOpacity>
-              ),
-            )}
+          <View style={styles.dataRow}>
+            <Text style={styles.dataLabel}>Day Range</Text>
+            <Text style={styles.dataValue}>${getDayRange()}</Text>
           </View>
 
-          {/* LIVE MARKET DATA */}
+          <View style={styles.dataRow}>
+            <Text style={styles.dataLabel}>Volume</Text>
+            <Text style={styles.dataValue}>{getVolume()} BTC</Text>
+          </View>
+        </View>
 
-          <View style={styles.liveCard}>
-            <Text style={styles.liveTitle}>
-              Live Market Data
-            </Text>
+        <View style={styles.historyCard}>
+          <Text style={styles.dataTitle}>Trading History</Text>
 
-            <View style={styles.liveRow}>
-              <Text style={styles.liveLabel}>
-                Market Cap
-              </Text>
-
-              <Text style={styles.liveValue}>
-                $1.52T
-              </Text>
-            </View>
-
-            <View style={styles.liveRow}>
-              <Text style={styles.liveLabel}>
-                24h Volume
-              </Text>
-
-              <Text style={styles.liveValue}>
-                $48.6B
-              </Text>
-            </View>
-
-            <View style={styles.liveRow}>
-              <Text style={styles.liveLabel}>
-                Buy Orders
-              </Text>
-
-              <Text
-                style={[
-                  styles.liveValue,
-                  {color: '#00C087'},
-                ]}>
-                68%
-              </Text>
-            </View>
-
-            <View style={styles.liveRow}>
-              <Text style={styles.liveLabel}>
-                Sell Orders
-              </Text>
-
-              <Text
-                style={[
-                  styles.liveValue,
-                  {color: '#FF4D6D'},
-                ]}>
-                32%
-              </Text>
-            </View>
-
-            <View style={styles.liveRow}>
-              <Text style={styles.liveLabel}>
-                Holders
-              </Text>
-
-              <Text style={styles.liveValue}>
-                54 Million+
-              </Text>
-            </View>
+          <View style={styles.historyRow}>
+            <Text style={styles.historyType}>BUY</Text>
+            <Text style={styles.historyAmount}>0.25 BTC</Text>
+            <Text style={styles.historyPrice}>${getCurrentPrice()?.toLocaleString()}</Text>
           </View>
 
-          {/* ABOUT */}
-
-          <View style={styles.aboutSection}>
-            <Text style={styles.aboutTitle}>
-              About Bitcoin
-            </Text>
-
-            <Text style={styles.aboutText}>
-              Bitcoin is a decentralized digital
-              currency that enables secure
-              peer-to-peer transactions without
-              banks or central authorities.
-            </Text>
-
-            <Text style={styles.aboutText}>
-              Bitcoin was introduced in 2009 by
-              Satoshi Nakamoto and became the
-              first successful cryptocurrency.
-            </Text>
-
-            <Text style={styles.aboutText}>
-              BTC prices change based on market
-              demand, investor activity,
-              trading volume, and global
-              financial news.
-            </Text>
-
-            <Text style={styles.aboutText}>
-              Bitcoin is widely used for
-              trading, investing, and digital
-              payments worldwide.
-            </Text>
+          <View style={styles.historyRow}>
+            <Text style={[styles.historyType, { color: "#FF4D6D" }]}>SELL</Text>
+            <Text style={styles.historyAmount}>0.10 BTC</Text>
+            <Text style={styles.historyPrice}>${(getCurrentPrice() * 0.95)?.toLocaleString()}</Text>
           </View>
-        </ScrollView>
-      </LinearGradient>
+
+          <View style={styles.historyRow}>
+            <Text style={styles.historyType}>BUY</Text>
+            <Text style={styles.historyAmount}>0.30 BTC</Text>
+            <Text style={styles.historyPrice}>${(getCurrentPrice() * 0.92)?.toLocaleString()}</Text>
+          </View>
+        </View>
+
+        <View>
+          <Text style={styles.dataTitleDescription}>About {coinData.symbol}</Text>
+          <Text style={styles.descriptionText}>
+            {marketData?.description
+              ? marketData.description
+              : `${coinData.symbol} is a cryptocurrency that operates on blockchain technology, enabling secure, decentralized, and fast digital transactions across the world.`}
+          </Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -1532,203 +1016,253 @@ export default function TradingScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#07111F',
+    backgroundColor: '#0B0E14',
+    paddingHorizontal: wp('4%'),
+     paddingBottom: hp('4%'),
+      paddingTop: hp('4%'),
   },
-
-  header: {
+  centerContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: '#FF4D6D',
+    fontSize: moderateScale(16),
+  },
+  headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    marginTop: hp('1.5%'),
   },
-
-  logoRow: {
+  coinRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-
-  coinIcon: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: '#F7931A',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 8,
+  coinImage: {
+    width: wp('10%'),
+    height: wp('10%'),
+    marginRight: wp('3%'),
+    borderRadius: wp('5%'),
   },
-
-  logoText: {
+  coinSymbol: {
     color: '#fff',
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
   },
-
-  time: {
-    color: '#8E98A7',
-    fontSize: 12,
+  coinName: {
+    color: '#6B7280',
+    fontSize: moderateScale(14),
   },
-
-  priceSection: {
-    paddingHorizontal: 16,
-    marginTop: 24,
+  tradeButtons: {
+    flexDirection: 'row',
+    gap: wp('2%'),
   },
-
+  buyBtn: {
+    backgroundColor: '#00C853',
+    paddingHorizontal: wp('5%'),
+    paddingVertical: hp('1%'),
+    borderRadius: moderateScale(8),
+  },
+  sellBtn: {
+    backgroundColor: '#FF4D6D',
+    paddingHorizontal: wp('5%'),
+    paddingVertical: hp('1%'),
+    borderRadius: moderateScale(8),
+  },
+  tradeText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: moderateScale(14),
+  },
   price: {
-    color: '#00C087',
-    fontSize: 42,
-    fontWeight: '800',
-  },
-
-  row: {
-    flexDirection: 'row',
-    marginTop: 6,
-  },
-
-  subPrice: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: moderateScale(32),
+    fontWeight: 'bold',
+    marginTop: hp('2%'),
   },
-
-  loss: {
-    color: '#FF4D6D',
-    fontSize: 16,
-    fontWeight: '700',
-  },
-
-  fullChartBtn: {
-    marginTop: 20,
-    marginLeft: 16,
-    width: 130,
-    height: 42,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#1F2937',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  fullChartText: {
-    color: '#fff',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-
-  graphContainer: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
-
-  switchRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 18,
-  },
-
-  switchBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 12,
-    backgroundColor: '#111827',
-    marginHorizontal: 8,
-  },
-
-  activeSwitch: {
-    backgroundColor: '#2563EB',
-  },
-
-  switchText: {
-    color: '#8E98A7',
-    marginLeft: 6,
-    fontSize: 14,
+  change: {
+    fontSize: moderateScale(16),
+    marginTop: hp('0.5%'),
     fontWeight: '600',
   },
-
-  activeSwitchText: {
-    color: '#fff',
-  },
-
-  tabs: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 24,
-    paddingHorizontal: 10,
-  },
-
-  tabBtn: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 12,
-    backgroundColor: '#111827',
-  },
-
-  activeTab: {
-    backgroundColor: '#1F2937',
-  },
-
-  tabTitle: {
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: '700',
-  },
-
-  activeTabText: {
-    color: '#fff',
-  },
-
-  liveCard: {
-    backgroundColor: '#111827',
-    marginHorizontal: 16,
-    marginTop: 28,
-    borderRadius: 16,
-    padding: 16,
-  },
-
-  liveTitle: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: '800',
-    marginBottom: 18,
-  },
-
-  liveRow: {
+  statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 14,
+    marginTop: hp('2.5%'),
+    paddingVertical: hp('2%'),
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#1F2937',
   },
-
-  liveLabel: {
-    color: '#8E98A7',
-    fontSize: 14,
+  statLabel: {
+    color: '#6B7280',
+    fontSize: moderateScale(12),
+    marginBottom: hp('0.5%'),
   },
-
-  liveValue: {
+  statValue: {
     color: '#fff',
-    fontSize: 15,
-    fontWeight: '700',
+    fontSize: moderateScale(14),
+    fontWeight: 'bold',
   },
-
-  aboutSection: {
-    marginTop: 28,
-    paddingHorizontal: 16,
+  timeframeContainer: {
+    flexDirection: 'row',
+    marginTop: hp('2%'),
+    flexWrap: 'wrap',
+    gap: wp('2%'),
   },
-
-  aboutTitle: {
+  timeframeButton: {
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('1%'),
+    backgroundColor: '#1F2937',
+    borderRadius: moderateScale(8),
+  },
+  timeframeButtonActive: {
+    backgroundColor: '#FCD535',
+  },
+  timeframeText: {
     color: '#fff',
-    fontSize: 30,
-    fontWeight: '800',
-    marginBottom: 18,
+    fontWeight: '600',
+    fontSize: moderateScale(12),
   },
-
-  aboutText: {
-    color: '#D1D5DB',
-    fontSize: 15,
-    lineHeight: 28,
-    marginBottom: 16,
+  timeframeTextActive: {
+    color: '#000',
+  },
+chartTypeContainer: {
+  flexDirection: 'row',
+  marginTop: hp('2%'),
+  gap: wp('4%'),
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+  chartTypeText: {
+    color: '#fff',
+    fontSize: moderateScale(16),
+  },
+  chartTypeTextActive: {
+    color: '#FCD535',
+    fontWeight: '600',
+  },
+  xAxisLabel: {
+    color: '#9CA3AF',
+    fontSize: moderateScale(11),
+  },
+  xAxisLabelMonth: {
+    color: '#FCD535',
+    fontSize: moderateScale(11),
+    fontWeight: '600',
+  },
+  tooltip: {
+    backgroundColor: '#1A1F2E',
+    borderRadius: moderateScale(8),
+    padding: wp('2%'),
+    minWidth: wp('25%'),
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#FCD535',
+  },
+  tooltipText: {
+    color: '#FCD535',
+    fontSize: moderateScale(14),
+    fontWeight: 'bold',
+  },
+  tooltipSubtext: {
+    color: '#6B7280',
+    fontSize: moderateScale(10),
+    marginTop: hp('0.3%'),
+  },
+  tooltipArrow: {
+    position: 'absolute',
+    bottom: -6,
+    left: '50%',
+    marginLeft: -6,
+    width: 0,
+    height: 0,
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderTopWidth: 6,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: '#FCD535',
+  },
+  zoomIndicator: {
+    position: 'absolute',
+    bottom: hp('2%'),
+    right: wp('2%'),
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    paddingHorizontal: wp('3%'),
+    paddingVertical: hp('0.5%'),
+    borderRadius: moderateScale(4),
+  },
+  zoomIndicatorText: {
+    color: '#FCD535',
+    fontSize: moderateScale(12),
+    fontWeight: 'bold',
+  },
+  dataCard: {
+    marginTop: hp('3%'),
+    padding: wp('4%'),
+    backgroundColor: '#1A1F2E',
+    borderRadius: moderateScale(12),
+  },
+  dataTitle: {
+    color: '#fff',
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+    marginBottom: hp('2%'),
+  },
+  dataTitleDescription: {
+    color: '#fff',
+    fontSize: moderateScale(22),
+    fontWeight: 'bold',
+    marginBottom: hp('2%'),
+  },
+  dataRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: hp('1.5%'),
+    borderBottomWidth: 1,
+    borderBottomColor: '#2A2F3E',
+  },
+  dataLabel: {
+    color: '#6B7280',
+    fontSize: moderateScale(14),
+  },
+  dataValue: {
+    color: '#fff',
+    fontSize: moderateScale(14),
+    fontWeight: '500',
+  },
+  historyCard: {
+    marginTop: hp('2%'),
+    marginBottom: hp('4%'),
+    padding: wp('4%'),
+    backgroundColor: '#1A1F2E',
+    borderRadius: moderateScale(12),
+  },
+  historyRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: hp('1.5%'),
+    borderBottomWidth: 1,
+    borderBottomColor: '#2A2F3E',
+  },
+  historyType: {
+    color: '#00C853',
+    fontWeight: 'bold',
+    fontSize: moderateScale(14),
+  },
+  historyAmount: {
+    color: '#fff',
+    fontSize: moderateScale(14),
+  },
+  historyPrice: {
+    color: '#6B7280',
+    fontSize: moderateScale(14),
+  },
+  descriptionText: {
+    color: "#D1D5DB",
+    fontSize: moderateScale(14),
+    lineHeight: moderateScale(22),
   },
 });
-
-
