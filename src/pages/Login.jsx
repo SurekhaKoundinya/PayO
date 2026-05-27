@@ -48,7 +48,7 @@ export default function Login({ onLogin }) {
         {/* ── Logo: your real PNG app icon ── */}
         <div style={{ display:'flex', justifyContent:'center', marginBottom:32 }}>
           <img
-            src={process.env.PUBLIC_URL + "/images/payo-icon-logo.png"}
+            src={process.env.PUBLIC_URL + "/images/payo-icon-logo-removebg-preview.png"}
             alt="PayO"
             style={{
               width: 130,

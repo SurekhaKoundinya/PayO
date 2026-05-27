@@ -53,7 +53,7 @@ export default function Sidebar({ onLogout }) {
         justifyContent: 'center',
       }}>
         <img
-          src={process.env.PUBLIC_URL + "/images/payo-wide-logo.png"}
+          src={process.env.PUBLIC_URL + "/images/payo-wide-logo-removebg-preview.png"}
           alt="PayO Admin Portal"
           style={{
             width: '100%',
