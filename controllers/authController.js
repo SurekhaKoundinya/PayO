@@ -8,7 +8,12 @@ const Otp = require("../models/Otp");
 const Wallet = require("../models/Wallet");
 const Transaction = require("../models/Transaction");
 const { sendNotification } = require("../utils/notify");
- 
+// ================== POSTGRESQL MODELS ==================
+const PostgresUser = require("../models/PostgresUser");
+const PostgresWallet = require("../models/PostgresWallet");
+const PostgresTransaction = require("../models/PostgresTransaction");
+const PostgresOtp = require("../models/PostgresOtp");
+
 const { generateWalletAddress, generateQR } = require("../utils/helpers");
 // ======================register========================
 exports.register = async (req, res) => {
@@ -106,6 +111,16 @@ if (referralCode) {
       myReferralCode: myReferral,
       isVerified: true
     });
+// Save into PostgreSQL also
+await PostgresUser.create({
+  name,
+  email,
+  password: hash,
+  mobile,
+  referralcode: referralCode || null,
+  isVerified: true,
+});
+    
     await sendNotification({
   userId: user._id,
   title: "Welcome to PAYO",
@@ -113,7 +128,7 @@ if (referralCode) {
   type: "SYSTEM"
 });
  
-    // ================= CREATE WALLET =================
+    // ================= CREATE WALLET IN DB =================
     const walletAddress = generateWalletAddress();
     const qr = await generateQR(walletAddress);
 const wallet = await Wallet.create({
@@ -124,6 +139,13 @@ const wallet = await Wallet.create({
  
   qrToken: uuidv4(),
   qrExpiry: Date.now() + 15 * 60 * 1000 // 15 min
+});
+// ================== CREATE WALLET IN POSTGRESQL ==================
+await PostgresWallet.create({
+  userId: user.id,
+  walletAddress: wallet.walletAddress,
+  balance: wallet.balance || 0,
+  qrToken: wallet.qrToken,
 });
  
     // link wallet to user
@@ -157,13 +179,20 @@ const wallet = await Wallet.create({
   // 5. Give bonus ONLY to referrer
   referrerWallet.balance += REFERRAL_BONUS;
   await referrerWallet.save();
- 
+ // ================== SAVE TRANSACTION IN MONGODB ==================
   await Transaction.create({
     userId: referrer._id,
     amount: REFERRAL_BONUS,
     type: "credit",
     message: "Referral bonus received"
   });
+  // ================== SAVE TRANSACTION IN POSTGRESQL ==================
+  await PostgresTransaction.create({
+  userId: referrer.id,
+  amount: REFERRAL_BONUS,
+  type: "credit",
+  message: "Referral bonus received"
+});
  await sendNotification({
   userId: referrer._id,
   title: "Referral Reward",
@@ -317,7 +346,7 @@ exports.sendOtp=async (req, res) => {
  
   // hash OTP
   const hashedOtp = await bcrypt.hash(otp, 10);
- 
+ // ================== SAVE OTP IN MONGODB ==================
   await Otp.findOneAndUpdate(
   { mobile },
   {
@@ -329,6 +358,12 @@ exports.sendOtp=async (req, res) => {
   },
  { upsert: true, returnDocument: "after" }
 );
+// ================== SAVE OTP IN POSTGRESQL ==================
+await PostgresOtp.create({
+  mobile,
+  otp: hashedOtp,
+  isVerified: false,
+});
  
   console.log("OTP:", otp);
  

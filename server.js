@@ -13,7 +13,15 @@ const connectDB = require("./config/db");
 const websocketManager = require("./utils/websocketManager");
 const binanceWebSocket = require("./services/binanceWebSocketService");
 const realtimePriceCache = require("./cache/realtimePriceCache");
-
+const sequelize = require("./config/postgres");
+// PostgreSQL Models
+require("./models/PostgresUser");
+require("./models/PostgresWallet");
+require("./models/PostgresTransaction");
+require("./models/PostgresNotification");
+require("./models/PostgresBank");
+require("./models/PostgresRecent");
+require("./models/PostgresOtp");
 // cron
 require("./cron/walletCron");
 
@@ -26,8 +34,17 @@ const updateMarketCache = require("./services/marketUpdater");
 const bankRoutes = require("./routes/bankRoutes");
 const tradingRoutes = require('./routes/tradingRoutes');
 
-// connect database
+// connect MongoDB
 connectDB();
+
+// connect PostgreSQL
+sequelize.sync({ alter: true })
+  .then(() => {
+    console.log("PostgreSQL connected");
+  })
+  .catch((err) => {
+    console.log("PostgreSQL error:", err);
+  });
 
 // Initial fetch of static data
 updateMarketCache();

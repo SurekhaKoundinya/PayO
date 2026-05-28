@@ -3,6 +3,7 @@ const Bank = require("../models/Bank");
 const Notification = require("../models/Notification");
 const { sendNotification } = require("../utils/notify");
 const bcrypt = require("bcrypt");
+const PostgresBank = require("../models/PostgresBank");
 
  //=========================add bank============
 
@@ -93,6 +94,16 @@ const bcrypt = require("bcrypt");
       ifscCode: ifsc.toUpperCase(),
       accountType
     });
+    // ================= SAVE BANK IN POSTGRESQL =================
+await PostgresBank.create({
+  userId: req.userId,
+  accountHolder: name,
+  mobileNumber: mobile,
+  bankName: bank,
+  accountNumber: account,
+  ifsc: ifsc.toUpperCase(),
+  accountType
+});
 await sendNotification({
   userId: req.userId,
   title: "Bank added successfully",
