@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from "react-native-linear-gradient";
 
-import styles from "./enterAddressStyling";
+import styles from "./Styles/EnterAddressStyles";
 import { useRoute } from "@react-navigation/native";
 import api from "../../api/axios";
 

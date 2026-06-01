@@ -287,7 +287,7 @@ export default function Onboarding2({
 
           <Animated.Image
             key={index}
-            source={require('../../../assets/images/coin.png')}
+            source={require('../../../../assets/images/coin.png')}
             style={{
               position:
                 'absolute',
@@ -327,7 +327,7 @@ export default function Onboarding2({
         ]}>
 
         <Animated.Image
-          source={require('../../../assets/images/LogoContainer.png')}
+          source={require('../../../../assets/images/LogoContainer.png')}
           style={[
             styles.logo,
             {
@@ -345,7 +345,7 @@ export default function Onboarding2({
         />
 
         <Animated.Image
-          source={require('../../../assets/images/onboardingScreen1.png')}
+          source={require('../../../../assets/images/onboardingScreen2.png')}
           style={[
             styles.mainImage,
             {
@@ -460,7 +460,7 @@ export default function Onboarding2({
           activeOpacity={0.8}>
 
           <Image
-            source={require('../../../assets/images/half_load1.png')}
+            source={require('../../../../assets/images/half_load.png')}
             style={
               styles.nextImage
             }

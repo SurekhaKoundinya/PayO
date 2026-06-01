@@ -21,7 +21,7 @@ import {
 } from 'react-native-vision-camera';
 
 import { launchImageLibrary } from 'react-native-image-picker';
-import api from '../api/axios';
+import api from '../../api/axios';
 
 import {
   widthPercentageToDP as wp,

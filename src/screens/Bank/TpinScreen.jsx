@@ -101,7 +101,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import axios from "axios";
-import styles from "./TpinStyles";
+import styles from "./styles/TpinStyles";
 import api from "../../api/axios";
 
 const TpinScreen = ({ navigation, route }) => {

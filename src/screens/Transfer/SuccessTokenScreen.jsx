@@ -9,7 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 
-import styles from './successScreenStyling';
+import styles from './Styles/SuccessScreenStyles';
 
 export default function PaymentSuccess({
   route,

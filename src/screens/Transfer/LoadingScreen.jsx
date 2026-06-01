@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import api from '../../api/axios';
 
-import styles from './loadingScreenStyling';
+import styles from './Styles/LoadingScreenStyles';
 
 export default function PaymentLoading({
   route,

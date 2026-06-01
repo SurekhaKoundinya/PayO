@@ -22,7 +22,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 import styles from './ForgotPasswordStyles';
-import api from '../api/axios';
+import api from '../../../api/axios';
 import Icon from 'react-native-vector-icons/Feather';
 
 export default function ForgotPassword({ navigation }) {

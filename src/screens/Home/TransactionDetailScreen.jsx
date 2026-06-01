@@ -21,7 +21,7 @@ import ViewShot from 'react-native-view-shot';
 import RNFS from 'react-native-fs';
 
 import api from '../../api/axios';
-import styles from './TransactionDetailStyles';
+import styles from './Styles/TransactionDetailScreenStyles';
 
 export default function TransactionDetailScreen({
     navigation,

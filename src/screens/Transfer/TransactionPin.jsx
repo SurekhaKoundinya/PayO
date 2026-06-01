@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import api from '../api/axios';
+import api from '../../api/axios';
 import Icon from 'react-native-vector-icons/Feather';
 
 import {

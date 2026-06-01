@@ -12,12 +12,12 @@ import {
   SafeAreaView,
 } from 'react-native-safe-area-context';
 
-import ScanQRScreen from '../ScanQRScreen';
-import EnterAddressScreen from '../HomeScreen/enterAddress';
-import Header from './header';
+import ScanQRScreen from '../QR/ScanQRScreen';
+import EnterAddressScreen from './EnterAddressScreen';
+import Header from '../../components/common/Header';
 import LinearGradient from 'react-native-linear-gradient';
-import EnterAmountScreen from '../HomeScreen/EnterAmountScreen';
-import Recents from '../HomeScreen/Recents';
+import EnterAmountScreen from './EnterAmountScreen';
+import Recents from './RecentsScreen';
 import Icon from 'react-native-vector-icons/Feather';
 import SendTabs from './SendTabs';
 

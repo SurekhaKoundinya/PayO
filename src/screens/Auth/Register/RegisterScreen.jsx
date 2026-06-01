@@ -283,7 +283,7 @@ export default function RegisterScreen({
                   style={styles.link}
                   onPress={() =>
                     navigation.navigate(
-                      'RegisterMobile',
+                      'Register',
                       {
                         mode:
                           'register',

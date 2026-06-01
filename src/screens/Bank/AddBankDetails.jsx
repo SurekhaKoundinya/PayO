@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
 
-import styles from './AddBankDetailsStyles';
+import styles from './styles/AddBankDetailsStyles';
 import api from '../../api/axios';
 
 const AddBankDetails = ({ navigation }) => {

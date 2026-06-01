@@ -16,7 +16,7 @@ import {
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
-import api from '../api/axios';
+import api from '../../api/axios';
 
 import {
   widthPercentageToDP as wp,

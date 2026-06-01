@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+// LoginScreen.jsx
+
+import React, {
+  useState,
+  useEffect,
+} from 'react';
 
 import {
   View,
@@ -30,15 +35,26 @@ import { moderateScale } from 'react-native-size-matters';
 
 import styles from './Login';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({
+  navigation,
+}) {
 
   const insets = useSafeAreaInsets();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState('');
-  const [isConnected, setIsConnected] = useState(true);
+  const [email, setEmail] =
+    useState('');
+
+  const [password, setPassword] =
+    useState('');
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [message, setMessage] =
+    useState('');
+
+  const [isConnected, setIsConnected] =
+    useState(true);
 
   const [errors, setErrors] = useState({
     email: '',
@@ -58,83 +74,120 @@ export default function LoginScreen({ navigation }) {
 
   const validate = () => {
 
-    let valid = true;
+  let valid = true;
 
-    let newErrors = {
-      email: '',
-      password: '',
-    };
-
-    if (!email.trim()) {
-      newErrors.email = 'Email is required';
-      valid = false;
-    }
-
-    if (!password.trim()) {
-      newErrors.password = 'Password is required';
-      valid = false;
-    }
-
-    setErrors(newErrors);
-
-    return valid;
+  let newErrors = {
+    email: '',
+    password: '',
   };
+
+  const emailRegex =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!email.trim()) {
+
+    newErrors.email =
+      'Email is required';
+
+    valid = false;
+
+  } else if (!emailRegex.test(email)) {
+
+    newErrors.email =
+      'Enter valid email';
+
+    valid = false;
+  }
+
+  if (!password.trim()) {
+
+    newErrors.password =
+      'Password is required';
+
+    valid = false;
+
+  } else if (password.length < 6) {
+
+    newErrors.password =
+      'Password must be 6 characters';
+
+    valid = false;
+  }
+
+  setErrors(newErrors);
+
+  return valid;
+};
 
   const handleSubmit = async () => {
 
-    if (!isConnected) {
-      setMessage('No internet connection');
-      return;
-    }
+  if (!isConnected) {
 
-    if (!validate()) return;
+    setMessage(
+      'No internet connection',
+    );
 
-    try {
+    return;
+  }
 
-      const response = await api.post(
-        '/api/auth/login',
-        {
-          email,
-          password,
-        },
+  if (!validate()) return;
+
+  try {
+
+    const response = await api.post(
+      '/api/auth/login',
+      {
+        email,
+        password,
+      },
+    );
+
+    console.log(
+      'LOGIN RESPONSE:',
+      response.data,
+    );
+
+    const token =
+      response?.data?.token;
+
+    if (token) {
+
+      await Keychain.setGenericPassword(
+        'userToken',
+        token,
       );
 
-      if (
-        response?.data?.message ===
-        'Login success'
-      ) {
+      setMessage('');
 
-        const token =
-          response?.data?.token;
+      navigation.replace(
+        'BottomTabs',
+      );
 
-        await Keychain.setGenericPassword(
-          'userToken',
-          token,
-        );
-
-        setMessage('');
-
-        navigation.navigate('Main');
-
-      } else {
-
-        setMessage(
-          response?.data?.message ||
-          'Login failed',
-        );
-      }
-
-    } catch (error) {
+    } else {
 
       setMessage(
-        error?.response?.data?.message ||
-        error?.message ||
-        'Something went wrong',
+        response?.data?.message ||
+        'Login failed',
       );
     }
-  };
+
+  } catch (error) {
+
+    console.log(
+      'LOGIN ERROR:',
+      error?.response?.data,
+    );
+
+    setMessage(
+      error?.response?.data?.message ||
+      error?.message ||
+      'Something went wrong',
+    );
+  }
+};
 
   return (
+
     <SafeAreaView
       style={styles.safeArea}
       edges={['top', 'bottom']}>
@@ -348,7 +401,7 @@ export default function LoginScreen({ navigation }) {
               onPress={() =>
                 isConnected &&
                 navigation.navigate(
-                  'RegisterMobile',
+                  'RegisterScreen',
                   {
                     mode: 'login',
                   },
@@ -371,7 +424,7 @@ export default function LoginScreen({ navigation }) {
                 onPress={() =>
                   isConnected &&
                   navigation.navigate(
-                    'RegisterMobile',
+                    'RegisterScreen',
                     {
                       mode: 'register',
                     },
@@ -381,6 +434,7 @@ export default function LoginScreen({ navigation }) {
                 Register
 
               </Text>
+
             </Text>
 
           </ScrollView>

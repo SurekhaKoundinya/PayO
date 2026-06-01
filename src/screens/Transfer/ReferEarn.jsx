@@ -13,10 +13,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
-import styles from './ReferEarnStyles';
+import styles from './Styles/ReferEarnStyles';
 import api from '../../api/axios';
 import Clipboard from '@react-native-clipboard/clipboard';
-import BottomNav from '../components/bottomNav';
+import BottomNav from '../../components/common/Bottom';
 import Icon from 'react-native-vector-icons/Feather';
 
 export default function ReferEarn({ navigation }) {

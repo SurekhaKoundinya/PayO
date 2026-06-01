@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import styles from './BankAccInitStyles';
+import styles from './styles/BankAccInitStyles';
 import Icon from "react-native-vector-icons/Feather";
 
 export default function BankAccInit({ navigation }) {

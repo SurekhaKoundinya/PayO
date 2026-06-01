@@ -9,12 +9,12 @@ import Icon from 'react-native-vector-icons/Feather';
 import { moderateScale } from 'react-native-size-matters';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import HomeScreen from '../HomeScreen/HomeScreen';
-import styles from '../HomeScreen/homeStyling';
-import SendScreen from './sendScreen';
-import TransactionHistory from '../HomeScreen/TransactionHistory';
-import WalletScreen from '../HomeScreen/WalletScreen';
-import MarketScreen from '../Market/market';
+import HomeScreen from '../../screens/Home/HomeScreen';
+import styles from '../../screens/Home/Styles/HomeStyles';
+import SendScreen from '../../screens/Transfer/SendScreen';
+import TransactionHistory from '../../screens/Home/TransactionHistory';
+import WalletScreen from '../../screens/Home/WalletScreen';
+import Market from '../../screens/Market/market';
 
 const Tab = createBottomTabNavigator();
 
@@ -144,7 +144,7 @@ export default function BottomTabs() {
 
       <Tab.Screen
         name="MarketScreen"
-        component={MarketScreen}
+        component={Market}
       />
     </Tab.Navigator>
   );

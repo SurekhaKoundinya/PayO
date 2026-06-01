@@ -22,7 +22,7 @@ import {
   useFocusEffect,
 } from '@react-navigation/native';
 
-import styles from './TransactionHistoryStyles';
+import styles from './Styles/TransactionStyles';
 import api from '../../api/axios';
 
 export default function TransactionHistory({

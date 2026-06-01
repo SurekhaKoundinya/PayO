@@ -1,4 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import {
   View,
   Text,
@@ -13,11 +20,17 @@ import {
 } from 'react-native';
 
 import RNFS from 'react-native-fs';
+
 import Share from 'react-native-share';
+
 import LinearGradient from 'react-native-linear-gradient';
+
 import Clipboard from '@react-native-clipboard/clipboard';
-import api from '../api/axios';
-import BottomNav from './components/bottomNav';
+
+import api from '../../api/axios';
+
+import BottomNav from '../../components/common/Bottom';
+
 import Icon from 'react-native-vector-icons/Feather';
 
 import { SafeAreaView } from 'react-native-safe-area-context';

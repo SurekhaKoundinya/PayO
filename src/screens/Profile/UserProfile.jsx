@@ -350,14 +350,14 @@ import {
 } from 'react-native-responsive-screen';
 
 import * as Keychain from 'react-native-keychain'; // ✅ added
-import styles from './UserProfileStyling';
+import styles from './Styles/UserProfileStyling';
 import api from '../../api/axios';
 import Clipboard from "@react-native-clipboard/clipboard";
 import Share from "react-native-share";
 import RNFS from "react-native-fs";
 import Icon from "react-native-vector-icons/Feather";
 import { useFocusEffect } from '@react-navigation/native';
-import BottomNav from '../components/bottomNav';
+import BottomNav from '../../components/common/Bottom';
 
 export default function UserProfile({ navigation }) {
 

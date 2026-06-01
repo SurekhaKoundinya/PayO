@@ -15,7 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 
 import { moderateScale } from 'react-native-size-matters';
-import styles from '../HomeScreen/homeStyling';
+import styles from '../../screens/Home/Styles/HomeStyles';
 
 export default function Header({
   type = 'default',

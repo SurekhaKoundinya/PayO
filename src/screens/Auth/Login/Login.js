@@ -1,3 +1,5 @@
+// LoginStyles.js
+
 import { StyleSheet } from 'react-native';
 
 import {
@@ -7,7 +9,7 @@ import {
 
 import { moderateScale } from 'react-native-size-matters';
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
 
   flex: {
     flex: 1,
@@ -196,3 +198,5 @@ export default StyleSheet.create({
   },
 
 });
+
+export default styles;

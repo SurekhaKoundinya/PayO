@@ -304,7 +304,7 @@ export default function Onboarding3({
 
           <Animated.Image
             key={index}
-            source={require('../../../assets/images/coin.png')}
+            source={require('../../../../assets/images/coin.png')}
             style={{
               position:
                 'absolute',
@@ -346,7 +346,7 @@ export default function Onboarding3({
         ]}>
 
         <Animated.Image
-          source={require('../../../assets/images/LogoContainer.png')}
+          source={require('../../../../assets/images/LogoContainer.png')}
           style={[
             styles.logo,
             {
@@ -364,7 +364,7 @@ export default function Onboarding3({
         />
 
         <Animated.Image
-          source={require('../../../assets/images/onboardingScreen3.png')}
+          source={require('../../../../assets/images/onboardingScreen3.png')}
           style={[
             styles.mainImage,
             {

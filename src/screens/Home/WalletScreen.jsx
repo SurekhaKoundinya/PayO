@@ -14,8 +14,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 import api from '../../api/axios';
-import styles from './WalletStyles';
-import Header from '../components/header';
+import styles from './Styles/WalletStyles';
+import Header from '../../components/common/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Share from 'react-native-share';
