@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-import { SkeletonPage } from '../components/Skeleton';
 import { kycRequests, notifications } from '../data/mockData';
 
 /* ── Sparkline SVG ── */
@@ -273,8 +272,6 @@ const getDocLabel = r => {
 export default function Dashboard() {
   const navigate = useNavigate();
   const [dateFilter, setDateFilter] = useState('all');
-  const [loading, setLoading] = useState(true);
-  useEffect(() => { const t = setTimeout(() => setLoading(false), 700); return () => clearTimeout(t); }, []);
 
   const stats = [
     {
@@ -325,7 +322,6 @@ export default function Dashboard() {
     },
   ];
 
-  if (loading) return <SkeletonPage />;
   return (
     <div className="page">
       <div className="page-header">
