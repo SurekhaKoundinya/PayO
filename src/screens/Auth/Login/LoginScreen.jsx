@@ -122,11 +122,7 @@ export default function LoginScreen({
   const handleSubmit = async () => {
 
   if (!isConnected) {
-
-    setMessage(
-      'No internet connection',
-    );
-
+    setMessage('No internet connection');
     return;
   }
 
@@ -143,12 +139,17 @@ export default function LoginScreen({
     );
 
     console.log(
-      'LOGIN RESPONSE:',
-      response.data,
+      'LOGIN RESPONSE =>',
+      JSON.stringify(
+        response.data,
+        null,
+        2,
+      ),
     );
 
     const token =
-      response?.data?.token;
+      response?.data?.token ||
+      response?.data?.data?.token;
 
     if (token) {
 
@@ -159,22 +160,32 @@ export default function LoginScreen({
 
       setMessage('');
 
-      navigation.replace(
-        'Main',
-      );
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Main',
+          },
+        ],
+      });
 
     } else {
 
+      console.log(
+        'TOKEN NOT FOUND',
+        response.data,
+      );
+
       setMessage(
         response?.data?.message ||
-        'Login failed',
+        'Login successful but token not received',
       );
     }
 
   } catch (error) {
 
     console.log(
-      'LOGIN ERROR:',
+      'LOGIN ERROR =>',
       error?.response?.data,
     );
 
@@ -401,7 +412,7 @@ export default function LoginScreen({
               onPress={() =>
                 isConnected &&
                 navigation.navigate(
-                  'RegisterScreen',
+                  'RegisterMobile',
                   {
                     mode: 'login',
                   },
@@ -424,7 +435,7 @@ export default function LoginScreen({
                 onPress={() =>
                   isConnected &&
                   navigation.navigate(
-                    'RegisterScreen',
+                    'RegisterMobile',
                     {
                       mode: 'register',
                     },

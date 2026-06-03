@@ -1,42 +1,23 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 import styles from './HelpCenterStyles';
 
-const helpTopics = [
-  {
-    title: 'Bank Related Queries',
-    icon: 'credit-card',
-  },
-  {
-    title: 'Money Transfer Issues',
-    icon: 'send',
-  },
-  {
-    title: 'Wallet Related Issues',
-    icon: 'briefcase',
-  },
-  {
-    title: 'Market Related Queries',
-    icon: 'trending-up',
-  },
-  {
-    title: 'Profile Related Queries',
-    icon: 'user',
-  },
-];
+export default function HelpCenterScreen({ navigation }) {
 
-const HelpCenterScreen = ({ navigation }) => {
+  const [selectedCategory, setSelectedCategory] =
+    useState('');
+
   return (
     <View style={styles.container}>
-
-      {/* HEADER */}
 
       <View style={styles.header}>
 
@@ -55,116 +36,102 @@ const HelpCenterScreen = ({ navigation }) => {
         </Text>
 
         <View style={{ width: 26 }} />
-
       </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
       >
 
-        {/* VIEW TICKETS */}
-
-        <TouchableOpacity style={styles.ticketCard}>
-          <View style={styles.ticketLeft}>
-            <Icon
-              name="file-text"
-              size={22}
-              color="#fff"
-            />
-
-            <Text style={styles.ticketText}>
-              View All Tickets
-            </Text>
-          </View>
-
-          <Icon
-            name="chevron-right"
-            size={20}
-            color="#fff"
-          />
-        </TouchableOpacity>
-
-        {/* RECENT ISSUE */}
-
         <Text style={styles.sectionTitle}>
-          Need help with a recent transaction?
+          Select Issue Category
         </Text>
 
-        <TouchableOpacity
-          style={styles.transactionCard}
-        >
-          <Text style={styles.transactionName}>
-            Money Transfer Failed
-          </Text>
-
-          <Text style={styles.transactionDate}>
-            29 June 2026
-          </Text>
-
-          <Text style={styles.transactionAmount}>
-            ₹1,000
-          </Text>
-        </TouchableOpacity>
-
-        {/* HELP TOPICS */}
-
-        <Text style={styles.sectionTitle}>
-          Help Topics
-        </Text>
-
-        {helpTopics.map((item, index) => (
+        {[
+          'Bank Related Issues',
+          'Money Transfer Issues',
+          'Wallet Related Issues',
+          'Market Related Queries',
+          'Profile Related Queries',
+        ].map((item, index) => (
           <TouchableOpacity
             key={index}
-            style={styles.topicRow}
+            style={[
+              styles.categoryCard,
+              selectedCategory === item &&
+                styles.selectedCard,
+            ]}
+            onPress={() =>
+              setSelectedCategory(item)
+            }
           >
-            <View style={styles.topicLeft}>
-
-              <Icon
-                name={item.icon}
-                size={20}
-                color="#fff"
-              />
-
-              <Text style={styles.topicText}>
-                {item.title}
-              </Text>
-
-            </View>
-
-            <Icon
-              name="chevron-right"
-              size={18}
-              color="#ccc"
-            />
+            <Text style={styles.categoryText}>
+              {item}
+            </Text>
           </TouchableOpacity>
         ))}
 
-        {/* CONTACT SUPPORT */}
+        <Text style={styles.sectionTitle}>
+          Issue Title
+        </Text>
 
-        <View style={styles.supportContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter issue title"
+          placeholderTextColor="#999"
+        />
 
-          <Text style={styles.supportTitle}>
-            Need further assistance?
+        <Text style={styles.sectionTitle}>
+          Describe Your Issue
+        </Text>
+
+        <TextInput
+          style={styles.textArea}
+          multiline
+          numberOfLines={5}
+          placeholder="Explain your issue in detail..."
+          placeholderTextColor="#999"
+        />
+
+        <Text style={styles.sectionTitle}>
+          Upload Evidence
+        </Text>
+
+        <TouchableOpacity
+          style={styles.uploadButton}
+        >
+          <Icon
+            name="paperclip"
+            size={18}
+            color="#fff"
+          />
+
+          <Text style={styles.uploadText}>
+            Attach Image / PDF
           </Text>
+        </TouchableOpacity>
 
-          <Text style={styles.supportSubtitle}>
-            We are here to help you.
+        <Text style={styles.sectionTitle}>
+          Additional Notes
+        </Text>
+
+        <TextInput
+          style={styles.notesInput}
+          multiline
+          numberOfLines={4}
+          placeholder="Enter additional notes..."
+          placeholderTextColor="#999"
+        />
+
+        <TouchableOpacity
+          style={styles.submitButton}
+        >
+          <Text style={styles.submitText}>
+            Submit Query
           </Text>
-
-          <TouchableOpacity
-            style={styles.contactButton}
-          >
-            <Text style={styles.contactButtonText}>
-              Contact Support
-            </Text>
-          </TouchableOpacity>
-
-        </View>
+        </TouchableOpacity>
 
       </ScrollView>
 
     </View>
   );
-};
-
-export default HelpCenterScreen;
+}

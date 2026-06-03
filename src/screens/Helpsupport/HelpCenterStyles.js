@@ -131,10 +131,96 @@ export default StyleSheet.create({
     borderRadius: 12,
   },
 
-  contactButtonText: {
+    contactButtonText: {
     color: '#fff',
     fontWeight: '700',
     fontSize: moderateScale(15),
   },
 
+  categoryCard: {
+    backgroundColor: '#6a1bb9',
+    borderRadius: moderateScale(12),
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('4%'),
+    marginBottom: hp('1.2%'),
+  },
+
+  selectedCard: {
+    borderWidth: 2,
+    borderColor: '#00ff99',
+  },
+
+  categoryText: {
+    color: '#fff',
+    fontSize: moderateScale(14),
+    fontWeight: '600',
+  },
+
+  input: {
+    backgroundColor: '#6a1bb9',
+    borderRadius: moderateScale(12),
+    paddingHorizontal: wp('4%'),
+    height: hp('6%'),
+    color: '#fff',
+    marginBottom: hp('2%'),
+    fontSize: moderateScale(14),
+  },
+
+  textArea: {
+    backgroundColor: '#6a1bb9',
+    borderRadius: moderateScale(12),
+    paddingHorizontal: wp('4%'),
+    paddingTop: hp('1.5%'),
+    color: '#fff',
+    minHeight: hp('15%'),
+    textAlignVertical: 'top',
+    marginBottom: hp('2%'),
+    fontSize: moderateScale(14),
+  },
+
+  uploadButton: {
+    backgroundColor: '#5e2bb8',
+    borderRadius: moderateScale(12),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: hp('2%'),
+    marginBottom: hp('2%'),
+  },
+
+  uploadText: {
+    color: '#fff',
+    marginLeft: wp('2%'),
+    fontWeight: '600',
+    fontSize: moderateScale(14),
+  },
+
+  notesInput: {
+    backgroundColor: '#6a1bb9',
+    borderRadius: moderateScale(12),
+    paddingHorizontal: wp('4%'),
+    paddingTop: hp('1.5%'),
+    color: '#fff',
+    minHeight: hp('12%'),
+    textAlignVertical: 'top',
+    marginBottom: hp('2%'),
+    fontSize: moderateScale(14),
+  },
+
+  submitButton: {
+    backgroundColor: '#00C853',
+    borderRadius: moderateScale(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: hp('2%'),
+    marginBottom: hp('5%'),
+  },
+
+  submitText: {
+    color: '#fff',
+    fontSize: moderateScale(16),
+    fontWeight: '700',
+  },
+
 });
+

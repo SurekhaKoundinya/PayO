@@ -62,24 +62,22 @@ export default function TransactionPinScreen({
             },
           );
 
-        if (
-          response.data.message
-        ) {
-          Alert.alert(
-            'Success',
-            response.data.message,
-            [
-              {
-                text: 'OK',
-                onPress: () =>
-                  navigation.replace(
-                    'Main',
-                  ),
-              },
-            ],
-          );
-        }
-      } catch (error) {
+       Alert.alert(
+  'Success',
+  response?.data?.message ||
+    'Transaction PIN set successfully',
+  [
+    {
+      text: 'OK',
+      onPress: () => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Main' }],
+        });
+      },
+    },
+  ],
+  ) } catch (error) {
         Alert.alert(
           'Error',
           error.response?.data
