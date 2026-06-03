@@ -493,19 +493,33 @@ export default function UserProfile({ navigation }) {
 
         {/* HEADER */}
         <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => 
-              // navigation.canGoBack() && navigation.goBack()
-              navigation.navigate("Main")
-            }
-          >
-            <Icon name="chevron-left" size={28} color="#ffffff" />
-          </TouchableOpacity>
+  <TouchableOpacity
+    onPress={() => navigation.navigate("Main")}
+  >
+    <Icon
+      name="chevron-left"
+      size={28}
+      color="#ffffff"
+    />
+  </TouchableOpacity>
 
-          <Text style={styles.title}>Profile</Text>
+  <Text style={styles.title}>
+    Profile
+  </Text>
 
-          <View style={{ width: 20 }} />
-        </View>
+  <TouchableOpacity
+    style={styles.helpButton}
+    onPress={() =>
+      navigation.navigate("HelpCenter")
+    }
+  >
+    <Icon
+      name="help-circle"
+      size={28}
+      color="#ffffff"
+    />
+  </TouchableOpacity>
+</View>
 
         {/* PROFILE */}
         <View style={styles.profileSection}>
@@ -668,18 +682,67 @@ export default function UserProfile({ navigation }) {
 
           {/* LOGOUT */}
 
-          <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
-            <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity>
+          {/* HELP & SUPPORT */}
 
-        </ScrollView>
-      </View>
+<Text style={styles.sectionTitle}>
+  Help & Support
+</Text>
 
-      <BottomNav
-        navigation={navigation}
-        currentRoute="Scan"
+<TouchableOpacity
+  style={styles.helpSupportCard}
+  onPress={() => navigation.navigate('HelpCenter')}
+>
+  <View style={styles.helpRow}>
+
+    <View style={styles.helpLeft}>
+      <Icon
+        name="help-circle"
+        size={22}
+        color="#fff"
       />
 
+      <Text style={styles.helpText}>
+        Help Center
+      </Text>
+    </View>
+
+    <Icon
+      name="chevron-right"
+      size={20}
+      color="#fff"
+    />
+  </View>
+</TouchableOpacity>
+
+{/* LOGOUT */}
+
+<TouchableOpacity
+  style={styles.logoutBtn}
+  onPress={handleLogout}
+>
+  <View style={styles.helpRow}>
+
+    <View style={styles.helpLeft}>
+      <Icon
+        name="log-out"
+        size={22}
+        color="#ff4d4d"
+      />
+
+      <Text style={styles.logoutText}>
+        Logout
+      </Text>
+    </View>
+
+    <Icon
+      name="chevron-right"
+      size={20}
+      color="#ff4d4d"
+    />
+  </View>
+</TouchableOpacity>
+</ScrollView>
+</View>
     </SafeAreaView>
   );
 }

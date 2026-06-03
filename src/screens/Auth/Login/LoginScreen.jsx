@@ -160,7 +160,7 @@ export default function LoginScreen({
       setMessage('');
 
       navigation.replace(
-        'BottomTabs',
+        'Main',
       );
 
     } else {

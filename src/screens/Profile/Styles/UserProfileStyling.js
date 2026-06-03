@@ -274,5 +274,37 @@ bankSub: {
   color: "#ccc",
   fontSize: 12
 },
+
+helpButton: {
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+helpSupportCard: {
+  backgroundColor: '#6a1bb9',
+  borderRadius: moderateScale(15),
+  paddingVertical: hp('2%'),
+  paddingHorizontal: wp('4%'),
+  marginBottom: hp('2%'),
+},
+
+helpRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+
+helpLeft: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+
+helpText: {
+  color: '#fff',
+  fontSize: moderateScale(15),
+  fontWeight: '600',
+  marginLeft: wp('3%'),
+},
+
 });
  

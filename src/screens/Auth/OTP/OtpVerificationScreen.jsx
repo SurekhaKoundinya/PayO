@@ -241,7 +241,7 @@ export default function OtpVerificationScreen({
           } else {
 
             navigation.replace(
-              'Profile',
+              'ProfileScreen',
             );
           }
 
@@ -577,3 +577,4 @@ export default function OtpVerificationScreen({
     </SafeAreaView>
   );
 }
+ 
