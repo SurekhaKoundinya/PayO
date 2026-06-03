@@ -262,10 +262,14 @@ const actIcon = t => {
 const getDocLabel = r => {
   const d = r.documents;
   if (!d) return r.document || '—';
+  const bank = d.bankDocs || {};
   const list = [];
   if (d.aadhaar?.submitted)  list.push('Aadhaar');
   if (d.pan?.submitted)      list.push('PAN');
-  if (d.passport?.submitted) list.push('Passport');
+  if (d.selfie?.submitted)   list.push('Selfie');
+  if (bank.cancelCheque?.submitted)  list.push('Cheque');
+  if (bank.bankStatement?.submitted) list.push('Statement');
+  if (bank.passbook?.submitted)      list.push('Passbook');
   return list.join(', ') || '—';
 };
 

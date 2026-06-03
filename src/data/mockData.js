@@ -6,10 +6,14 @@ export const kycRequests = [
     dob:"15 Aug 1995", address:"123, MG Road, Bangalore, Karnataka",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 4321", name: "Priya Sharma",    dob: "15-08-1995", address: "123, MG Road, Bangalore, Karnataka" },
-      pan:      { submitted: true,  number: "ABCDE1234F",     name: "PRIYA SHARMA",    dob: "15/08/1995" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 4321", name:"Priya Sharma",  dob:"15-08-1995", address:"123, MG Road, Bangalore, Karnataka" },
+      pan:      { number:"ABCDE1234F",     name:"PRIYA SHARMA",  dob:"15/08/1995" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"HDFC Bank",            accountNumber:"XXXX XXXX 5678", ifsc:"HDFC0001234", accountHolder:"Priya Sharma" },
+        bankStatement: { bankName:"HDFC Bank",            period:"Apr 2026 – May 2026",   pages:3 },
+        passbook:      { bankName:"HDFC Bank",            period:"Jan 2026 – May 2026" },
+      }
     }
   },
   {
@@ -19,10 +23,14 @@ export const kycRequests = [
     dob:"22 Mar 1990", address:"456, Linking Road, Mumbai, Maharashtra",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 7890", name: "Rahul Mehta",     dob: "22-03-1990", address: "456, Linking Road, Mumbai, Maharashtra" },
-      pan:      { submitted: true,  number: "FGHIJ5678K",     name: "RAHUL MEHTA",     dob: "22/03/1990" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 7890", name:"Rahul Mehta",   dob:"22-03-1990", address:"456, Linking Road, Mumbai, Maharashtra" },
+      pan:      { number:"FGHIJ5678K",     name:"RAHUL MEHTA",   dob:"22/03/1990" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"State Bank of India",  accountNumber:"XXXX XXXX 3344", ifsc:"SBIN0005678", accountHolder:"Rahul Mehta" },
+        bankStatement: { bankName:"State Bank of India",  period:"Mar 2026 – May 2026",   pages:4 },
+        passbook:      { bankName:"State Bank of India",  period:"Jan 2026 – May 2026" },
+      }
     }
   },
   {
@@ -32,10 +40,14 @@ export const kycRequests = [
     dob:"10 Jun 1998", address:"789, Banjara Hills, Hyderabad, Telangana",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 1122", name: "Ananya Reddy",    dob: "10-06-1998", address: "789, Banjara Hills, Hyderabad" },
-      pan:      { submitted: false },
-      passport: { submitted: true,  number: "P1234567",       name: "ANANYA REDDY",    expiry: "2030-06-10", country: "India" },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 1122", name:"Ananya Reddy",  dob:"10-06-1998", address:"789, Banjara Hills, Hyderabad, Telangana" },
+      pan:      { number:"HIJKL2233M",     name:"ANANYA REDDY",  dob:"10/06/1998" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"ICICI Bank",           accountNumber:"XXXX XXXX 9900", ifsc:"ICIC0002345", accountHolder:"Ananya Reddy" },
+        bankStatement: { bankName:"ICICI Bank",           period:"Mar 2026 – May 2026",   pages:5 },
+        passbook:      { bankName:"ICICI Bank",           period:"Feb 2026 – May 2026" },
+      }
     }
   },
   {
@@ -45,10 +57,14 @@ export const kycRequests = [
     dob:"05 Jan 1985", address:"321, Connaught Place, New Delhi",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 3344", name: "Vikram Singh",    dob: "05-01-1985", address: "321, Connaught Place, New Delhi" },
-      pan:      { submitted: true,  number: "KLMNO9012P",     name: "VIKRAM SINGH",    dob: "05/01/1985" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 3344", name:"Vikram Singh",  dob:"05-01-1985", address:"321, Connaught Place, New Delhi" },
+      pan:      { number:"KLMNO9012P",     name:"VIKRAM SINGH",  dob:"05/01/1985" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"Axis Bank",            accountNumber:"XXXX XXXX 1122", ifsc:"UTIB0001122", accountHolder:"Vikram Singh" },
+        bankStatement: { bankName:"Axis Bank",            period:"Apr 2026 – May 2026",   pages:2 },
+        passbook:      { bankName:"Axis Bank",            period:"Jan 2026 – May 2026" },
+      }
     }
   },
   {
@@ -58,10 +74,14 @@ export const kycRequests = [
     dob:"18 Sep 1993", address:"654, MG Road, Kochi, Kerala",
     rejectionReason:"Documents unclear, Aadhaar & PAN details mismatch",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 5566", name: "Meera Nair",      dob: "18-09-1993", address: "654, MG Road, Kochi, Kerala" },
-      pan:      { submitted: true,  number: "QRSTU3456V",     name: "MEERA NAIR",      dob: "18/09/1993" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 5566", name:"Meera Nair",    dob:"18-09-1993", address:"654, MG Road, Kochi, Kerala" },
+      pan:      { number:"QRSTU3456V",     name:"MEERA NAIR",    dob:"18/09/1993" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"Federal Bank",         accountNumber:"XXXX XXXX 7788", ifsc:"FDRL0007788", accountHolder:"Meera Nair" },
+        bankStatement: { bankName:"Federal Bank",         period:"Apr 2026 – May 2026",   pages:3 },
+        passbook:      { bankName:"Federal Bank",         period:"Jan 2026 – May 2026" },
+      }
     }
   },
   {
@@ -71,10 +91,14 @@ export const kycRequests = [
     dob:"28 Dec 1992", address:"987, CG Road, Ahmedabad, Gujarat",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 7788", name: "Arjun Patel",     dob: "28-12-1992", address: "987, CG Road, Ahmedabad, Gujarat" },
-      pan:      { submitted: true,  number: "VWXYZ7890A",     name: "ARJUN PATEL",     dob: "28/12/1992" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 7788", name:"Arjun Patel",   dob:"28-12-1992", address:"987, CG Road, Ahmedabad, Gujarat" },
+      pan:      { number:"VWXYZ7890A",     name:"ARJUN PATEL",   dob:"28/12/1992" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"Kotak Mahindra Bank",  accountNumber:"XXXX XXXX 4455", ifsc:"KKBK0003456", accountHolder:"Arjun Patel" },
+        bankStatement: { bankName:"Kotak Mahindra Bank",  period:"Mar 2026 – May 2026",   pages:3 },
+        passbook:      { bankName:"Kotak Mahindra Bank",  period:"Jan 2026 – May 2026" },
+      }
     }
   },
   {
@@ -84,10 +108,14 @@ export const kycRequests = [
     dob:"14 Apr 1997", address:"147, Sector 17, Chandigarh",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 9900", name: "Sneha Kapoor",    dob: "14-04-1997", address: "147, Sector 17, Chandigarh" },
-      pan:      { submitted: false },
-      passport: { submitted: true,  number: "P9876543",       name: "SNEHA KAPOOR",    expiry: "2029-04-14", country: "India" },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 9900", name:"Sneha Kapoor",  dob:"14-04-1997", address:"147, Sector 17, Chandigarh" },
+      pan:      { number:"ABCPQ8899R",     name:"SNEHA KAPOOR",  dob:"14/04/1997" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"Punjab National Bank", accountNumber:"XXXX XXXX 7766", ifsc:"PUNB0007766", accountHolder:"Sneha Kapoor" },
+        bankStatement: { bankName:"Punjab National Bank", period:"Apr 2026 – May 2026",   pages:4 },
+        passbook:      { bankName:"Punjab National Bank", period:"Mar 2026 – May 2026" },
+      }
     }
   },
   {
@@ -97,10 +125,14 @@ export const kycRequests = [
     dob:"03 Jul 1988", address:"258, Indiranagar, Bangalore, Karnataka",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 1234", name: "Karthik Rao",     dob: "03-07-1988", address: "258, Indiranagar, Bangalore" },
-      pan:      { submitted: true,  number: "BCDEF2345G",     name: "KARTHIK RAO",     dob: "03/07/1988" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 1234", name:"Karthik Rao",   dob:"03-07-1988", address:"258, Indiranagar, Bangalore, Karnataka" },
+      pan:      { number:"BCDEF2345G",     name:"KARTHIK RAO",   dob:"03/07/1988" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"HDFC Bank",            accountNumber:"XXXX XXXX 8899", ifsc:"HDFC0008899", accountHolder:"Karthik Rao" },
+        bankStatement: { bankName:"HDFC Bank",            period:"Mar 2026 – May 2026",   pages:3 },
+        passbook:      { bankName:"HDFC Bank",            period:"Jan 2026 – May 2026" },
+      }
     }
   },
   {
@@ -110,10 +142,14 @@ export const kycRequests = [
     dob:"25 Nov 1994", address:"369, Anna Nagar, Chennai, Tamil Nadu",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 5678", name: "Divya Menon",     dob: "25-11-1994", address: "369, Anna Nagar, Chennai" },
-      pan:      { submitted: true,  number: "HIJKL6789M",     name: "DIVYA MENON",     dob: "25/11/1994" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 5678", name:"Divya Menon",   dob:"25-11-1994", address:"369, Anna Nagar, Chennai, Tamil Nadu" },
+      pan:      { number:"HIJKL6789M",     name:"DIVYA MENON",   dob:"25/11/1994" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"Canara Bank",          accountNumber:"XXXX XXXX 2233", ifsc:"CNRB0002233", accountHolder:"Divya Menon" },
+        bankStatement: { bankName:"Canara Bank",          period:"Apr 2026 – May 2026",   pages:2 },
+        passbook:      { bankName:"Canara Bank",          period:"Feb 2026 – May 2026" },
+      }
     }
   },
   {
@@ -123,10 +159,14 @@ export const kycRequests = [
     dob:"07 Feb 1991", address:"741, Hazratganj, Lucknow, Uttar Pradesh",
     rejectionReason:"Images are cropped and not clear",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 9012", name: "Rohit Gupta",     dob: "07-02-1991", address: "741, Hazratganj, Lucknow" },
-      pan:      { submitted: true,  number: "NOPQR0123S",     name: "ROHIT GUPTA",     dob: "07/02/1991" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 9012", name:"Rohit Gupta",   dob:"07-02-1991", address:"741, Hazratganj, Lucknow, Uttar Pradesh" },
+      pan:      { number:"NOPQR0123S",     name:"ROHIT GUPTA",   dob:"07/02/1991" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"Bank of Baroda",       accountNumber:"XXXX XXXX 3322", ifsc:"BARB0003322", accountHolder:"Rohit Gupta" },
+        bankStatement: { bankName:"Bank of Baroda",       period:"Apr 2026 – May 2026",   pages:2 },
+        passbook:      { bankName:"Bank of Baroda",       period:"Jan 2026 – May 2026" },
+      }
     }
   },
   {
@@ -136,10 +176,14 @@ export const kycRequests = [
     dob:"12 Mar 1989", address:"22, T Nagar, Chennai, Tamil Nadu",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 3456", name: "Lakshmi Iyer",    dob: "12-03-1989", address: "22, T Nagar, Chennai" },
-      pan:      { submitted: true,  number: "STUVW4567X",     name: "LAKSHMI IYER",    dob: "12/03/1989" },
-      passport: { submitted: false },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 3456", name:"Lakshmi Iyer",  dob:"12-03-1989", address:"22, T Nagar, Chennai, Tamil Nadu" },
+      pan:      { number:"STUVW4567X",     name:"LAKSHMI IYER",  dob:"12/03/1989" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"Indian Bank",          accountNumber:"XXXX XXXX 6677", ifsc:"IDIB0006677", accountHolder:"Lakshmi Iyer" },
+        bankStatement: { bankName:"Indian Bank",          period:"Apr 2026 – May 2026",   pages:3 },
+        passbook:      { bankName:"Indian Bank",          period:"Jan 2026 – May 2026" },
+      }
     }
   },
   {
@@ -149,10 +193,14 @@ export const kycRequests = [
     dob:"30 Jul 2000", address:"77, Salt Lake, Kolkata, West Bengal",
     rejectionReason:"",
     documents: {
-      aadhaar:  { submitted: true,  number: "XXXX XXXX 7890", name: "Aditya Kumar",    dob: "30-07-2000", address: "77, Salt Lake, Kolkata" },
-      pan:      { submitted: false },
-      passport: { submitted: true,  number: "P5432109",       name: "ADITYA KUMAR",    expiry: "2032-07-30", country: "India" },
-      selfie:   { submitted: true }
+      aadhaar:  { number:"XXXX XXXX 7890", name:"Aditya Kumar",  dob:"30-07-2000", address:"77, Salt Lake, Kolkata, West Bengal" },
+      pan:      { number:"YZABC1234D",     name:"ADITYA KUMAR",  dob:"30/07/2000" },
+      selfie:   { verified: true },
+      bankDocs: {
+        cancelCheque:  { bankName:"UCO Bank",             accountNumber:"XXXX XXXX 1100", ifsc:"UCBA0001100", accountHolder:"Aditya Kumar" },
+        bankStatement: { bankName:"UCO Bank",             period:"Apr 2026 – May 2026",   pages:2 },
+        passbook:      { bankName:"UCO Bank",             period:"Jan 2026 – May 2026" },
+      }
     }
   },
 ];
@@ -230,34 +278,34 @@ export const wallets = [
 ];
 
 export const auditLogs = [
-  { id:1,  action:"KYC Approved",       user:"Vikram Singh",  admin:"Admin User", timestamp:"24 May 2026, 04:30 PM", details:"All documents verified and approved", type:"approve" },
-  { id:2,  action:"KYC Rejected",       user:"Meera Nair",    admin:"Admin User", timestamp:"24 May 2026, 02:45 PM", details:"Documents unclear, details mismatch",  type:"reject"  },
-  { id:3,  action:"KYC Approved",       user:"Karthik Rao",   admin:"Admin User", timestamp:"23 May 2026, 10:00 AM", details:"All documents verified and approved", type:"approve" },
-  { id:4,  action:"User Account Created",user:"Priya Sharma", admin:"System",     timestamp:"20 May 2026, 09:00 AM", details:"New user registered on PayO",          type:"info"    },
-  { id:5,  action:"Wallet Activated",   user:"Vikram Singh",  admin:"System",     timestamp:"24 May 2026, 04:35 PM", details:"Wallet activated post KYC approval",   type:"info"    },
-  { id:6,  action:"KYC Rejected",       user:"Rohit Gupta",   admin:"Admin User", timestamp:"22 May 2026, 05:00 PM", details:"Images are cropped and not clear",     type:"reject"  },
-  { id:7,  action:"KYC Approved",       user:"Divya Menon",   admin:"Admin User", timestamp:"23 May 2026, 08:30 AM", details:"All documents verified and approved", type:"approve" },
-  { id:8,  action:"KYC Approved",       user:"Lakshmi Iyer",  admin:"Admin User", timestamp:"22 May 2026, 11:30 AM", details:"All documents verified and approved", type:"approve" },
-  { id:9,  action:"Wallet Deactivated", user:"Meera Nair",    admin:"Admin User", timestamp:"24 May 2026, 03:00 PM", details:"Wallet deactivated pending re-verification", type:"reject" },
-  { id:10, action:"Admin Login",        user:"—",             admin:"Admin User", timestamp:"25 May 2026, 09:00 AM", details:"Admin logged into the portal",         type:"info"    },
+  { id:1,  action:"KYC Approved",        user:"Vikram Singh",  admin:"Admin User", timestamp:"24 May 2026, 04:30 PM", details:"All documents verified and approved", type:"approve" },
+  { id:2,  action:"KYC Rejected",        user:"Meera Nair",    admin:"Admin User", timestamp:"24 May 2026, 02:45 PM", details:"Documents unclear, details mismatch",  type:"reject"  },
+  { id:3,  action:"KYC Approved",        user:"Karthik Rao",   admin:"Admin User", timestamp:"23 May 2026, 10:00 AM", details:"All documents verified and approved", type:"approve" },
+  { id:4,  action:"User Account Created",user:"Priya Sharma",  admin:"System",     timestamp:"20 May 2026, 09:00 AM", details:"New user registered on PayO",          type:"info"    },
+  { id:5,  action:"Wallet Activated",    user:"Vikram Singh",  admin:"System",     timestamp:"24 May 2026, 04:35 PM", details:"Wallet activated post KYC approval",   type:"info"    },
+  { id:6,  action:"KYC Rejected",        user:"Rohit Gupta",   admin:"Admin User", timestamp:"22 May 2026, 05:00 PM", details:"Images are cropped and not clear",     type:"reject"  },
+  { id:7,  action:"KYC Approved",        user:"Divya Menon",   admin:"Admin User", timestamp:"23 May 2026, 08:30 AM", details:"All documents verified and approved", type:"approve" },
+  { id:8,  action:"KYC Approved",        user:"Lakshmi Iyer",  admin:"Admin User", timestamp:"22 May 2026, 11:30 AM", details:"All documents verified and approved", type:"approve" },
+  { id:9,  action:"Wallet Deactivated",  user:"Meera Nair",    admin:"Admin User", timestamp:"24 May 2026, 03:00 PM", details:"Wallet deactivated pending re-verification", type:"reject" },
+  { id:10, action:"Admin Login",         user:"—",             admin:"Admin User", timestamp:"25 May 2026, 09:00 AM", details:"Admin logged into the portal",         type:"info"    },
 ];
 
 export const notifications = [
-  { id:1, type:"kyc_request",  title:"New KYC Request",  message:"Priya Sharma submitted Aadhaar & PAN for review.",          time:"09:12 AM", read:false },
-  { id:2, type:"kyc_request",  title:"New KYC Request",  message:"Rahul Mehta submitted Aadhaar & PAN for verification.",     time:"08:55 AM", read:false },
+  { id:1, type:"kyc_request",  title:"New KYC Request",  message:"Priya Sharma submitted all documents for review.",          time:"09:12 AM", read:false },
+  { id:2, type:"kyc_request",  title:"New KYC Request",  message:"Rahul Mehta submitted all documents for verification.",     time:"08:55 AM", read:false },
   { id:3, type:"kyc_approved", title:"KYC Approved",     message:"Ananya Reddy's KYC has been approved successfully.",        time:"09:45 AM", read:true  },
-  { id:4, type:"kyc_rejected", title:"KYC Rejected",     message:"Neha Sharma's KYC was rejected — document mismatch.",      time:"09:15 AM", read:true  },
-  { id:5, type:"kyc_request",  title:"New KYC Request",  message:"Arjun Patel submitted Aadhaar & PAN for verification.",    time:"12:05 PM", read:false },
+  { id:4, type:"kyc_rejected", title:"KYC Rejected",     message:"Meera Nair's KYC was rejected — document mismatch.",       time:"09:15 AM", read:true  },
+  { id:5, type:"kyc_request",  title:"New KYC Request",  message:"Arjun Patel submitted all documents for verification.",    time:"12:05 PM", read:false },
   { id:6, type:"kyc_approved", title:"KYC Approved",     message:"Karthik Rao's KYC verification completed.",                time:"09:30 AM", read:true  },
   { id:7, type:"system",       title:"System Alert",     message:"245 KYC requests are currently pending review.",           time:"08:00 AM", read:false },
   { id:8, type:"kyc_rejected", title:"KYC Rejected",     message:"Rohit Gupta's documents rejected — images unclear.",       time:"05:00 PM", read:true  },
-  { id:9, type:"kyc_request",  title:"New KYC Request",  message:"Aditya Kumar submitted Aadhaar & Passport for review.",    time:"03:30 PM", read:false },
+  { id:9, type:"kyc_request",  title:"New KYC Request",  message:"Aditya Kumar submitted all documents for review.",         time:"03:30 PM", read:false },
 ];
 
 export const monthlyData = [
-  { month:"Jan", approved:620, rejected:45, pending:80  },
-  { month:"Feb", approved:740, rejected:60, pending:95  },
-  { month:"Mar", approved:810, rejected:55, pending:110 },
-  { month:"Apr", approved:950, rejected:70, pending:130 },
-  { month:"May", approved:1020,rejected:80, pending:245 },
+  { month:"Jan", approved:620,  rejected:45, pending:80  },
+  { month:"Feb", approved:740,  rejected:60, pending:95  },
+  { month:"Mar", approved:810,  rejected:55, pending:110 },
+  { month:"Apr", approved:950,  rejected:70, pending:130 },
+  { month:"May", approved:1020, rejected:80, pending:245 },
 ];
