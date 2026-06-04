@@ -206,18 +206,41 @@ export const kycRequests = [
 ];
 
 export const users = [
-  { id:"USR-001", name:"Priya Sharma",  email:"priya.sharma@email.com",  phone:"+91 98765 43210", kyc:"Pending",   wallet:"0 PYO",    joined:"20 May 2026", initials:"PS", color:"#6C63FF" },
-  { id:"USR-002", name:"Rahul Mehta",   email:"rahul.mehta@email.com",   phone:"+91 91234 56789", kyc:"In Review", wallet:"0 PYO",    joined:"19 May 2026", initials:"RM", color:"#FF6584" },
-  { id:"USR-003", name:"Ananya Reddy",  email:"ananya.reddy@email.com",  phone:"+91 87654 32109", kyc:"Pending",   wallet:"0 PYO",    joined:"18 May 2026", initials:"AR", color:"#43E97B" },
-  { id:"USR-004", name:"Vikram Singh",  email:"vikram.singh@email.com",  phone:"+91 76543 21098", kyc:"Approved",  wallet:"1,250 PYO",joined:"15 May 2026", initials:"VS", color:"#FA8231" },
-  { id:"USR-005", name:"Meera Nair",    email:"meera.nair@email.com",    phone:"+91 65432 10987", kyc:"Failed",    wallet:"0 PYO",    joined:"14 May 2026", initials:"MN", color:"#E74C3C" },
-  { id:"USR-006", name:"Arjun Patel",   email:"arjun.patel@email.com",   phone:"+91 54321 09876", kyc:"Pending",   wallet:"0 PYO",    joined:"12 May 2026", initials:"AP", color:"#3498DB" },
-  { id:"USR-007", name:"Sneha Kapoor",  email:"sneha.kapoor@email.com",  phone:"+91 43210 98765", kyc:"In Review", wallet:"0 PYO",    joined:"10 May 2026", initials:"SK", color:"#9B59B6" },
-  { id:"USR-008", name:"Karthik Rao",   email:"karthik.rao@email.com",   phone:"+91 32109 87654", kyc:"Approved",  wallet:"820 PYO",  joined:"08 May 2026", initials:"KR", color:"#1ABC9C" },
-  { id:"USR-009", name:"Divya Menon",   email:"divya.menon@email.com",   phone:"+91 21098 76543", kyc:"Approved",  wallet:"2,500 PYO",joined:"05 May 2026", initials:"DM", color:"#F39C12" },
-  { id:"USR-010", name:"Rohit Gupta",   email:"rohit.gupta@email.com",   phone:"+91 10987 65432", kyc:"Failed",    wallet:"0 PYO",    joined:"02 May 2026", initials:"RG", color:"#E67E22" },
-  { id:"USR-011", name:"Lakshmi Iyer",  email:"lakshmi.iyer@email.com",  phone:"+91 99887 76655", kyc:"Approved",  wallet:"540 PYO",  joined:"01 May 2026", initials:"LI", color:"#8E44AD" },
-  { id:"USR-012", name:"Aditya Kumar",  email:"aditya.kumar@email.com",  phone:"+91 88776 65544", kyc:"Pending",   wallet:"0 PYO",    joined:"28 Apr 2026", initials:"AK", color:"#16A085" },
+  { id:"USR-001", name:"Priya Sharma",  email:"priya.sharma@email.com",  phone:"+91 98765 43210", kyc:"Pending",   wallet:"0 PYO",    joined:"20 May 2026", initials:"PS", color:"#6C63FF",
+    bankDetails: { bankName:"HDFC Bank", accountNumber:"XXXX XXXX 5678", ifsc:"HDFC0001234", accountHolder:"Priya Sharma" } },
+
+  { id:"USR-002", name:"Rahul Mehta",   email:"rahul.mehta@email.com",   phone:"+91 91234 56789", kyc:"In Review", wallet:"0 PYO",    joined:"19 May 2026", initials:"RM", color:"#FF6584",
+    bankDetails: null },
+
+  { id:"USR-003", name:"Ananya Reddy",  email:"ananya.reddy@email.com",  phone:"+91 87654 32109", kyc:"Pending",   wallet:"0 PYO",    joined:"18 May 2026", initials:"AR", color:"#43E97B",
+    bankDetails: null },
+
+  { id:"USR-004", name:"Vikram Singh",  email:"vikram.singh@email.com",  phone:"+91 76543 21098", kyc:"Approved",  wallet:"1,250 PYO",joined:"15 May 2026", initials:"VS", color:"#FA8231",
+    bankDetails: { bankName:"Axis Bank", accountNumber:"XXXX XXXX 1122", ifsc:"UTIB0001122", accountHolder:"Vikram Singh" } },
+
+  { id:"USR-005", name:"Meera Nair",    email:"meera.nair@email.com",    phone:"+91 65432 10987", kyc:"Failed",    wallet:"0 PYO",    joined:"14 May 2026", initials:"MN", color:"#E74C3C",
+    bankDetails: null },
+
+  { id:"USR-006", name:"Arjun Patel",   email:"arjun.patel@email.com",   phone:"+91 54321 09876", kyc:"Pending",   wallet:"0 PYO",    joined:"12 May 2026", initials:"AP", color:"#3498DB",
+    bankDetails: { bankName:"Kotak Mahindra Bank", accountNumber:"XXXX XXXX 4455", ifsc:"KKBK0003456", accountHolder:"Arjun Patel" } },
+
+  { id:"USR-007", name:"Sneha Kapoor",  email:"sneha.kapoor@email.com",  phone:"+91 43210 98765", kyc:"In Review", wallet:"0 PYO",    joined:"10 May 2026", initials:"SK", color:"#9B59B6",
+    bankDetails: null },
+
+  { id:"USR-008", name:"Karthik Rao",   email:"karthik.rao@email.com",   phone:"+91 32109 87654", kyc:"Approved",  wallet:"820 PYO",  joined:"08 May 2026", initials:"KR", color:"#1ABC9C",
+    bankDetails: { bankName:"HDFC Bank", accountNumber:"XXXX XXXX 8899", ifsc:"HDFC0008899", accountHolder:"Karthik Rao" } },
+
+  { id:"USR-009", name:"Divya Menon",   email:"divya.menon@email.com",   phone:"+91 21098 76543", kyc:"Approved",  wallet:"2,500 PYO",joined:"05 May 2026", initials:"DM", color:"#F39C12",
+    bankDetails: { bankName:"Canara Bank", accountNumber:"XXXX XXXX 2233", ifsc:"CNRB0002233", accountHolder:"Divya Menon" } },
+
+  { id:"USR-010", name:"Rohit Gupta",   email:"rohit.gupta@email.com",   phone:"+91 10987 65432", kyc:"Failed",    wallet:"0 PYO",    joined:"02 May 2026", initials:"RG", color:"#E67E22",
+    bankDetails: null },
+
+  { id:"USR-011", name:"Lakshmi Iyer",  email:"lakshmi.iyer@email.com",  phone:"+91 99887 76655", kyc:"Approved",  wallet:"540 PYO",  joined:"01 May 2026", initials:"LI", color:"#8E44AD",
+    bankDetails: { bankName:"Indian Bank", accountNumber:"XXXX XXXX 6677", ifsc:"IDIB0006677", accountHolder:"Lakshmi Iyer" } },
+
+  { id:"USR-012", name:"Aditya Kumar",  email:"aditya.kumar@email.com",  phone:"+91 88776 65544", kyc:"Pending",   wallet:"0 PYO",    joined:"28 Apr 2026", initials:"AK", color:"#16A085",
+    bankDetails: null },
 ];
 
 export const wallets = [

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { users as init, kycRequests } from '../data/mockData';
+import { users as init } from '../data/mockData';
 import { useNavigate } from 'react-router-dom';
 
 const sMap = { Pending:'b-pending', 'In Review':'b-review', Approved:'b-approved', Failed:'b-failed' };
@@ -8,9 +8,8 @@ const Badge = ({ s }) => <span className={`badge ${sMap[s]||'b-pending'}`}>{s}</
 function UserModal({ u, onClose }) {
   if (!u) return null;
 
-  // Pull bank details from kycRequests using the same user ID
-  const kyc = kycRequests.find(r => r.id === u.id);
-  const bank = kyc?.documents?.bankDocs?.cancelCheque || null;
+  // Use bankDetails directly from the user object (independent of KYC docs)
+  const bank = u.bankDetails || null;
   const hasBankDetails = !!(bank?.accountNumber);
 
   return (
@@ -123,22 +122,48 @@ function UserModal({ u, onClose }) {
                 </div>
               </div>
             ) : (
-              /* Not submitted state */
+              /* Not submitted state — attention-grabbing alert */
               <div style={{
-                border:'2px dashed var(--gray-200)',
-                borderRadius:14, padding:'22px 20px',
-                display:'flex', alignItems:'center', gap:16,
-                background:'var(--gray-50,#F9FAFB)',
+                borderRadius: 14,
+                overflow: 'hidden',
+                border: '1.5px solid #FED7AA',
+                boxShadow: '0 4px 20px rgba(234,88,12,0.10)',
               }}>
+                {/* Body */}
                 <div style={{
-                  width:48, height:48, borderRadius:12, flexShrink:0,
-                  background:'var(--gray-100)',
-                  display:'flex', alignItems:'center', justifyContent:'center', fontSize:24,
-                }}>🏦</div>
-                <div>
-                  <div style={{ fontSize:13.5, fontWeight:700, color:'var(--gray-500)' }}>Bank Details Not Submitted</div>
-                  <div style={{ fontSize:12, color:'var(--gray-400)', marginTop:4, lineHeight:1.5 }}>
-                    The user has not submitted any bank details yet.
+                  background: 'linear-gradient(135deg, #FFF7ED, #FFEDD5)',
+                  padding: '18px 18px 16px',
+                  display: 'flex', alignItems: 'flex-start', gap: 14,
+                }}>
+                  {/* Icon */}
+                  <div style={{
+                    width: 48, height: 48, borderRadius: 12, flexShrink: 0,
+                    background: 'rgba(234,88,12,0.12)',
+                    border: '1.5px solid rgba(234,88,12,0.2)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22,
+                  }}>🏦</div>
+
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: '#9A3412', letterSpacing: '-0.2px', marginBottom: 4 }}>
+                      Bank Details Not Submitted
+                    </div>
+                    <div style={{ fontSize: 12.5, color: '#C2410C', lineHeight: 1.55 }}>
+                      This user has not linked any bank account yet. KYC verification may be incomplete.
+                    </div>
+
+                    {/* Status pill */}
+                    <div style={{ marginTop: 10 }}>
+                      <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 5,
+                        background: 'rgba(234,88,12,0.15)',
+                        border: '1px solid rgba(234,88,12,0.3)',
+                        borderRadius: 20, padding: '3px 10px',
+                        fontSize: 11, fontWeight: 700, color: '#EA580C',
+                      }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#EA580C', display: 'inline-block' }}/>
+                        Pending — No Bank Account
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
