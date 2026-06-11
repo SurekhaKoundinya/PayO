@@ -68,7 +68,7 @@ const AddBankDetails = ({ navigation }) => {
     async () => {
       try {
         const res = await api.get(
-          '/api/wallet/all-banks',
+          '/api/bank/all-banks',
         );
 
         setBanksList(
@@ -142,7 +142,9 @@ const AddBankDetails = ({ navigation }) => {
 
   const handleSubmit =
     async () => {
+       console.log(form,"form")
       if (loading) return;
+     
 
       const {
         name,
