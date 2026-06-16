@@ -60,6 +60,19 @@ export const deleteKYCRecord = (kycId) =>
 export const getAuditLog = () =>
   api.get("/api/admin/kyc/audit-log");
 
+// ─── Dashboard Widget Stats ───────────────────────────────────────────────────
+// GET /api/admin/stats/widgets
+// Expected response:
+//   { success, totalTransactions, payoInCirculation, referralRewardsDistributed }
+//
+// TODO (backend team): Create this endpoint with adminAuth middleware.
+//   It should aggregate:
+//     - totalTransactions:           Transaction.countDocuments({})
+//     - payoInCirculation:           Wallet.aggregate sum of all walletBalance fields
+//     - referralRewardsDistributed:  Referral.aggregate sum of all reward amounts
+export const getDashboardWidgetStats = () =>
+  api.get("/api/admin/stats/widgets");
+
 // ─── Bank (user-scoped — admin bank endpoint not yet available) ───────────────
 // /api/bank/all-banks uses user-level auth and returns only the calling user's
 // banks — it cannot return all users' banks from the admin portal.
