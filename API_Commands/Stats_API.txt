@@ -1,0 +1,145 @@
+---
+
+# 1. Get All Users (Total Users card)
+
+### API
+
+```txt
+GET /api/admin/auth/users
+```
+
+### Full URL
+
+```txt
+https://shadily-hazard-widget.ngrok-free.dev/api/admin/auth/users
+```
+
+### Headers
+
+```txt
+Content-Type: application/json
+Authorization: Bearer eyJhbGc...
+ngrok-skip-browser-warning: true
+```
+
+### Body
+
+```txt
+None
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "total": 42,
+  "verified": 30,
+  "pending": 12,
+  "users": [
+    {
+      "_id": "64abc...",
+      "name": "Rahul Sharma",
+      "email": "rahul@gmail.com",
+      "mobile": "9876543210",
+      "kycVerified": true,
+      "walletBalance": 150,
+      "walletAddress": "PAYO-XXXX",
+      "createdAt": "2024-01-15T10:30:00.000Z",
+      "role": "user",
+      "bankDetails": null
+    }
+  ]
+}
+```
+
+---
+
+# 2. Get All KYC Submissions (Active Wallets card)
+
+### API
+
+```txt
+GET /api/admin/kyc/all-submissions
+```
+
+### Full URL
+
+```txt
+https://shadily-hazard-widget.ngrok-free.dev/api/admin/kyc/all-submissions
+```
+
+### Headers
+
+```txt
+Content-Type: application/json
+Authorization: Bearer eyJhbGc...
+ngrok-skip-browser-warning: true
+```
+
+### Body
+
+```txt
+None
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "kycs": [
+    {
+      "_id": "64abc...",
+      "userId": { "_id": "64xyz...", "name": "Rahul Sharma", "mobile": "9876543210" },
+      "fullName": "Rahul Sharma",
+      "status": "approved",
+      "createdAt": "2024-01-15T10:30:00.000Z",
+      "aadharFrontUrl": "...",
+      "panCardUrl": "...",
+      "selfieUrl": "..."
+    }
+  ]
+}
+```
+
+---
+
+# 3. Get Dashboard Widget Stats *(New endpoint)*
+
+### API
+
+```txt
+GET /api/admin/stats/widgets
+```
+
+### Full URL
+
+```txt
+https://shadily-hazard-widget.ngrok-free.dev/api/admin/stats/widgets
+```
+
+### Headers
+
+```txt
+Content-Type: application/json
+Authorization: Bearer eyJhbGc...
+ngrok-skip-browser-warning: true
+```
+
+### Body
+
+```txt
+None
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "totalTransactions": 318,
+  "payoInCirculation": 52400,
+  "referralRewardsDistributed": 1750
+}
+```
