@@ -433,7 +433,7 @@ useFocusEffect(
                 coin?.priceChangePercentage24h < 0;
 
               const graphData = [
-                coin.price + 1200,
+                coin.price + 1300,
                 coin.price + 900,
                 coin.price + 700,
                 coin.price + 300,
