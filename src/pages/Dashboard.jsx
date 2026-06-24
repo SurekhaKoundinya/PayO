@@ -92,6 +92,7 @@ function FilterDropdown({ value, onChange }) {
     document.addEventListener('mousedown', h);
     return () => document.removeEventListener('mousedown', h);
   }, []);
+  // eslint-disable-next-line no-unused-vars
   const selected = options.find(o => o.value === value) || options[0];
   return (
     <div ref={ref} style={{ position:'relative' }}>
