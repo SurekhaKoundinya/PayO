@@ -223,7 +223,9 @@ export default function TransactionHistory({
   return (
     <LinearGradient
       colors={['#6A00F4', '#1A0033']}
-      style={{ flex: 1 }}>
+      style={{ flex: 1 ,}}
+      
+      >
       <SafeAreaView
         style={styles.container}>
         <View style={styles.headerRow}>

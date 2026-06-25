@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: hp('1.5%'),
-    paddingHorizontal: wp('1%'),
+    paddingHorizontal: wp('5%'),
   },
 
   section: {

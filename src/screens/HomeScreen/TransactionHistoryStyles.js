@@ -10,11 +10,14 @@ export default StyleSheet.create({
     flex: 1,
     paddingHorizontal: wp('5%'),
     paddingBottom: hp('16%'),
+     paddingTop: hp('5%'),
   },
 
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'start',
+    gap:'5%',
     marginBottom: hp('2.5%'),
   },
 
@@ -27,7 +30,7 @@ export default StyleSheet.create({
     color: '#fff',
     fontSize: moderateScale(21),
     fontWeight: '700',
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
 
   filterRow: {
