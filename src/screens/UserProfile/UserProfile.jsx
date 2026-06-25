@@ -26,6 +26,7 @@ import {
 import * as Keychain from 'react-native-keychain'; // ✅ added
 import styles from './UserProfileStyling';
 import api from '../../api/axios';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Clipboard from "@react-native-clipboard/clipboard";
 import Share from "react-native-share";
 import RNFS from "react-native-fs";
@@ -287,8 +288,12 @@ export default function UserProfile({ navigation }) {
                 <View key={index} style={styles.bankCard}>
                   <View style={styles.bankLeft}>
                     <View style={styles.bankIcon}>
-                      <Icon name="credit-card" size={20} color="#fff" />
-                    </View>
+  <MaterialCommunityIcons
+    name="bank"
+    size={22}
+    color="#fff"
+  />
+</View>
 
                     <View>
                       <Text style={styles.bankName}>

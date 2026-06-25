@@ -18,6 +18,7 @@ export default StyleSheet.create({
 
   container: {
     flex: 1,
+    paddingTop: hp('5%'),
     paddingHorizontal: wp('5%'),
   },
 

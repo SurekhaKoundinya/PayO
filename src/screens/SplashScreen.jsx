@@ -157,7 +157,6 @@ const SplashScreen = ({ navigation }) => {
   }
 
 
-
   return (
     <SafeAreaView style={styles.safeAreaBlack}>
       <StatusBar backgroundColor="#02040D" barStyle="light-content" />

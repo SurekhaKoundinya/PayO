@@ -1335,4 +1335,3 @@ export default function KYCVerification({
     </SafeAreaView>
   );
 }
-

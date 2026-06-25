@@ -1,9 +1,13 @@
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
+
 const styles = {
   container: {
     flex: 1,
     backgroundColor: "#f3e8ff",
-    justifyContent: "space-between",
-    paddingVertical: 40,
+    paddingTop: 50,
+    paddingHorizontal: 20,
   },
 
   title: {
@@ -11,68 +15,99 @@ const styles = {
     fontSize: 22,
     fontWeight: "bold",
     color: "#6a0dad",
+    marginTop: 40,
   },
 
   subtitle: {
     textAlign: "center",
-    marginTop: 5,
+    marginTop: 15,
     color: "#666",
+    fontSize: 16,
   },
 
   dotContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 30,
+    marginTop: 50,
+    marginBottom: 50,
   },
 
   dot: {
-    width: 15,
-    height: 15,
-    borderRadius: 8,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
     borderWidth: 2,
     borderColor: "#6a0dad",
-    marginHorizontal: 10,
+    marginHorizontal: 15,
   },
 
   dotFilled: {
     backgroundColor: "#6a0dad",
   },
 
+  // NUMPAD
   numpad: {
+    alignItems: "center",
+    marginTop: 30,
+  },
+
+  row: {
     flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "center",
-    paddingHorizontal: 40,
   },
 
   key: {
-    width: "30%",
-    height: 70,
+    width: width * 0.24,
+    height: width * 0.24,
+    minWidth: 60,
+    minHeight: 60,
+    maxWidth: 80,
+    maxHeight: 80,
+    margin: 8,
+    borderRadius: 15,
+    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
-    margin: 5,
-    borderRadius: 10,
-    backgroundColor: "#fff",
-    elevation: 3,
+    elevation: 4,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+
+  keyEmpty: {
+    width: width * 0.24,
+    height: width * 0.24,
+    minWidth: 60,
+    minHeight: 60,
+    maxWidth: 80,
+    maxHeight: 80,
+    margin: 8,
   },
 
   keyText: {
-    fontSize: 22,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: "700",
     color: "#333",
   },
 
   button: {
-    marginHorizontal: 20,
     backgroundColor: "#7b1fa2",
-    padding: 15,
-    borderRadius: 12,
+    height: 60,
+    borderRadius: 16,
+    justifyContent: "center",
     alignItems: "center",
+    marginTop: 30,
+    marginBottom: 20,
   },
 
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 };
