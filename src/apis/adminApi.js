@@ -118,3 +118,14 @@ export const getUserTransactions = (userId, params = {}) =>
 // GET /api/admin/user-details/:userId/referral
 export const getUserReferralDetails = (userId) =>
   api.get(`/api/admin/user-details/${userId}/referral`);
+export const exportUsers = (type) =>
+  api.get("/api/admin/auth/export-users", {
+    params: { type },
+    responseType: "blob",
+  });
+  export const exportTransactions = async (params) => {
+  return api.get('/transactions/export', {
+    params,
+    responseType: 'blob',
+  });
+};

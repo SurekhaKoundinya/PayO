@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = "https://shadily-hazard-widget.ngrok-free.dev";
+const API_BASE = "https://skyline-plated-casualty.ngrok-free.dev";
 
 // Axios Instance
 const api = axios.create({

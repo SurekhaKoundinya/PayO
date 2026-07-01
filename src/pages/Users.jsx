@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllUsers } from '../apis/adminApi';
+import { getAllUsers, exportUsers } from '../apis/adminApi';
 
 const COLORS = ['#6C63FF','#FF6584','#43E97B','#FA8231','#E74C3C','#3498DB','#9B59B6','#1ABC9C','#E67E22','#2ECC71'];
 function getInitials(name) { if (!name) return '?'; return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
@@ -540,6 +540,7 @@ export default function Users() {
   const [sel, setSel]         = useState(null);
   const [kycSel, setKycSel]   = useState(null);
   const [page, setPage]       = useState(1);
+  const [showExport, setShowExport] = useState(false);
   const per = 8;
 
   useEffect(() => {
@@ -604,29 +605,155 @@ export default function Users() {
 
   const tp    = Math.max(1, Math.ceil(filtered.length / per));
   const paged = filtered.slice((page - 1) * per, page * per);
+  const handleExport = async (type) => {
+  const ok = window.confirm(
+    `Do you want to download ${type.toUpperCase()} file?`
+  );
+
+  if (!ok) return;
+
+  try {
+    const res = await exportUsers(type);
+
+    const blob = new Blob([res.data]);
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `users.${type}`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Export failed:", error);
+    alert("Export failed");
+  }
+};
 
   return (
     <div className="page">
       <style>{`@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}`}</style>
 
       <div className="page-header">
-        <div className="page-header-left">
-          <h2>Users</h2>
-          <p>All registered PayO users with KYC status, wallet balance and bank details.</p>
+  <div className="page-header-left">
+    <h2>Users</h2>
+    <p>All registered PayO users with KYC status, wallet balance and bank details.</p>
+  </div>
+
+  <div
+    style={{
+      display: "flex",
+      gap: 10,
+      alignItems: "center",
+      position: "relative"
+    }}
+  >
+    {[
+      { label: "Total", val: totals.total, color: "#2563EB", bg: "#EFF6FF" },
+      { label: "Verified", val: totals.verified, color: "#059669", bg: "#F0FDF4" },
+      { label: "Pending", val: totals.pending, color: "#D97706", bg: "#FFFBEB" },
+    ].map((s) => (
+      <div
+        key={s.label}
+        style={{
+          background: s.bg,
+          border: `1.5px solid ${s.color}33`,
+          borderRadius: 10,
+          padding: "9px 16px",
+          textAlign: "center",
+          minWidth: 70
+        }}
+      >
+        <div
+          style={{
+            fontFamily: "'Space Grotesk',sans-serif",
+            fontSize: 18,
+            fontWeight: 800,
+            color: s.color
+          }}
+        >
+          {loading ? "—" : s.val.toLocaleString()}
         </div>
-        <div style={{ display:'flex', gap:10 }}>
-          {[
-            { label:'Total',    val:totals.total,    color:'#2563EB', bg:'#EFF6FF' },
-            { label:'Verified', val:totals.verified, color:'#059669', bg:'#F0FDF4' },
-            { label:'Pending',  val:totals.pending,  color:'#D97706', bg:'#FFFBEB' },
-          ].map(s => (
-            <div key={s.label} style={{ background:s.bg, border:`1.5px solid ${s.color}33`, borderRadius:10, padding:'9px 16px', textAlign:'center', minWidth:70 }}>
-              <div style={{ fontFamily:"'Space Grotesk',sans-serif", fontSize:18, fontWeight:800, color:s.color }}>{loading ? '—' : s.val.toLocaleString()}</div>
-              <div style={{ fontSize:11, color:s.color, fontWeight:600, opacity:0.8 }}>{s.label}</div>
-            </div>
-          ))}
+
+        <div
+          style={{
+            fontSize: 11,
+            color: s.color,
+            fontWeight: 600,
+            opacity: 0.8
+          }}
+        >
+          {s.label}
         </div>
       </div>
+    ))}
+
+    <div style={{ position: "relative" }}>
+      <button
+        onClick={() => setShowExport((prev) => !prev)}
+        style={{
+          height: 58,
+          padding: "0 18px",
+          borderRadius: 15,
+          border: "1.5px solid #CBD5E1",
+          background: "#07c6fa",
+          cursor: "pointer",
+          fontWeight: 600,
+          fontSize: 14
+        }}
+      >
+        Export ▼
+      </button>
+
+      {showExport && (
+        <div
+          style={{
+            position: "absolute",
+            top: 65,
+            right: 0,
+            width: 160,
+            background: "#fff",
+            border: "1px solid #E2E8F0",
+            borderRadius: 10,
+            boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+            overflow: "hidden",
+            zIndex: 999
+          }}
+        >
+          <div
+            onClick={() => {
+              handleExport("csv");
+              setShowExport(false);
+            }}
+            style={{
+              padding: "12px 16px",
+              cursor: "pointer",
+              borderBottom: "1px solid #E2E8F0"
+            }}
+          >
+            CSV File
+          </div>
+
+          <div
+            onClick={() => {
+              handleExport("xlsx");
+              setShowExport(false);
+            }}
+            style={{
+              padding: "12px 16px",
+              cursor: "pointer"
+            }}
+          >
+            Excel File
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
 
       {error && (
         <div style={{ background:'#FEF2F2', border:'1px solid #FECACA', borderRadius:10, padding:'12px 16px', marginBottom:18, color:'#DC2626', fontSize:13 }}>

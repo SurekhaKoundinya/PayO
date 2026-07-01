@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { getTransactions, getTransactionDetails } from '../apis/adminApi';
+import {
+  getTransactions,
+  getTransactionDetails,
+  exportTransactions
+} from '../apis/adminApi';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function Skeleton({ w = '100%', h = 14, r = 6, style = {} }) {
@@ -8,7 +12,7 @@ function Skeleton({ w = '100%', h = 14, r = 6, style = {} }) {
       width: w, height: h, borderRadius: r,
       background: 'linear-gradient(90deg,var(--skeleton-a,#E2E8F0) 25%,var(--skeleton-b,#F1F5F9) 50%,var(--skeleton-a,#E2E8F0) 75%)',
       backgroundSize: '200% 100%', animation: 'shimmer 1.4s infinite', ...style,
-    }}/>
+    }} />
   );
 }
 
@@ -18,7 +22,7 @@ function useCopy() {
     navigator.clipboard.writeText(val).then(() => {
       setCopied(key);
       setTimeout(() => setCopied(''), 2000);
-    }).catch(() => {});
+    }).catch(() => { });
   }, []);
   return [copied, copy];
 }
@@ -47,8 +51,8 @@ function formatDate(str, full = false) {
 // Status config
 const STATUS_CFG = {
   success: { cls: 'b-approved', label: 'Success', color: '#059669', dot: '#10B981' },
-  pending: { cls: 'b-pending',  label: 'Pending', color: '#D97706', dot: '#F59E0B' },
-  failed:  { cls: 'b-failed',   label: 'Failed',  color: '#DC2626', dot: '#EF4444' },
+  pending: { cls: 'b-pending', label: 'Pending', color: '#D97706', dot: '#F59E0B' },
+  failed: { cls: 'b-failed', label: 'Failed', color: '#DC2626', dot: '#EF4444' },
 };
 function getStatus(s) {
   return STATUS_CFG[String(s || '').toLowerCase()] ||
@@ -58,8 +62,8 @@ function getStatus(s) {
 // Type config — derived from senderWallet since Transaction model has no type field
 // REFERRAL_BONUS = reward, otherwise = transfer
 const TYPE_CFG = {
-  reward:   { icon: '★', label: 'Reward',   grad: 'linear-gradient(135deg,#B45309,#F59E0B)', glow: 'rgba(245,158,11,0.3)',  credit: true  },
-  transfer: { icon: '⇄', label: 'Transfer', grad: 'linear-gradient(135deg,#1D4ED8,#3B82F6)', glow: 'rgba(59,130,246,0.3)',  credit: false },
+  reward: { icon: '★', label: 'Reward', grad: 'linear-gradient(135deg,#B45309,#F59E0B)', glow: 'rgba(245,158,11,0.3)', credit: true },
+  transfer: { icon: '⇄', label: 'Transfer', grad: 'linear-gradient(135deg,#1D4ED8,#3B82F6)', glow: 'rgba(59,130,246,0.3)', credit: false },
 };
 function deriveType(txn) {
   if ((txn.senderWallet || '').toUpperCase() === 'REFERRAL_BONUS') return 'reward';
@@ -73,10 +77,10 @@ const PAGE_SIZE = 10;
 
 // Date filter options — mapped to what backend supports
 const DATE_OPTS = [
-  { label: 'All Time',    value: 'all'   },
-  { label: 'Today',       value: 'today' },
-  { label: 'Last 7 Days', value: 'week'  },
-  { label: 'Last 30 Days',value: 'month' },
+  { label: 'All Time', value: 'all' },
+  { label: 'Today', value: 'today' },
+  { label: 'Last 7 Days', value: 'week' },
+  { label: 'Last 30 Days', value: 'month' },
 ];
 
 // ── CopyField ─────────────────────────────────────────────────────────────────
@@ -101,8 +105,8 @@ function CopyField({ val, copyId, copied, onCopy, truncate = false }) {
         }}
       >
         {ok
-          ? <svg width="10" height="10" fill="none" stroke="#059669" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          : <svg width="10" height="10" fill="none" stroke="var(--gray-400)" strokeWidth="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          ? <svg width="10" height="10" fill="none" stroke="#059669" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+          : <svg width="10" height="10" fill="none" stroke="var(--gray-400)" strokeWidth="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" /></svg>
         }
       </button>
     </div>
@@ -117,7 +121,7 @@ function StatCard({ label, value, icon, iconBg, color, sub, loading }) {
         <div>
           <div className="stat-label">{label}</div>
           <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 28, fontWeight: 800, color: 'var(--stat-card-value,#0D1B3E)', letterSpacing: '-1px', lineHeight: 1, marginTop: 6 }}>
-            {loading ? <Skeleton w={80} h={28} r={6}/> : value}
+            {loading ? <Skeleton w={80} h={28} r={6} /> : value}
           </div>
           {sub && !loading && (
             <div style={{ fontSize: 11.5, color, fontWeight: 600, marginTop: 5 }}>{sub}</div>
@@ -156,9 +160,9 @@ function DateDropdown({ value, onChange }) {
         }}
       >
         <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
         </svg>
         {selected.label}
         {value !== 'all' && (
@@ -166,7 +170,7 @@ function DateDropdown({ value, onChange }) {
         )}
         <svg width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"
           style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.18s' }}>
-          <polyline points="6 9 12 15 18 9"/>
+          <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
       {open && (
@@ -192,7 +196,7 @@ function DateDropdown({ value, onChange }) {
             >
               {opt.label}
               {value === opt.value && (
-                <svg width="13" height="13" fill="none" stroke="#4F46E5" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg width="13" height="13" fill="none" stroke="#4F46E5" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
               )}
             </div>
           ))}
@@ -232,17 +236,17 @@ function TxnModal({ txn, onClose }) {
 
   if (!txn) return null;
 
-  const tc     = getType(txn);
-  const sc     = getStatus(txn.status);
-  const amt    = Math.abs(txn.amount ?? 0);
-  const txId   = txn.transactionId || '—';
+  const tc = getType(txn);
+  const sc = getStatus(txn.status);
+  const amt = Math.abs(txn.amount ?? 0);
+  const txId = txn.transactionId || '—';
   // blockchainHash only available from detail endpoint
-  const hash   = detail?.blockchainHash || '';
-  const sender = txn.senderWallet   || '—';
-  const recvr  = txn.receiverWallet || '—';
+  const hash = detail?.blockchainHash || '';
+  const sender = txn.senderWallet || '—';
+  const recvr = txn.receiverWallet || '—';
   const senderName = detail?.sender?.name || txn.senderName || null;
-  const recvrName  = detail?.receiver?.name || txn.receiverName || null;
-  const ts     = formatDate(txn.createdAt, true);
+  const recvrName = detail?.receiver?.name || txn.receiverName || null;
+  const ts = formatDate(txn.createdAt, true);
 
   return (
     <div className="overlay" onClick={e => e.target === e.currentTarget && onClose()}>
@@ -271,7 +275,7 @@ function TxnModal({ txn, onClose }) {
           </div>
           <button className="btn btn-ghost icon-btn" onClick={onClose}>
             <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
         </div>
@@ -284,7 +288,7 @@ function TxnModal({ txn, onClose }) {
             : 'linear-gradient(135deg,#1c0101,#7F1D1D)',
           padding: '22px 24px', color: '#fff', position: 'relative', overflow: 'hidden',
         }}>
-          <div style={{ position: 'absolute', top: -40, right: -40, width: 140, height: 140, borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }}/>
+          <div style={{ position: 'absolute', top: -40, right: -40, width: 140, height: 140, borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
           <div style={{ position: 'relative' }}>
             <div style={{ fontSize: 10, fontWeight: 700, opacity: 0.5, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 6 }}>
               {tc.credit ? 'Reward Amount' : 'Transfer Amount'}
@@ -295,9 +299,9 @@ function TxnModal({ txn, onClose }) {
             </div>
             <div style={{ marginTop: 16, display: 'flex', gap: 0 }}>
               {[
-                ['Type',   tc.label],
+                ['Type', tc.label],
                 ['Status', sc.label],
-                ['Date',   txn.createdAt ? new Date(txn.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'],
+                ['Date', txn.createdAt ? new Date(txn.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'],
               ].map(([l, v], i, a) => (
                 <div key={l} style={{ paddingRight: 20, marginRight: 20, borderRight: i < a.length - 1 ? '1px solid rgba(255,255,255,0.15)' : 'none' }}>
                   <div style={{ fontSize: 9, opacity: 0.45, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 2 }}>{l}</div>
@@ -318,23 +322,23 @@ function TxnModal({ txn, onClose }) {
             {[
               {
                 label: 'Transaction ID',
-                content: <CopyField val={txId} copyId="txid" copied={copied} onCopy={copy}/>,
+                content: <CopyField val={txId} copyId="txid" copied={copied} onCopy={copy} />,
               },
               {
                 label: 'Blockchain Hash',
                 content: detailLoading ? (
-                  <Skeleton w={200} h={14} r={4}/>
+                  <Skeleton w={200} h={14} r={4} />
                 ) : hash ? (
                   <div>
-                    <CopyField val={hash} copyId="hash" copied={copied} onCopy={copy} truncate/>
+                    <CopyField val={hash} copyId="hash" copied={copied} onCopy={copy} truncate />
                     <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 5 }}>
-                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 5px #10B981' }}/>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 5px #10B981' }} />
                       <span style={{ fontSize: 10.5, color: '#059669', fontWeight: 600 }}>Confirmed on-chain</span>
                     </div>
                   </div>
                 ) : (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#F59E0B' }}/>
+                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#F59E0B' }} />
                     <span style={{ fontSize: 12.5, color: 'var(--gray-400)' }}>Pending blockchain confirmation</span>
                   </div>
                 ),
@@ -343,7 +347,7 @@ function TxnModal({ txn, onClose }) {
                 label: 'Sender Wallet',
                 content: (
                   <div>
-                    <CopyField val={sender === 'REFERRAL_BONUS' ? 'REFERRAL_BONUS' : sender} copyId="sender" copied={copied} onCopy={copy} truncate/>
+                    <CopyField val={sender === 'REFERRAL_BONUS' ? 'REFERRAL_BONUS' : sender} copyId="sender" copied={copied} onCopy={copy} truncate />
                     {senderName && (
                       <div style={{ fontSize: 11, color: 'var(--gray-400)', marginTop: 3 }}>{senderName}</div>
                     )}
@@ -354,7 +358,7 @@ function TxnModal({ txn, onClose }) {
                 label: 'Receiver Wallet',
                 content: (
                   <div>
-                    <CopyField val={recvr} copyId="recvr" copied={copied} onCopy={copy} truncate/>
+                    <CopyField val={recvr} copyId="recvr" copied={copied} onCopy={copy} truncate />
                     {recvrName && (
                       <div style={{ fontSize: 11, color: 'var(--gray-400)', marginTop: 3 }}>{recvrName}</div>
                     )}
@@ -415,20 +419,22 @@ function TxnModal({ txn, onClose }) {
 //  MAIN PAGE — server-side filtering + pagination
 // ════════════════════════════════════════════════════════════════════════════
 export default function Transactions() {
-  const [txns,      setTxns]      = useState([]);
-  const [summary,   setSummary]   = useState(null);
-  const [loading,   setLoading]   = useState(true);
-  const [error,     setError]     = useState('');
-  const [sel,       setSel]       = useState(null);
+  const [txns, setTxns] = useState([]);
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [sel, setSel] = useState(null);
   const [totalRows, setTotalRows] = useState(0);
-  const [totalPages,setTotalPages]= useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   // Filters
-  const [search,    setSearch]    = useState('');
-  const [fStatus,   setFStatus]   = useState('all');
-  const [fDate,     setFDate]     = useState('all');
-  const [fWallet,   setFWallet]   = useState('');
-  const [page,      setPage]      = useState(1);
+  const [search, setSearch] = useState('');
+  const [fStatus, setFStatus] = useState('all');
+  const [fDate, setFDate] = useState('all');
+  const [fWallet, setFWallet] = useState('');
+  const [page, setPage] = useState(1);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   // Debounce search so we don't hammer the API on every keystroke
   const searchTimer = useRef(null);
@@ -448,22 +454,58 @@ export default function Transactions() {
 
   // Combine search + wallet into one search param for backend
   const combinedSearch = debouncedSearch || debouncedWallet;
+  const handleExport = async (format) => {
+    try {
+      setExporting(true);
 
+      const params = {
+        format, // csv or excel
+      };
+
+      if (fStatus !== 'all') params.status = fStatus;
+      if (fDate !== 'all') params.dateFilter = fDate;
+      if (combinedSearch) params.search = combinedSearch;
+
+      const response = await exportTransactions(params);
+
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download =
+        format === 'csv'
+          ? 'transactions.csv'
+          : 'transactions.xlsx';
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+      setShowExportMenu(false);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Export failed');
+    } finally {
+      setExporting(false);
+    }
+  };
   const fetchData = useCallback(() => {
     setLoading(true);
     setError('');
 
     const params = { page, limit: PAGE_SIZE };
-    if (fStatus !== 'all')   params.status     = fStatus;
-    if (fDate   !== 'all')   params.dateFilter  = fDate;
-    if (combinedSearch)      params.search      = combinedSearch;
+    if (fStatus !== 'all') params.status = fStatus;
+    if (fDate !== 'all') params.dateFilter = fDate;
+    if (combinedSearch) params.search = combinedSearch;
 
     getTransactions(params)
       .then(res => {
         const data = res.data;
         setTxns(Array.isArray(data?.transactions) ? data.transactions : []);
         setSummary(data?.summary || null);
-        setTotalRows(data?.total  || 0);
+        setTotalRows(data?.total || 0);
         setTotalPages(data?.totalPages || 1);
       })
       .catch(err => {
@@ -473,7 +515,7 @@ export default function Transactions() {
         setSummary(null);
       })
       .finally(() => setLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, fStatus, fDate, combinedSearch]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
@@ -482,16 +524,24 @@ export default function Transactions() {
   useEffect(() => { setPage(1); }, [fStatus, fDate]);
 
   // Stats from backend summary (not calculated locally — backend has full dataset)
-  const totalTxns  = summary?.totalTransactions ?? totalRows;
-  const succCount  = summary?.successCount ?? 0;
-  const pendCount  = summary?.pendingCount ?? 0;
-  const failCount  = summary?.failedCount  ?? 0;
-  const volume     = summary?.totalVolume  ?? 0;
-  const successRate= summary?.successRate  ?? '—';
+  const totalTxns = summary?.totalTransactions ?? totalRows;
+  const succCount = summary?.successCount ?? 0;
+  const pendCount = summary?.pendingCount ?? 0;
+  const failCount = summary?.failedCount ?? 0;
+  const volume = summary?.totalVolume ?? 0;
+  const successRate = summary?.successRate ?? '—';
 
   // Active filter count for "Clear" button
   const activeFilters = (fStatus !== 'all' ? 1 : 0) + (fDate !== 'all' ? 1 : 0) + (fWallet ? 1 : 0) + (search ? 1 : 0);
-
+  const menuBtn = {
+    padding: '10px 16px',
+    borderRadius: '10px',
+    border: '1px solid #D1D5DB',
+    background: '#e00a0a',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '600'
+  };
   return (
     <div className="page">
       <style>{`
@@ -509,24 +559,95 @@ export default function Transactions() {
       `}</style>
 
       {/* ── Page Header ── */}
-      <div className="page-header">
+      {/* ── Page Header ── */}
+      {/* ── Page Header ── */}
+      <div
+        className="page-header"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 20
+        }}
+      >
+        {/* Left */}
         <div className="page-header-left">
-          <h2>Transaction Monitoring</h2>
-          <p>Monitor all platform transactions in real-time.</p>
+          <h2>Referral Management</h2>
+          <p>Track and manage all platform referrals and rewards.</p>
         </div>
-        <button
-          className="btn btn-outline"
-          onClick={fetchData}
-          disabled={loading}
-          style={{ display: 'flex', alignItems: 'center', gap: 7 }}
-        >
-          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"
-            style={{ animation: loading ? 'spin 0.8s linear infinite' : 'none' }}>
-            <polyline points="23 4 23 10 17 10"/>
-            <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
-          </svg>
-          {loading ? 'Loading…' : 'Refresh'}
-        </button>
+
+        {/* Right */}
+        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+
+          {!loading && (
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => setShowExportMenu(!showExportMenu)}
+                disabled={exporting}
+                className="btn btn-primary"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8
+                }}
+              >
+                {exporting ? "Exporting..." : "Export"} ▼
+              </button>
+
+              {showExportMenu && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "110%",
+                    right: 0,
+                    background: "#fff",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: 12,
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
+                    minWidth: 160,
+                    zIndex: 1000,
+                    overflow: "hidden"
+                  }}
+                >
+                  <button
+                    onClick={() => handleExport("csv")}
+                    style={{
+                      width: "100%",
+                      padding: "12px",
+                      border: "none",
+                      background: "#fff",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Export CSV
+                  </button>
+
+                  <button
+                    onClick={() => handleExport("excel")}
+                    style={{
+                      width: "100%",
+                      padding: "12px",
+                      border: "none",
+                      background: "#fff",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Export Excel
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          <button
+            className="btn btn-outline"
+            onClick={fetchData}
+            disabled={loading}
+            style={{ display: "flex", alignItems: "center", gap: 7 }}
+          >
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* ── Error Banner ── */}
@@ -538,7 +659,7 @@ export default function Transactions() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <svg width="18" height="18" fill="none" stroke="#DC2626" strokeWidth="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <span style={{ fontSize: 13, fontWeight: 600, color: '#DC2626' }}>{error}</span>
           </div>
@@ -556,25 +677,25 @@ export default function Transactions() {
         <StatCard
           label="Total Transactions" value={totalTxns.toLocaleString()}
           sub={`${volume.toLocaleString()} PYO total volume`}
-          icon={<svg width="20" height="20" fill="none" stroke="#3B82F6" strokeWidth="2" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>}
+          icon={<svg width="20" height="20" fill="none" stroke="#3B82F6" strokeWidth="2" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 014-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 01-4 4H3" /></svg>}
           iconBg="rgba(59,130,246,0.12)" color="#3B82F6" loading={loading}
         />
         <StatCard
           label="Successful" value={succCount.toLocaleString()}
           sub={`${successRate} success rate`}
-          icon={<svg width="20" height="20" fill="none" stroke="#10B981" strokeWidth="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>}
+          icon={<svg width="20" height="20" fill="none" stroke="#10B981" strokeWidth="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>}
           iconBg="rgba(16,185,129,0.12)" color="#10B981" loading={loading}
         />
         <StatCard
           label="Pending" value={pendCount.toLocaleString()}
           sub="Awaiting confirmation"
-          icon={<svg width="20" height="20" fill="none" stroke="#F59E0B" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>}
+          icon={<svg width="20" height="20" fill="none" stroke="#F59E0B" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>}
           iconBg="rgba(245,158,11,0.12)" color="#D97706" loading={loading}
         />
         <StatCard
           label="Failed" value={failCount.toLocaleString()}
           sub="Requires attention"
-          icon={<svg width="20" height="20" fill="none" stroke="#EF4444" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>}
+          icon={<svg width="20" height="20" fill="none" stroke="#EF4444" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>}
           iconBg="rgba(239,68,68,0.12)" color="#DC2626" loading={loading}
         />
       </div>
@@ -585,10 +706,10 @@ export default function Transactions() {
         {/* Status tabs */}
         <div style={{ display: 'flex', borderBottom: '1px solid var(--gray-200)', paddingLeft: 8, overflowX: 'auto' }}>
           {[
-            { key: 'all',     label: 'All',     count: totalTxns  },
-            { key: 'success', label: 'Success', count: succCount   },
-            { key: 'pending', label: 'Pending', count: pendCount   },
-            { key: 'failed',  label: 'Failed',  count: failCount   },
+            { key: 'all', label: 'All', count: totalTxns },
+            { key: 'success', label: 'Success', count: succCount },
+            { key: 'pending', label: 'Pending', count: pendCount },
+            { key: 'failed', label: 'Failed', count: failCount },
           ].map(tab => (
             <button
               key={tab.key}
@@ -614,7 +735,7 @@ export default function Transactions() {
           {/* Search by TX ID */}
           <div className="search-field" style={{ flex: 1, minWidth: 200, maxWidth: 300 }}>
             <svg width="13" height="13" fill="none" stroke="var(--gray-400)" strokeWidth="2" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <input
               placeholder="Search Transaction ID…"
@@ -626,8 +747,8 @@ export default function Transactions() {
           {/* Wallet address filter */}
           <div className="search-field" style={{ flex: 1, minWidth: 200, maxWidth: 280 }}>
             <svg width="13" height="13" fill="none" stroke="var(--gray-400)" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/>
-              <path d="M16 3H8L4 7h16l-4-4z"/>
+              <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
+              <path d="M16 3H8L4 7h16l-4-4z" />
             </svg>
             <input
               placeholder="Filter by wallet address…"
@@ -637,7 +758,7 @@ export default function Transactions() {
           </div>
 
           {/* Date range dropdown */}
-          <DateDropdown value={fDate} onChange={v => { setFDate(v); setPage(1); }}/>
+          <DateDropdown value={fDate} onChange={v => { setFDate(v); setPage(1); }} />
 
           {/* Clear filters */}
           {activeFilters > 0 && (
@@ -677,129 +798,129 @@ export default function Transactions() {
             <tbody>
               {loading
                 ? Array(PAGE_SIZE).fill(0).map((_, i) => (
-                    <tr key={i}>
-                      <td><div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><Skeleton w={32} h={32} r={9}/><div><Skeleton w={100} h={12} r={4}/><Skeleton w={55} h={9} r={4} style={{ marginTop: 5 }}/></div></div></td>
-                      <td><Skeleton w={120} h={12} r={4}/></td>
-                      <td><Skeleton w={120} h={12} r={4}/></td>
-                      <td><Skeleton w={90} h={16} r={4}/></td>
-                      <td><Skeleton w={70} h={22} r={20}/></td>
-                      <td><Skeleton w={110} h={12} r={4}/></td>
-                      <td><Skeleton w={60} h={28} r={20} style={{ margin: '0 auto' }}/></td>
-                    </tr>
-                  ))
+                  <tr key={i}>
+                    <td><div style={{ display: 'flex', alignItems: 'center', gap: 9 }}><Skeleton w={32} h={32} r={9} /><div><Skeleton w={100} h={12} r={4} /><Skeleton w={55} h={9} r={4} style={{ marginTop: 5 }} /></div></div></td>
+                    <td><Skeleton w={120} h={12} r={4} /></td>
+                    <td><Skeleton w={120} h={12} r={4} /></td>
+                    <td><Skeleton w={90} h={16} r={4} /></td>
+                    <td><Skeleton w={70} h={22} r={20} /></td>
+                    <td><Skeleton w={110} h={12} r={4} /></td>
+                    <td><Skeleton w={60} h={28} r={20} style={{ margin: '0 auto' }} /></td>
+                  </tr>
+                ))
                 : txns.map((t, idx) => {
-                    const tc     = getType(t);
-                    const sc     = getStatus(t.status);
-                    const txId   = t.transactionId || '—';
-                    const sender = t.senderWallet  || '—';
-                    const recvr  = t.receiverWallet || '—';
-                    const amt    = Math.abs(t.amount ?? 0);
+                  const tc = getType(t);
+                  const sc = getStatus(t.status);
+                  const txId = t.transactionId || '—';
+                  const sender = t.senderWallet || '—';
+                  const recvr = t.receiverWallet || '—';
+                  const amt = Math.abs(t.amount ?? 0);
 
-                    return (
-                      <tr
-                        key={txId + idx}
-                        className="txn-row"
-                        style={{ animation: `rowFadeIn 0.3s ease both`, animationDelay: `${idx * 0.04}s` }}
-                      >
-                        {/* Transaction ID */}
-                        <td>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                            <div
-                              className="txn-type-icon"
-                              style={{
-                                width: 34, height: 34, borderRadius: 10,
-                                background: tc.grad, flexShrink: 0,
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                fontSize: 15, color: '#fff', fontWeight: 900,
-                                boxShadow: `0 2px 10px ${tc.glow}`,
-                              }}
-                            >
-                              {tc.icon}
-                            </div>
-                            <div>
-                              <div style={{ fontFamily: 'monospace', fontSize: 12.5, fontWeight: 700, color: 'var(--navy)' }}>
-                                #{String(txId).slice(-12)}
-                              </div>
-                              <div style={{ fontSize: 10.5, color: 'var(--gray-400)', marginTop: 1 }}>
-                                {tc.label}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-
-                        {/* Sender */}
-                        <td>
-                          <div>
-                            <span style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--gray-600)', display: 'block' }} title={sender}>
-                              {sender === 'REFERRAL_BONUS' ? (
-                                <span style={{ background: '#FEF3C7', color: '#92400E', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 6 }}>
-                                  REFERRAL BONUS
-                                </span>
-                              ) : truncateWallet(sender)}
-                            </span>
-                            {t.senderName && (
-                              <span style={{ fontSize: 11, color: 'var(--gray-400)' }}>{t.senderName}</span>
-                            )}
-                          </div>
-                        </td>
-
-                        {/* Receiver */}
-                        <td>
-                          <div>
-                            <span style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--gray-600)', display: 'block' }} title={recvr}>
-                              {truncateWallet(recvr)}
-                            </span>
-                            {t.receiverName && (
-                              <span style={{ fontSize: 11, color: 'var(--gray-400)' }}>{t.receiverName}</span>
-                            )}
-                          </div>
-                        </td>
-
-                        {/* Amount */}
-                        <td>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                            <span style={{
-                              fontFamily: "'Space Grotesk',sans-serif", fontSize: 15, fontWeight: 800,
-                              color: tc.credit ? '#059669' : '#2563EB',
-                            }}>
-                              {tc.credit ? '+' : ''}{amt.toLocaleString()}
-                            </span>
-                            <span style={{ background: 'var(--gray-100)', fontSize: 10, fontWeight: 700, color: 'var(--gray-400)', padding: '2px 6px', borderRadius: 6 }}>
-                              PYO
-                            </span>
-                          </div>
-                        </td>
-
-                        {/* Status */}
-                        <td><span className={`badge ${sc.cls}`}>{sc.label}</span></td>
-
-                        {/* Date */}
-                        <td style={{ fontSize: 12.5, color: 'var(--gray-400)', whiteSpace: 'nowrap' }}>
-                          {formatDate(t.createdAt)}
-                        </td>
-
-                        {/* View */}
-                        <td style={{ textAlign: 'center' }}>
-                          <button
-                            onClick={e => { e.stopPropagation(); setSel(t); }}
+                  return (
+                    <tr
+                      key={txId + idx}
+                      className="txn-row"
+                      style={{ animation: `rowFadeIn 0.3s ease both`, animationDelay: `${idx * 0.04}s` }}
+                    >
+                      {/* Transaction ID */}
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <div
+                            className="txn-type-icon"
                             style={{
-                              padding: '6px 16px', borderRadius: 20, cursor: 'pointer',
-                              background: 'linear-gradient(135deg,#2563EB,#3B82F6)',
-                              border: 'none', color: '#fff',
-                              fontSize: 12, fontWeight: 600,
-                              fontFamily: "'Inter',sans-serif",
-                              boxShadow: '0 2px 8px rgba(37,99,235,0.28)',
-                              transition: 'all 0.18s',
+                              width: 34, height: 34, borderRadius: 10,
+                              background: tc.grad, flexShrink: 0,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              fontSize: 15, color: '#fff', fontWeight: 900,
+                              boxShadow: `0 2px 10px ${tc.glow}`,
                             }}
-                            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(37,99,235,0.4)'; }}
-                            onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(37,99,235,0.28)'; }}
                           >
-                            View
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })
+                            {tc.icon}
+                          </div>
+                          <div>
+                            <div style={{ fontFamily: 'monospace', fontSize: 12.5, fontWeight: 700, color: 'var(--navy)' }}>
+                              #{String(txId).slice(-12)}
+                            </div>
+                            <div style={{ fontSize: 10.5, color: 'var(--gray-400)', marginTop: 1 }}>
+                              {tc.label}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Sender */}
+                      <td>
+                        <div>
+                          <span style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--gray-600)', display: 'block' }} title={sender}>
+                            {sender === 'REFERRAL_BONUS' ? (
+                              <span style={{ background: '#FEF3C7', color: '#92400E', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 6 }}>
+                                REFERRAL BONUS
+                              </span>
+                            ) : truncateWallet(sender)}
+                          </span>
+                          {t.senderName && (
+                            <span style={{ fontSize: 11, color: 'var(--gray-400)' }}>{t.senderName}</span>
+                          )}
+                        </div>
+                      </td>
+
+                      {/* Receiver */}
+                      <td>
+                        <div>
+                          <span style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--gray-600)', display: 'block' }} title={recvr}>
+                            {truncateWallet(recvr)}
+                          </span>
+                          {t.receiverName && (
+                            <span style={{ fontSize: 11, color: 'var(--gray-400)' }}>{t.receiverName}</span>
+                          )}
+                        </div>
+                      </td>
+
+                      {/* Amount */}
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                          <span style={{
+                            fontFamily: "'Space Grotesk',sans-serif", fontSize: 15, fontWeight: 800,
+                            color: tc.credit ? '#059669' : '#2563EB',
+                          }}>
+                            {tc.credit ? '+' : ''}{amt.toLocaleString()}
+                          </span>
+                          <span style={{ background: 'var(--gray-100)', fontSize: 10, fontWeight: 700, color: 'var(--gray-400)', padding: '2px 6px', borderRadius: 6 }}>
+                            PYO
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Status */}
+                      <td><span className={`badge ${sc.cls}`}>{sc.label}</span></td>
+
+                      {/* Date */}
+                      <td style={{ fontSize: 12.5, color: 'var(--gray-400)', whiteSpace: 'nowrap' }}>
+                        {formatDate(t.createdAt)}
+                      </td>
+
+                      {/* View */}
+                      <td style={{ textAlign: 'center' }}>
+                        <button
+                          onClick={e => { e.stopPropagation(); setSel(t); }}
+                          style={{
+                            padding: '6px 16px', borderRadius: 20, cursor: 'pointer',
+                            background: 'linear-gradient(135deg,#2563EB,#3B82F6)',
+                            border: 'none', color: '#fff',
+                            fontSize: 12, fontWeight: 600,
+                            fontFamily: "'Inter',sans-serif",
+                            boxShadow: '0 2px 8px rgba(37,99,235,0.28)',
+                            transition: 'all 0.18s',
+                          }}
+                          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(37,99,235,0.4)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(37,99,235,0.28)'; }}
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
               }
             </tbody>
           </table>
@@ -831,8 +952,8 @@ export default function Transactions() {
               {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
                 const p = totalPages <= 7 ? i + 1
                   : page <= 4 ? i + 1
-                  : page >= totalPages - 3 ? totalPages - 6 + i
-                  : page - 3 + i;
+                    : page >= totalPages - 3 ? totalPages - 6 + i
+                      : page - 3 + i;
                 return (
                   <button key={p} className={`pag-btn${page === p ? ' act' : ''}`} onClick={() => setPage(p)}>{p}</button>
                 );
@@ -844,7 +965,7 @@ export default function Transactions() {
       </div>
 
       {/* Detail Modal */}
-      {sel && <TxnModal txn={sel} onClose={() => setSel(null)}/>}
+      {sel && <TxnModal txn={sel} onClose={() => setSel(null)} />}
     </div>
   );
 }

@@ -8,7 +8,7 @@ function Skeleton({ w = '100%', h = 14, r = 6, style = {} }) {
       width: w, height: h, borderRadius: r,
       background: 'linear-gradient(90deg,var(--skeleton-a,#E2E8F0) 25%,var(--skeleton-b,#F1F5F9) 50%,var(--skeleton-a,#E2E8F0) 75%)',
       backgroundSize: '200% 100%', animation: 'shimmer 1.4s infinite', ...style,
-    }}/>
+    }} />
   );
 }
 
@@ -22,10 +22,10 @@ function formatDate(str) {
 
 // rewardStatus comes as "paid" or "pending" from the backend
 const STATUS_CFG = {
-  paid:    { cls: 'b-approved', label: 'Paid'    },
-  pending: { cls: 'b-pending',  label: 'Pending' },
-  failed:  { cls: 'b-failed',   label: 'Failed'  },
-  held:    { cls: 'b-review',   label: 'Held'    },
+  paid: { cls: 'b-approved', label: 'Paid' },
+  pending: { cls: 'b-pending', label: 'Pending' },
+  failed: { cls: 'b-failed', label: 'Failed' },
+  held: { cls: 'b-review', label: 'Held' },
 };
 function statusBadge(s) {
   return STATUS_CFG[String(s || '').toLowerCase()] ||
@@ -42,7 +42,7 @@ function StatCard({ label, value, icon, iconBg, color, sub, loading }) {
         <div>
           <div className="stat-label">{label}</div>
           <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 28, fontWeight: 800, color: 'var(--stat-card-value,#0D1B3E)', letterSpacing: '-1px', lineHeight: 1, marginTop: 6 }}>
-            {loading ? <Skeleton w={80} h={28} r={6}/> : value}
+            {loading ? <Skeleton w={80} h={28} r={6} /> : value}
           </div>
           {sub && !loading && (
             <div style={{ fontSize: 11.5, color, fontWeight: 600, marginTop: 5 }}>{sub}</div>
@@ -60,18 +60,20 @@ function StatCard({ label, value, icon, iconBg, color, sub, loading }) {
 //  MAIN PAGE
 // ════════════════════════════════════════════════════════════════════════════
 export default function Referrals() {
-  const [referrals,   setReferrals]   = useState([]);
-  const [summary,     setSummary]     = useState(null);
-  const [loading,     setLoading]     = useState(true);
-  const [error,       setError]       = useState('');
-  const [totalRows,   setTotalRows]   = useState(0);
-  const [totalPages,  setTotalPages]  = useState(1);
-  const [page,        setPage]        = useState(1);
+  const [referrals, setReferrals] = useState([]);
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [totalRows, setTotalRows] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState(1);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   // Filters
-  const [search,         setSearch]         = useState('');
-  const [debouncedSearch,setDebouncedSearch] = useState('');
-  const [fStatus,        setFStatus]        = useState('all');
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [fStatus, setFStatus] = useState('all');
 
   const searchTimer = useRef(null);
   const handleSearchChange = v => {
@@ -102,7 +104,7 @@ export default function Referrals() {
         setSummary(null);
       })
       .finally(() => setLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, debouncedSearch]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
@@ -113,32 +115,59 @@ export default function Referrals() {
     : referrals.filter(r => String(r.rewardStatus || '').toLowerCase() === fStatus);
 
   // Stats from summary
-  const totalReferrals     = summary?.totalReferrals          ?? totalRows;
+  const totalReferrals = summary?.totalReferrals ?? totalRows;
   const rewardsDistributed = summary?.totalRewardsDistributed ?? 0;
-  const topReferrers       = summary?.topReferrers            ?? [];
-  const pendingCount       = referrals.filter(r => String(r.rewardStatus).toLowerCase() === 'pending').length;
+  const topReferrers = summary?.topReferrers ?? [];
+  const pendingCount = referrals.filter(r => String(r.rewardStatus).toLowerCase() === 'pending').length;
 
   // CSV export
-  function exportCSV() {
-    const rows = [
-      ['Referrer Name', 'Referrer Email', 'Referral Code', 'Referred User', 'Referred Email', 'Reward (PYO)', 'Status', 'Joined At'],
-      ...filtered.map(r => [
-        r.referrer?.name  || '—',
-        r.referrer?.email || '—',
-        r.referrer?.referralCode || '—',
-        r.referredUser?.name  || '—',
-        r.referredUser?.email || '—',
-        r.rewardAmount ?? 0,
-        r.rewardStatus || '—',
-        r.referredUser?.joinedAt ? new Date(r.referredUser.joinedAt).toLocaleDateString('en-IN') : '—',
-      ]),
-    ];
-    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = 'referrals.csv'; a.click();
-    URL.revokeObjectURL(url);
-  }
+  const handleExport = async (format) => {
+    try {
+      setExporting(true);
+
+      const rows = [
+        ['Referrer Name', 'Referrer Email', 'Referral Code', 'Referred User', 'Referred Email', 'Reward (PYO)', 'Status', 'Joined At'],
+        ...filtered.map(r => [
+          r.referrer?.name || '—',
+          r.referrer?.email || '—',
+          r.referrer?.referralCode || '—',
+          r.referredUser?.name || '—',
+          r.referredUser?.email || '—',
+          r.rewardAmount ?? 0,
+          r.rewardStatus || '—',
+          r.referredUser?.joinedAt
+            ? new Date(r.referredUser.joinedAt).toLocaleDateString('en-IN')
+            : '—',
+        ]),
+      ];
+
+      const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+
+      const blob = new Blob(
+        [csv],
+        {
+          type:
+            format === 'csv'
+              ? 'text/csv'
+              : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download =
+        format === 'csv'
+          ? 'referrals.csv'
+          : 'referrals.xlsx';
+
+      a.click();
+      URL.revokeObjectURL(url);
+      setShowExportMenu(false);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const activeFilters = (fStatus !== 'all' ? 1 : 0) + (search ? 1 : 0);
 
@@ -157,39 +186,93 @@ export default function Referrals() {
       `}</style>
 
       {/* ── Page Header ── */}
-      <div className="page-header">
+      {/* ── Page Header ── */}
+      <div
+        className="page-header"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 20
+        }}
+      >
+        {/* Left */}
         <div className="page-header-left">
           <h2>Referral Management</h2>
           <p>Track and manage all platform referrals and rewards.</p>
         </div>
-        <div style={{ display: 'flex', gap: 10 }}>
+
+        {/* Right */}
+        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+
+          {!loading && (
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => setShowExportMenu(!showExportMenu)}
+                disabled={exporting}
+                className="btn btn-primary"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8
+                }}
+              >
+                {exporting ? "Exporting..." : "Export"} ▼
+              </button>
+
+              {showExportMenu && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "110%",
+                    right: 0,
+                    background: "#fff",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: 12,
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
+                    minWidth: 160,
+                    zIndex: 1000,
+                    overflow: "hidden"
+                  }}
+                >
+                  <button
+                    onClick={() => handleExport("csv")}
+                    style={{
+                      width: "100%",
+                      padding: "12px",
+                      border: "none",
+                      background: "#fff",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Export CSV
+                  </button>
+
+                  <button
+                    onClick={() => handleExport("excel")}
+                    style={{
+                      width: "100%",
+                      padding: "12px",
+                      border: "none",
+                      background: "#fff",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Export Excel
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
           <button
             className="btn btn-outline"
             onClick={fetchData}
             disabled={loading}
-            style={{ display: 'flex', alignItems: 'center', gap: 7 }}
+            style={{ display: "flex", alignItems: "center", gap: 7 }}
           >
-            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"
-              style={{ animation: loading ? 'spin 0.8s linear infinite' : 'none' }}>
-              <polyline points="23 4 23 10 17 10"/>
-              <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
-            </svg>
             Refresh
           </button>
-          {!loading && filtered.length > 0 && (
-            <button
-              className="btn btn-primary"
-              onClick={exportCSV}
-              style={{ display: 'flex', alignItems: 'center', gap: 7 }}
-            >
-              <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Export CSV
-            </button>
-          )}
         </div>
       </div>
 
@@ -202,7 +285,7 @@ export default function Referrals() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <svg width="18" height="18" fill="none" stroke="#DC2626" strokeWidth="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <span style={{ fontSize: 13, fontWeight: 600, color: '#DC2626' }}>{error}</span>
           </div>
@@ -220,26 +303,26 @@ export default function Referrals() {
         <StatCard
           label="Total Referrals" value={totalReferrals.toLocaleString()}
           sub="All-time referrals"
-          icon={<svg width="20" height="20" fill="none" stroke="#7C3AED" strokeWidth="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>}
+          icon={<svg width="20" height="20" fill="none" stroke="#7C3AED" strokeWidth="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" /></svg>}
           iconBg="rgba(124,58,237,0.12)" color="#7C3AED" loading={loading}
         />
         <StatCard
           label="Rewards Distributed" value={`${rewardsDistributed.toLocaleString()} PYO`}
           sub="Total rewards paid out"
-          icon={<svg width="20" height="20" fill="none" stroke="#F59E0B" strokeWidth="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>}
+          icon={<svg width="20" height="20" fill="none" stroke="#F59E0B" strokeWidth="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>}
           iconBg="rgba(245,158,11,0.12)" color="#D97706" loading={loading}
         />
         <StatCard
           label="Pending Payouts" value={pendingCount.toLocaleString()}
           sub="Awaiting confirmation"
-          icon={<svg width="20" height="20" fill="none" stroke="#F59E0B" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>}
+          icon={<svg width="20" height="20" fill="none" stroke="#F59E0B" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>}
           iconBg="rgba(245,158,11,0.12)" color="#D97706" loading={loading}
         />
         <StatCard
           label="Top Referrer"
           value={topReferrers.length > 0 ? (topReferrers[0]?.name || '—') : '—'}
           sub={topReferrers.length > 0 ? `${topReferrers[0]?.totalReferrals ?? 0} referrals made` : 'No data yet'}
-          icon={<svg width="20" height="20" fill="none" stroke="#10B981" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>}
+          icon={<svg width="20" height="20" fill="none" stroke="#10B981" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>}
           iconBg="rgba(16,185,129,0.12)" color="#059669" loading={loading}
         />
       </div>
@@ -250,10 +333,10 @@ export default function Referrals() {
         {/* Status tabs */}
         <div style={{ display: 'flex', borderBottom: '1px solid var(--gray-200)', paddingLeft: 8, overflowX: 'auto' }}>
           {[
-            { key: 'all',     label: 'All',     count: totalRows },
-            { key: 'paid',    label: 'Paid',    count: referrals.filter(r => r.rewardStatus === 'paid').length    },
+            { key: 'all', label: 'All', count: totalRows },
+            { key: 'paid', label: 'Paid', count: referrals.filter(r => r.rewardStatus === 'paid').length },
             { key: 'pending', label: 'Pending', count: pendingCount },
-            { key: 'failed',  label: 'Failed',  count: referrals.filter(r => r.rewardStatus === 'failed').length  },
+            { key: 'failed', label: 'Failed', count: referrals.filter(r => r.rewardStatus === 'failed').length },
           ].map(tab => (
             <button
               key={tab.key}
@@ -277,7 +360,7 @@ export default function Referrals() {
         <div className="filter-bar" style={{ gap: 10, flexWrap: 'wrap' }}>
           <div className="search-field" style={{ flex: 1, minWidth: 240, maxWidth: 380 }}>
             <svg width="13" height="13" fill="none" stroke="var(--gray-400)" strokeWidth="2" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <input
               placeholder="Search by referrer name or email…"
@@ -319,94 +402,94 @@ export default function Referrals() {
             <tbody>
               {loading
                 ? Array(8).fill(0).map((_, i) => (
-                    <tr key={i}>
-                      <td><div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}><Skeleton w={120} h={13} r={4}/><Skeleton w={160} h={10} r={4}/></div></td>
-                      <td><div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}><Skeleton w={120} h={13} r={4}/><Skeleton w={160} h={10} r={4}/></div></td>
-                      <td><Skeleton w={80} h={22} r={6}/></td>
-                      <td><Skeleton w={60} h={16} r={4}/></td>
-                      <td><Skeleton w={70} h={22} r={20}/></td>
-                      <td><Skeleton w={110} h={12} r={4}/></td>
-                    </tr>
-                  ))
+                  <tr key={i}>
+                    <td><div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}><Skeleton w={120} h={13} r={4} /><Skeleton w={160} h={10} r={4} /></div></td>
+                    <td><div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}><Skeleton w={120} h={13} r={4} /><Skeleton w={160} h={10} r={4} /></div></td>
+                    <td><Skeleton w={80} h={22} r={6} /></td>
+                    <td><Skeleton w={60} h={16} r={4} /></td>
+                    <td><Skeleton w={70} h={22} r={20} /></td>
+                    <td><Skeleton w={110} h={12} r={4} /></td>
+                  </tr>
+                ))
                 : filtered.map((r, idx) => {
-                    const sb = statusBadge(r.rewardStatus);
-                    return (
-                      <tr
-                        key={idx}
-                        className="ref-row"
-                        style={{ animation: `rowFadeIn 0.3s ease both`, animationDelay: `${idx * 0.04}s` }}
-                      >
-                        {/* Referrer */}
-                        <td>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                            <div style={{
-                              width: 34, height: 34, borderRadius: '50%',
-                              background: 'linear-gradient(135deg,#6D28D9,#7C3AED)',
-                              display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              fontSize: 13, color: '#fff', fontWeight: 800, flexShrink: 0,
-                              boxShadow: '0 2px 8px rgba(109,40,217,0.3)',
-                            }}>
-                              {(r.referrer?.name || '?').charAt(0).toUpperCase()}
-                            </div>
-                            <div>
-                              <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--navy)' }}>
-                                {r.referrer?.name || '—'}
-                              </div>
-                              <div style={{ fontSize: 11, color: 'var(--gray-400)', marginTop: 1 }}>
-                                {r.referrer?.email || r.referrer?.mobile || '—'}
-                              </div>
-                            </div>
+                  const sb = statusBadge(r.rewardStatus);
+                  return (
+                    <tr
+                      key={idx}
+                      className="ref-row"
+                      style={{ animation: `rowFadeIn 0.3s ease both`, animationDelay: `${idx * 0.04}s` }}
+                    >
+                      {/* Referrer */}
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <div style={{
+                            width: 34, height: 34, borderRadius: '50%',
+                            background: 'linear-gradient(135deg,#6D28D9,#7C3AED)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: 13, color: '#fff', fontWeight: 800, flexShrink: 0,
+                            boxShadow: '0 2px 8px rgba(109,40,217,0.3)',
+                          }}>
+                            {(r.referrer?.name || '?').charAt(0).toUpperCase()}
                           </div>
-                        </td>
-
-                        {/* Referred User */}
-                        <td>
                           <div>
                             <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--navy)' }}>
-                              {r.referredUser?.name || '—'}
+                              {r.referrer?.name || '—'}
                             </div>
                             <div style={{ fontSize: 11, color: 'var(--gray-400)', marginTop: 1 }}>
-                              {r.referredUser?.email || r.referredUser?.mobile || '—'}
+                              {r.referrer?.email || r.referrer?.mobile || '—'}
                             </div>
                           </div>
-                        </td>
+                        </div>
+                      </td>
 
-                        {/* Code Used */}
-                        <td>
-                          {r.referrer?.referralCode ? (
-                            <span style={{
-                              fontFamily: 'monospace', fontSize: 12.5, fontWeight: 700,
-                              background: '#EDE9FE', color: '#5B21B6',
-                              padding: '3px 10px', borderRadius: 8,
-                              letterSpacing: '0.5px',
-                            }}>
-                              {r.referrer.referralCode}
-                            </span>
-                          ) : <span style={{ color: 'var(--gray-400)' }}>—</span>}
-                        </td>
+                      {/* Referred User */}
+                      <td>
+                        <div>
+                          <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--navy)' }}>
+                            {r.referredUser?.name || '—'}
+                          </div>
+                          <div style={{ fontSize: 11, color: 'var(--gray-400)', marginTop: 1 }}>
+                            {r.referredUser?.email || r.referredUser?.mobile || '—'}
+                          </div>
+                        </div>
+                      </td>
 
-                        {/* Reward */}
-                        <td>
+                      {/* Code Used */}
+                      <td>
+                        {r.referrer?.referralCode ? (
                           <span style={{
-                            fontFamily: "'Space Grotesk',sans-serif", fontSize: 15, fontWeight: 800,
-                            color: '#D97706',
+                            fontFamily: 'monospace', fontSize: 12.5, fontWeight: 700,
+                            background: '#EDE9FE', color: '#5B21B6',
+                            padding: '3px 10px', borderRadius: 8,
+                            letterSpacing: '0.5px',
                           }}>
-                            +{(r.rewardAmount ?? 0).toLocaleString()}
+                            {r.referrer.referralCode}
                           </span>
-                        </td>
+                        ) : <span style={{ color: 'var(--gray-400)' }}>—</span>}
+                      </td>
 
-                        {/* Status */}
-                        <td>
-                          <span className={`badge ${sb.cls}`}>{sb.label}</span>
-                        </td>
+                      {/* Reward */}
+                      <td>
+                        <span style={{
+                          fontFamily: "'Space Grotesk',sans-serif", fontSize: 15, fontWeight: 800,
+                          color: '#D97706',
+                        }}>
+                          +{(r.rewardAmount ?? 0).toLocaleString()}
+                        </span>
+                      </td>
 
-                        {/* Joined At */}
-                        <td style={{ fontSize: 12.5, color: 'var(--gray-400)', whiteSpace: 'nowrap' }}>
-                          {formatDate(r.referredUser?.joinedAt)}
-                        </td>
-                      </tr>
-                    );
-                  })
+                      {/* Status */}
+                      <td>
+                        <span className={`badge ${sb.cls}`}>{sb.label}</span>
+                      </td>
+
+                      {/* Joined At */}
+                      <td style={{ fontSize: 12.5, color: 'var(--gray-400)', whiteSpace: 'nowrap' }}>
+                        {formatDate(r.referredUser?.joinedAt)}
+                      </td>
+                    </tr>
+                  );
+                })
               }
             </tbody>
           </table>
@@ -480,8 +563,8 @@ export default function Referrals() {
               {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
                 const p = totalPages <= 7 ? i + 1
                   : page <= 4 ? i + 1
-                  : page >= totalPages - 3 ? totalPages - 6 + i
-                  : page - 3 + i;
+                    : page >= totalPages - 3 ? totalPages - 6 + i
+                      : page - 3 + i;
                 return (
                   <button key={p} className={`pag-btn${page === p ? ' act' : ''}`} onClick={() => setPage(p)}>{p}</button>
                 );
